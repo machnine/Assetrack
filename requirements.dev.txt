@@ -1,0 +1,6 @@
+django~=5.0.2
+django_htmx
+
+djlint
+django-extensions
+django-debug-toolbar

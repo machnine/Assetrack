@@ -1,0 +1,22 @@
+# virtual environment
+env/
+
+# environment file
+.env
+
+# python
+__pycache__/
+
+# django
+staticfiles/
+
+# IDE 
+.vscode/
+
+# logs
+logs/
+*.log
+
+#sqlite database
+*.sqlite3
+*.db

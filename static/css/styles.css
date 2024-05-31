@@ -1,0 +1,35 @@
+/* Auto-dismiss alert transition */
+.alert.auto-dismiss {
+  transition: opacity 0.5s ease-out, max-height 0.5s ease-out, padding 0.5s ease-out, margin 0.5s ease-out;
+  opacity: 1;
+  max-height: 60px; /* Adjust based on your alert's typical height */
+  overflow: hidden;
+  padding: 10px; /* Adjust to your alert's default padding */
+  margin: 10px 0; /* Adjust to your alert's default margin */
+}
+
+.alert.alert-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+
+.alert.auto-dismiss.hide {
+  opacity: 0; /* Fully transparent */
+  max-height: 0; /* Collapse the alert */
+  padding: 0; /* Remove padding during collapse */
+  margin: 0; /* Remove margin during collapse */
+}
+
+.alert.auto-dismiss .btn-close {
+  display: none; /* Hide the close button */
+}
+
+#alerts-container {
+  position: fixed; /* or absolute */
+  top: 0px;
+  left: 25%;
+  z-index: 1050;
+  width: 50%;
+  overflow: auto;
+}
