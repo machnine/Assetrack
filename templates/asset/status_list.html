@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-primary">Asset statuses</h1>
+  <a href="{% url 'status_create' %}">Create</a>
+  {% for status in statuses %}
+    <p>
+      {{ status.name }} - {{ status.description }} - <a href="{% url 'status_update' status.id %}">Edit</a> - <a href="{% url 'status_delete' status.id %}">Delete</a>
+      <br>
+    </p>
+  {% endfor %}
+{% endblock content %}

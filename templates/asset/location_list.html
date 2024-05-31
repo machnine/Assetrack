@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-primary">Asset Locations</h1>
+  <a href="{% url 'location_create' %}">Create</a>
+  {% for location in locations %}
+    <p>
+      {{ location.name }} - {{ location.description }} - <a href="{% url 'location_update' location.id %}">Edit</a> - <a href="{% url 'location_delete' location.id %}">Delete</a>
+      <br>
+    </p>
+  {% endfor %}
+{% endblock content %}

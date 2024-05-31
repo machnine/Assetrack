@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-primary">Asset equipments</h1>
+  <a href="{% url 'equipment_create' %}">Create</a>
+  {% for equipment in equipments %}
+    <p>
+      {{ equipment.name }} - {{ equipment.description }} -  
+       <a href="{% url 'equipment_update' equipment.id %}">Edit</a> - 
+       <a href="{% url 'equipment_delete' equipment.id %}">Delete</a> - 
+      <a href="{% url 'equipment_detail' equipment.id %}">Detail</a> -
+      <a href="{% url 'equipment_record_create' equipment.id %}">Add a record</a> -
+      <a href="{% url 'equipment_record_list' equipment.id %}">View records</a>
+      <br>
+    </p>
+  {% endfor %}
+{% endblock content %}

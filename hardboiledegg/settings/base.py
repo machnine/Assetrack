@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     # local
     "hardboiledegg",
     "user",
+    "asset",
 ]
 
 # Middleware

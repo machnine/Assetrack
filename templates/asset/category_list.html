@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-primary">Asset categories</h1>
+  <a href="{% url 'category_create' %}">Create</a>
+  {% for category in categories %}
+    <p>
+      {{ category.name }} - {{ category.description }} - <a href="{% url 'category_update' category.id %}">Edit</a> - <a href="{% url 'category_delete' category.id %}">Delete</a>
+      <br>
+    </p>
+  {% endfor %}
+{% endblock content %}
