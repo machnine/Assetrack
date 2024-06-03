@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block page_title %}
+{% endblock page_title %}
+{% block content %}
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="d-flex align-items-center justify-content-between pe-2">
+        <h5>
+          {% block panel_heading %}
+          {% endblock panel_heading %}
+        </h5>
+        <a href="{% block new_object_url %}{% endblock new_object_url %}" class="btn btn-sm btn-outline-success">
+          <i class="bi bi-plus-circle"></i> New
+        </a>
+      </div>
+    </div>
+    <div class="panel-content px-3">
+      {% block panel_content %}
+      {% endblock panel_content %}
+    </div>
+  </div>
+{% endblock content %}

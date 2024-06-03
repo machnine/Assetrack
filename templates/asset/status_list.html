@@ -1,11 +1,28 @@
-{% extends "base.html" %}
-{% block content %}
-  <h1 class="text-primary">Asset statuses</h1>
-  <a href="{% url 'status_create' %}">Create</a>
+{% extends "partials/object_list.html" %}
+{% block page_title %}
+  Status Management
+{% endblock page_title %}
+{% block new_object_url %}
+  {% url 'status_create' %}
+{% endblock new_object_url %}
+{% block panel_heading %}
+  <i class="bi bi-diamond-half text-muted"></i> Status List
+{% endblock panel_heading %}
+{% block panel_content %}
+  <div class="row pb-2 text-muted small fw-bold">
+    <div class="col">Name</div>
+    <div class="col">Description</div>
+    <div class="d-none col-lg-3 d-lg-block">Actions</div>
+  </div>
   {% for status in statuses %}
-    <p>
-      {{ status.name }} - {{ status.description }} - <a href="{% url 'status_update' status.id %}">Edit</a> - <a href="{% url 'status_delete' status.id %}">Delete</a>
-      <br>
-    </p>
+    <div class="row">
+      <div class="col text-primary fw-bold pb-2">{{ status.name }}</div>
+      <div class="col">{{ status.description }}</div>
+      <div class="d-none col-lg-3 d-lg-block justify-content-between align-items-center">
+        <a href="{% url 'status_update' status.id %}" title="Update '{{ status.name }}'"><i class="bi bi-pencil-square"></i></a>
+        <a href="{% url 'status_delete' status.id %}" title="Delete '{{ status.name }}'"><i class="bi bi-trash"></i></a>
+        <a href="#"><i class="bi bi-card-list" title="List all '{{ status.name }}' equipment"></i></a>
+      </div>
+    </div>
   {% endfor %}
-{% endblock content %}
+{% endblock panel_content %}
