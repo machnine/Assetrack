@@ -10,7 +10,7 @@ class AbstractRecord(models.Model):
     """Abstract record for repair and maintenance records of the asset"""
 
     date = models.DateField()
-    name = models.CharField(max_length=100)
+    record_type = models.ForeignKey("RecordType", on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
@@ -30,3 +30,12 @@ class EquipmentRecord(AbstractRecord):
     class Meta:
         verbose_name = "Equipment Record"
         verbose_name_plural = "Equipment Records"
+
+
+class RecordType(models.Model):
+    """Model for record type"""
+
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name

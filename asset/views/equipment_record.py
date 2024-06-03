@@ -1,8 +1,10 @@
 """CRUD view for equipment record"""
 
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from asset.forms import EquipmentRecordForm
 from asset.models import Equipment, EquipmentRecord
 
 
@@ -29,12 +31,12 @@ class EquipmentRecordCreateView(CreateView):
 
     model = EquipmentRecord
     template_name = "asset/equipment_record_form.html"
-    fields = ["date", "name", "description"]
+    form_class = EquipmentRecordForm
     success_url = reverse_lazy("equipment_list")
 
     def form_valid(self, form):
-        equipment_id = self.kwargs.get("equipment_id")
-        form.instance.equipment_id = equipment_id
+        # get the equipment id from the url
+        form.instance.equipment_id = self.kwargs.get("equipment_id")
         return super().form_valid(form)
 
 
@@ -43,7 +45,7 @@ class EquipmentRecordUpdateView(UpdateView):
 
     model = EquipmentRecord
     template_name = "asset/equipment_record_form.html"
-    fields = ["date", "name", "description"]
+    form_class = EquipmentRecordForm
     context_object_name = "record"
 
     def get_success_url(self):
