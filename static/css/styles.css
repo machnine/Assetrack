@@ -94,3 +94,15 @@ a:hover {
 .panel-heading .badge {
   float: right;
 }
+
+.input-group-text-fw-sm {
+  width: 8rem;
+}
+
+.input-group-text-fw-md {
+  width: 10rem;
+}
+
+.input-group-text-fw-lg {
+  width: 12rem;
+}

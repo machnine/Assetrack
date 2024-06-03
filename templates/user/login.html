@@ -1,11 +1,29 @@
 {% extends "base.html" %}
-{% block logout_link %}
-{% endblock logout_link %}
-{% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
-{% endblock content %}
+{% block header %}
+{% endblock header %}
+{% block page_title %}
+  Login
+{% endblock page_title %}
+{% block main %}
+  <div class="d-flex justify-content-center">
+    <div class="col-xl-3 col-lg-6 col-md-10 col-12 pt-5 mt-5">
+      <h3 class="ps-2 pb-3">
+        <span class="text-primary fw-bold"><i class="bi bi-fingerprint"></i> Asset</span><span class="fw-bold text-muted">rack</span>
+      </h3>
+      <div class="col ps-2 pe-5 text-end">
+        <form method="post">
+          {% csrf_token %}
+          <div id="div_id_username" class="input-group mb-3">
+            <span class="input-group-text input-group-text-fw-sm">{{ form.username.label_tag }}</span>
+            <input type="text" name="username" class="form-control form-control-sm" required id="id_username">
+          </div>
+          <div id="div_id_password" class="input-group mb-3">
+            <span class="input-group-text input-group-text-fw-sm">{{ form.password.label_tag }}</span>
+            <input type="password" name="password" class="form-control form-control-sm" required id="id_password">
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock main %}
