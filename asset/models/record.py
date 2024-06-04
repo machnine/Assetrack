@@ -3,6 +3,8 @@
 from django.conf import settings
 from django.db import models
 
+from attachment.models import Attachment
+
 USER = settings.AUTH_USER_MODEL
 
 
@@ -30,6 +32,14 @@ class EquipmentRecord(AbstractRecord):
     class Meta:
         verbose_name = "Equipment Record"
         verbose_name_plural = "Equipment Records"
+
+
+class EquipmentRecordAttachment(Attachment):
+    """Attachment for the equipment record"""
+
+    uploaded_by = models.ForeignKey(
+        USER, on_delete=models.SET_NULL, null=True, blank=True, related_name="equipment_record_attachments"
+    )
 
 
 class RecordType(models.Model):

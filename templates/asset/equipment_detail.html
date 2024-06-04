@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block page_title %}
+  Equipment detail - {{ equipment.name }}
+{% endblock page_title %}
 {% block content %}
   {# equipment details #}
   <div class="panel">
@@ -77,13 +80,13 @@
   {# equipment records #}
   <div class="panel">
     <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
-      <span class="text-primary"><i class="bi bi-journal-text"></i> Equipment records</span>
-      <a href="{% url 'equipment_record_create' equipment.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
+      <span class="text-primary"><i class="bi bi-calendar3"></i> Equipment records</span>
+      <a href="{% url 'equipmentrecord_create' equipment.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
     </div>
     <div class="panel-content">
       {% for record in equipment.equipmentrecord_set.all %}
         <p>
-          <a href="{% url 'equipment_record_detail' record.id %}">{{ record.date|date:'d/m/Y' }}</a> - {{ record.record_type }} - {{ record.description }} <a href="{% url 'equipment_record_update' record.id %}">Edit</a> - <a href="{% url 'equipment_record_delete' record.id %}">Delete</a>
+          <a href="{% url 'equipmentrecord_detail' record.id %}">{{ record.date|date:'d/m/Y' }}</a> - {{ record.record_type }} - {{ record.description }} <a href="{% url 'equipmentrecord_update' record.id %}">Edit</a> - <a href="{% url 'equipmentrecord_delete' record.id %}">Delete</a>
         </p>
       {% endfor %}
     </div>

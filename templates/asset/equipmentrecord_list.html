@@ -3,7 +3,7 @@
   <h1 class="text-primary">Asset equipment records</h1>
   {% for record in records %}
     <p>
-      {{ record.name }} - {{ record.description }} - <a href="{% url 'equipment_record_update' record.id %}">Edit</a> - <a href="{% url 'equipment_record_delete' record.id %}">Delete</a>
+      {{ record.name }} - {{ record.description }} - <a href="{% url 'equipmentrecord_update' record.id %}">Edit</a> - <a href="{% url 'equipment_ecord_delete' record.id %}">Delete</a>
       <br>
     </p>
   {% endfor %}

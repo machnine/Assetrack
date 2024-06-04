@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="panel">
+    <div class="panel-heading">
+      {{ record.date|date:"d/m/Y" }} - {{ record.description }} -
+      <a href="{% url 'equipmentrecord_attachment_upload' record.id %}" title="Upload a file"><i class="bi bi-file-earmark-plus"></i></a> -
+    </div>
+    <div class="panel-content">
+      {% if attachments|length %}
+        {% for file in attachments %}
+          <p>
+            {{ file.name }}
+            {% if file.filetype %}
+              <i class="bi bi-filetype-{{ file.filetype }} text-warning"></i>
+            {% else %}
+              <i class="bi bi-file-earmark text-warning"></i>
+            {% endif %}
+            <a href="{{ file.file.url }}" title="Download this file"><i class="bi bi-download"></i></a> - {{ file.description }} <a href="{% url 'equipmentrecord_attachment_update' file.id %}" title="Update a file"><i class="bi bi-pencil-square"></i></a> <a href="{% url 'equipmentrecord_attachment_delete' file.id %}" title="Delete this file"><i class="bi bi-trash"></i></a>
+          </p>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}
