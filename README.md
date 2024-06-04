@@ -9,8 +9,6 @@ This is a boilerplate project for Django web development using the following tec
 
 
 ### TODO
-- Attachment
-  - Attach file to equipment record
 - Redirect to previous request url
 - Order Equipment Records
 - Search Equipment

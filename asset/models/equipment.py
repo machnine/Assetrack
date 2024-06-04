@@ -30,6 +30,12 @@ class Equipment(models.Model):
     def __str__(self):
         return self.name
 
+    def has_attachment(self):
+        """Check if the equipment has an attachment"""
+        if EquipmentAttachment.objects.filter(object_id=self.id).exists():
+            return True
+        return False
+
 
 class EquipmentAttachment(Attachment):
     """Attachment model for equipment"""

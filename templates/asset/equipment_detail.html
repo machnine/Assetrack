@@ -58,7 +58,13 @@
   <div class="panel">
     <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
       <span class="text-primary"><i class="bi bi-folder"></i> Equipment documents <span class="text-muted small">(documents related to equipment records shoud be attached to the corresponding records)</span></span>
-      <a href="{% url 'equipment_attachment_upload' equipment.id %}" title="Upload a file"><i class="bi bi-file-earmark-arrow-up"></i></a>
+      <a hx-get="{% url 'equipment_attachment_upload' equipment.id %}"
+         hx-trigger="click"
+         hx-target="#modal-box .modal-content"
+         hx-swap="innerHTML"
+         data-bs-toggle="modal"
+         data-bs-target="#modal-box"
+         href="javascript:"><i class="bi bi-file-earmark-arrow-up"></i></a>
     </div>
     <div class="panel-content">
       {% if attachments|length %}
@@ -69,9 +75,21 @@
             {% else %}
               <i class="bi bi-file-earmark text-warning"></i>
             {% endif %}
-            {{ file.name }} - {{ file.file.url }} - {{ file.description }}
-            <a href="{% url 'equipment_attachment_update' file.id %}" title="Update a file"><i class="bi bi-pencil-square"></i></a>
-            <a href="{% url 'equipment_attachment_delete' file.id %}" title="Delete this file"><i class="bi bi-trash"></i></a>
+            <a href="{{ file.file.url }}">{{ file.name }}</a> - {{ file.description }}
+            <a hx-get="{% url 'equipment_attachment_update' file.id %}"
+               hx-trigger="click"
+               hx-target="#modal-box .modal-content"
+               hx-swap="innerHTML"
+               data-bs-toggle="modal"
+               data-bs-target="#modal-box"
+               href="javascript:"><i class="bi bi-pencil-square"></i></a>
+            <a hx-get="{% url 'equipment_attachment_delete' file.id %}"
+               hx-trigger="click"
+               hx-target="#modal-box .modal-content"
+               hx-swap="innerHTML"
+               data-bs-toggle="modal"
+               data-bs-target="#modal-box"
+               href="javascript:"><i class="bi bi-trash"></i></a>
           </p>
         {% endfor %}
       {% endif %}
@@ -87,8 +105,18 @@
       {% for record in equipment.equipmentrecord_set.all %}
         <p>
           <a href="{% url 'equipmentrecord_detail' record.id %}">{{ record.date|date:'d/m/Y' }}</a> - {{ record.record_type }} - {{ record.description }} <a href="{% url 'equipmentrecord_update' record.id %}">Edit</a> - <a href="{% url 'equipmentrecord_delete' record.id %}">Delete</a>
+          {% if record.has_attachment %}<i class="bi bi-paperclip text-warning"></i>{% endif %}
         </p>
       {% endfor %}
     </div>
   </div>
 {% endblock content %}
+{% block modals %}
+  <div class="modal fade" id="modal-box" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HTMX rendered content -->
+      </div>
+    </div>
+  </div>
+{% endblock modals %}

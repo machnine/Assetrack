@@ -33,6 +33,12 @@ class EquipmentRecord(AbstractRecord):
         verbose_name = "Equipment Record"
         verbose_name_plural = "Equipment Records"
 
+    def has_attachment(self):
+        """Check if the record has an attachment"""
+        if EquipmentRecordAttachment.objects.filter(object_id=self.id).exists():
+            return True
+        return False
+
 
 class EquipmentRecordAttachment(Attachment):
     """Attachment for the equipment record"""
