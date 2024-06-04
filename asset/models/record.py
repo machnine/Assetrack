@@ -19,7 +19,7 @@ class AbstractRecord(models.Model):
         abstract = True
 
     def __str__(self):
-        return f"{self.date} - {self.name}"
+        return f"{self.date} - {self.description[:50]}"
 
 
 class EquipmentRecord(AbstractRecord):

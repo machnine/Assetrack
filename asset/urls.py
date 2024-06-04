@@ -47,17 +47,22 @@ urlpatterns = [
         name="equipment_record_delete",
     ),
     path(
+        "equipment/record/detail/<int:pk>/",
+        equipment_record.EquipmentRecordDetailView.as_view(),
+        name="equipment_record_detail",
+    ),
+    path(
         "equipment/<int:pk>/attachment/upload/",
         equipment.EquipmentAttachmentUploadView.as_view(),
         name="equipment_attachment_upload",
     ),
     path(
-        "equipment/<int:pk>/attachment/update/",
+        "equipment/attachment/<int:pk>/update/",
         equipment.EquipmentAttachmentUpdateView.as_view(),
         name="equipment_attachment_update",
     ),
     path(
-        "equipment/<int:pk>/attachment/delete/",
+        "equipment/attachment/<int:pk>/delete/",
         equipment.EquipmentAttachmentDeleteView.as_view(),
         name="equipment_attachment_delete",
     ),

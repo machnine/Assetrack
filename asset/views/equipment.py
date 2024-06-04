@@ -32,6 +32,11 @@ class EquipmentDetailView(DetailView):
     template_name = "asset/equipment_detail.html"
     context_object_name = "equipment"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["attachments"] = EquipmentAttachment.objects.filter(object_id=self.object.id)
+        return context
+
 
 class EquipmentUpdateView(UpdateView):
     """Update view for equipment"""

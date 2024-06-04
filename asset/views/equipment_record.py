@@ -1,14 +1,15 @@
 """CRUD view for equipment record"""
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView, DetailView
 
 from asset.forms import EquipmentRecordForm
 from asset.models import Equipment, EquipmentRecord
 
 
-class EquipmentRecordListView(ListView):
+class EquipmentRecordListView(LoginRequiredMixin, ListView):
     """List view for equipment record"""
 
     model = EquipmentRecord
@@ -26,7 +27,7 @@ class EquipmentRecordListView(ListView):
         return context
 
 
-class EquipmentRecordCreateView(CreateView):
+class EquipmentRecordCreateView(LoginRequiredMixin, CreateView):
     """Create view for equipment record"""
 
     model = EquipmentRecord
@@ -40,7 +41,7 @@ class EquipmentRecordCreateView(CreateView):
         return super().form_valid(form)
 
 
-class EquipmentRecordUpdateView(UpdateView):
+class EquipmentRecordUpdateView(LoginRequiredMixin, UpdateView):
     """Update view for equipment record"""
 
     model = EquipmentRecord
@@ -52,7 +53,7 @@ class EquipmentRecordUpdateView(UpdateView):
         return reverse_lazy("equipment_detail", kwargs={"pk": self.object.equipment.id})
 
 
-class EquipmentRecordDeleteView(DeleteView):
+class EquipmentRecordDeleteView(LoginRequiredMixin, DeleteView):
     """Delete view for equipment record"""
 
     model = EquipmentRecord
@@ -61,3 +62,11 @@ class EquipmentRecordDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("equipment_detail", kwargs={"pk": self.object.equipment.id})
+
+
+class EquipmentRecordDetailView(LoginRequiredMixin, DetailView):
+    """Detail view for equipment record"""
+
+    model = EquipmentRecord
+    template_name = "asset/equipment_record_detail.html"
+    context_object_name = "record"
