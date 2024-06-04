@@ -1,0 +1,26 @@
+<form method="post" enctype="multipart/form-data" action="{{ upload_url }}">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h5 class="modal-title">Upload a Document</h5>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group mb-3">
+      <input class="form-control" type="file" name="file" required="" id="id_file">
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text input-group-text-fw-sm">{{ form.name.label_tag }}</span>
+      {{ form.name }}
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text input-group-text-fw-sm">{{ form.description.label_tag }}</span>
+      {{ form.description }}
+    </div>
+    <div class="text-end pt-2">
+      <button class="btn btn-success" type="submit">Save</button>
+    </div>
+  </div>
+</form>

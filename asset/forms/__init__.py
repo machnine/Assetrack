@@ -1,2 +1,2 @@
-from .equipment import EquipmentForm
-from .equipment_record import EquipmentRecordForm
+from .equipment import *
+from .equipment_record import *

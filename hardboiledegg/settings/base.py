@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "hardboiledegg",
     "user",
     "asset",
+    "attachment",
 ]
 
 # Middleware

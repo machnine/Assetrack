@@ -1,6 +1,11 @@
 """equipment model"""
 
+from django.conf import settings
 from django.db import models
+
+from attachment.models import Attachment
+
+USER = settings.AUTH_USER_MODEL
 
 
 class Equipment(models.Model):
@@ -24,3 +29,11 @@ class Equipment(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class EquipmentAttachment(Attachment):
+    """Attachment model for equipment"""
+
+    uploaded_by = models.ForeignKey(
+        USER, on_delete=models.SET_NULL, null=True, blank=True, related_name="equipment_attachments"
+    )
