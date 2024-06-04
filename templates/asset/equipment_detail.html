@@ -23,7 +23,7 @@
           <span class="text-muted small pe-2">Serial:</span> {{ equipment.serial_number }}
         </div>
         <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2" title="Medical Inventory Number">Inventory:</span> {{ equipment.inventory_number }}
+          <span class="text-muted small pe-2" title="Medical Inventory Number">Inventory:</span> {{ equipment.inventory_number|default:"" }}
         </div>
       </div>
       <div class="row pb-2">
