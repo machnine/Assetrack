@@ -19,6 +19,7 @@ class AbstractRecord(models.Model):
 
     class Meta:
         abstract = True
+        
 
     def __str__(self):
         return f"{self.date} - {self.description[:50]}"
@@ -32,6 +33,7 @@ class EquipmentRecord(AbstractRecord):
     class Meta:
         verbose_name = "Equipment Record"
         verbose_name_plural = "Equipment Records"
+        ordering = ["-date"]
 
     def has_attachment(self):
         """Check if the record has an attachment"""
@@ -55,3 +57,6 @@ class RecordType(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:        
+        ordering = ["name"]

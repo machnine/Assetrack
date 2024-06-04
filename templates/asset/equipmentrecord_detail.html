@@ -1,24 +1,78 @@
 {% extends "base.html" %}
+{% block page_title %}
+  Equipment record - {{ record.equipment }}
+{% endblock page_title %}
 {% block content %}
   <div class="panel">
-    <div class="panel-heading">
-      {{ record.date|date:"d/m/Y" }} - {{ record.description }} -
-      <a href="{% url 'equipmentrecord_attachment_upload' record.id %}" title="Upload a file"><i class="bi bi-file-earmark-plus"></i></a> -
+    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
+      <span class="h6"><i class="bi bi-calendar3"></i> Equipment record - <a href="{% url 'equipment_detail' record.equipment.id %}">{{ record.equipment }}</a></span>
+      <span>
+        <a href="{% url 'equipmentrecord_update' record.id %}" title="Edit"><i class="bi bi-pencil-square"></i></a>
+        <a href="{% url 'equipmentrecord_delete' record.id %}" title="Delete"><i class="bi bi-trash"></i></a>
+        <a hx-get="{% url 'equipmentrecord_attachment_upload' record.id %}"
+           hx-trigger="click"
+           hx-target="#modal-box .modal-content"
+           hx-swap="innerHTML"
+           data-bs-toggle="modal"
+           data-bs-target="#modal-box"
+           title="Upload a file"
+           href="javascript:"><i class="bi bi-file-earmark-arrow-up"></i></a>
+      </span>
     </div>
     <div class="panel-content">
+      <p>
+        <span class="h6 small pe-2">Date:</span>
+        <span>{{ record.date|date:"d/m/Y" }}</span>
+      </p>
+      <p>
+        <span class="h6 small pe-2">Record type:</span><span>{{ record.record_type }}</span>
+      </p>
+      <p>
+        <span class="h6 small pe-2">Detail description:</span>
+        {{ record.description }}
+      </p>
       {% if attachments|length %}
-        {% for file in attachments %}
-          <p>
-            {{ file.name }}
-            {% if file.filetype %}
-              <i class="bi bi-filetype-{{ file.filetype }} text-warning"></i>
-            {% else %}
-              <i class="bi bi-file-earmark text-warning"></i>
-            {% endif %}
-            <a href="{{ file.file.url }}" title="Download this file"><i class="bi bi-download"></i></a> - {{ file.description }} <a href="{% url 'equipmentrecord_attachment_update' file.id %}" title="Update a file"><i class="bi bi-pencil-square"></i></a> <a href="{% url 'equipmentrecord_attachment_delete' file.id %}" title="Delete this file"><i class="bi bi-trash"></i></a>
-          </p>
-        {% endfor %}
+        <span class="h6 small">Attachments:</span>
+        <div class="row pb-3">
+          {% for file in attachments %}
+            <div class="col-12 d-flex justify-content-between align-items-center px-3">
+              <span>
+                {% if file.filetype %}
+                  <i class="bi bi-filetype-{{ file.filetype }} text-info"></i>
+                {% else %}
+                  <i class="bi bi-file-earmark text-info"></i>
+                {% endif %}
+                <a href="{{ file.file.url }}" title="{{ file.description }}"><i class="small pe-5">{{ file.name }}</i></a>
+              </span>
+              <span>
+                <a hx-get="{% url 'equipmentrecord_attachment_update' file.id %}"
+                   hx-trigger="click"
+                   hx-target="#modal-box .modal-content"
+                   hx-swap="innerHTML"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modal-box"
+                   href="javascript:"><i class="bi bi-pencil-square small"></i></a>
+                <a hx-get="{% url 'equipmentrecord_attachment_delete' file.id %}"
+                   hx-trigger="click"
+                   hx-target="#modal-box .modal-content"
+                   hx-swap="innerHTML"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modal-box"
+                   href="javascript:"><i class="bi bi-trash small"></i></a>
+              </span>
+            </div>
+          {% endfor %}
+        </div>
       {% endif %}
     </div>
   </div>
 {% endblock content %}
+{% block modals %}
+  <div class="modal fade" id="modal-box" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HTMX rendered content -->
+      </div>
+    </div>
+  </div>
+{% endblock modals %}

@@ -10,7 +10,6 @@ This is a boilerplate project for Django web development using the following tec
 
 ### TODO
 - Redirect to previous request url
-- Order Equipment Records
 - Search Equipment
 - Search Company
 - Location/Company/Category/Status filtered list

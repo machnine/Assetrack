@@ -103,10 +103,22 @@
     </div>
     <div class="panel-content">
       {% for record in equipment.equipmentrecord_set.all %}
-        <p>
-          <a href="{% url 'equipmentrecord_detail' record.id %}">{{ record.date|date:'d/m/Y' }}</a> - {{ record.record_type }} - {{ record.description }} <a href="{% url 'equipmentrecord_update' record.id %}">Edit</a> - <a href="{% url 'equipmentrecord_delete' record.id %}">Delete</a>
-          {% if record.has_attachment %}<i class="bi bi-paperclip text-warning"></i>{% endif %}
-        </p>
+        <div class="row">
+          <div class="col-6 col-lg-1">
+            <a href="{% url 'equipmentrecord_detail' record.id %}">{{ record.date|date:'d/m/Y' }}</a>
+          </div>
+          <div class="col-6 col-lg-1 text-muted fw-bold small">{{ record.record_type }}</div>
+          <div class="d-none d-lg-block col-lg-8">
+            <span>{{ record.description|truncatewords:25 }}</span>            
+          </div>
+          <div class="d-none d-lg-block col-lg-2 text-center">
+            <a href="{% url 'equipmentrecord_update' record.id %}"><i class="bi bi-pencil-square"></i></a>
+              <a href="{% url 'equipmentrecord_delete' record.id %}"><i class="bi bi-trash"></i></a>
+            <span>
+              {% if record.has_attachment %}<i class="bi bi-paperclip text-warning"></i>{% endif %}
+            </span>
+          </div>
+        </div>
       {% endfor %}
     </div>
   </div>

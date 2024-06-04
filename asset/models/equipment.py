@@ -36,6 +36,9 @@ class Equipment(models.Model):
             return True
         return False
 
+    class Meta:
+        ordering = ["name"]
+
 
 class EquipmentAttachment(Attachment):
     """Attachment model for equipment"""
