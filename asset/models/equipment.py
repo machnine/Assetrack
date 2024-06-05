@@ -14,11 +14,13 @@ class Equipment(models.Model):
     name = models.CharField(max_length=100)
     manufacturer = models.ForeignKey("Company", on_delete=models.PROTECT, related_name="manufacturer")
     model_number = models.CharField(max_length=100)
-    serial_number = models.CharField(max_length=100)
-    inventory_number = models.CharField(max_length=100, null=True, blank=True)
+    serial_number = models.CharField(max_length=100, unique=True)
+    inventory_number = models.CharField(max_length=100, null=True, blank=True, unique=True)
     porcurement_date = models.DateField(null=True, blank=True)
     commission_date = models.DateField(null=True, blank=True)
     warranty_end = models.DateField(null=True, blank=True)
+    replacement_date = models.DateField(null=True, blank=True)
+    value = models.IntegerField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     category = models.ForeignKey("Category", on_delete=models.PROTECT)
     location = models.ForeignKey("Location", on_delete=models.PROTECT)
@@ -46,3 +48,6 @@ class EquipmentAttachment(Attachment):
     uploaded_by = models.ForeignKey(
         USER, on_delete=models.SET_NULL, null=True, blank=True, related_name="equipment_attachments"
     )
+
+    class Meta:
+        ordering = ["-uploaded_at"]

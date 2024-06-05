@@ -42,7 +42,7 @@
                 {% else %}
                   <i class="bi bi-file-earmark text-info"></i>
                 {% endif %}
-                <a href="{{ file.file.url }}" title="{{ file.description }}"><i class="small pe-5">{{ file.name }}</i></a>
+                <a href="{{ file.file.url }}" title="{{ file.description }}"><i class="small pe-5">{{ file.name }} - {{ file.file.size|filesizeformat }}</i></a>
               </span>
               <span>
                 <a hx-get="{% url 'equipmentrecord_attachment_update' file.id %}"

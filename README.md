@@ -15,3 +15,6 @@ This is a boilerplate project for Django web development using the following tec
 - Location/Company/Category/Status filtered list
 - Software/Firmware Logs
 - Log Equipment creation/update (USER and datetime)
+- Equipment
+  - Last serviced
+  - Last calibrated

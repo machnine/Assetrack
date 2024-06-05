@@ -9,7 +9,7 @@ USER = settings.AUTH_USER_MODEL
 class Status(models.Model):
     """status of the asset"""
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Status(models.Model):
 class Category(models.Model):
     """category of the asset"""
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -29,7 +29,7 @@ class Category(models.Model):
 class Location(models.Model):
     """location of the asset"""
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -39,7 +39,7 @@ class Location(models.Model):
 class Company(models.Model):
     """associated company of the asset"""
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     phone = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     website = models.URLField(null=True, blank=True)
