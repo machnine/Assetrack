@@ -2,30 +2,12 @@
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 
 from asset.forms import EquipmentRecordAttachmentUpdateForm, EquipmentRecordAttachmentUploadForm, EquipmentRecordForm
-from asset.models import Equipment, EquipmentRecord
+from asset.models import EquipmentRecord
 from asset.models.record import EquipmentRecordAttachment
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
-
-
-class EquipmentRecordListView(LoginRequiredMixin, ListView):
-    """List view for equipment record"""
-
-    model = EquipmentRecord
-    template_name = "asset/equipmentrecord_list.html"
-    context_object_name = "records"
-
-    def get_queryset(self):
-        equipment_id = self.kwargs.get("equipment_id")
-        return EquipmentRecord.objects.filter(equipment_id=equipment_id)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        equipment_id = self.kwargs.get("equipment_id")
-        context["equipment"] = Equipment.objects.get(id=equipment_id)
-        return context
 
 
 class EquipmentRecordCreateView(LoginRequiredMixin, CreateView):
@@ -58,8 +40,13 @@ class EquipmentRecordDeleteView(LoginRequiredMixin, DeleteView):
     """Delete view for equipment record"""
 
     model = EquipmentRecord
-    template_name = "asset/equipmentrecord_delete.html"
+    template_name = "partials/object_delete.html"
     context_object_name = "record"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("equipment_detail", kwargs={"pk": self.object.equipment.id})
+        return context
 
     def get_success_url(self):
         return reverse_lazy("equipment_detail", kwargs={"pk": self.object.equipment.id})

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block page_title %}
+  Confirm deletion
+{% endblock page_title %}
+{% block content %}
+  <div class="panel col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+    <div class="panel-heading">
+      <span class="h4 text-danger">Confirm Deletion</span>
+    </div>
+    <div class="panel-content">
+      <p>
+        Are you sure you want to delete <span class="fw-bold text-danger">{{ object.name }}</span>?
+      </p>
+      <p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+          <a href="{{ cancel_url }}" class="btn btn-sm btn-outline-secondary">Cancel</a>
+        </form>
+      </p>
+    </div>
+  </div>
+{% endblock content %}

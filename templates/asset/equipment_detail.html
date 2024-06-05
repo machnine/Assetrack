@@ -17,45 +17,57 @@
     </div>
     <div class="panel-content">
       <div class="row">
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Manufacturer:</span> {{ equipment.manufacturer }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Manufacturer</span>
+          <span class="text-primary">{{ equipment.manufacturer }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Model:</span> {{ equipment.model_number }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Model number</span>
+          <span class="text-primary">{{ equipment.model_number }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Serial:</span> {{ equipment.serial_number }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Serial number</span>
+          <span class="text-primary">{{ equipment.serial_number }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2" title="Medical Inventory Number">Inventory:</span> {{ equipment.inventory_number|default:"" }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block" title="Medical Inventory Number">Inventory number</span>
+          <span class="text-primary">{{ equipment.inventory_number|default:"" }}</span>
         </div>
       </div>
       <div class="row">
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Category:</span> {{ equipment.category }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Category</span>
+          <span class="text-primary">{{ equipment.category }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Location:</span> {{ equipment.location }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Location</span>
+          <span class="text-primary">{{ equipment.location }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Porcured:</span> {{ equipment.porcurement_date|date:"d/m/Y" }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Procurement date</span>
+          <span class="text-primary">{{ equipment.procurement_date|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2" title="Medical Inventory Number">Commissioned:</span> {{ equipment.commission_date|date:"d/m/Y" }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block" title="Medical Inventory Number">Commission date</span>
+          <span class="text-primary">{{ equipment.commission_date|date:"d/m/Y" }}</span>
         </div>
       </div>
       <div class="row pb-2">
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Warranty end:</span> {{ equipment.warranty_end|date:"d/m/Y" }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Warranty end</span>
+          <span class="text-primary">{{ equipment.warranty_end|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Serviced by:</span> {{ equipment.service_provider|default:"" }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Serviced by</span>
+          <span class="text-primary">{{ equipment.service_provider|default:"" }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Replacement date:</span> {{ equipment.replacement_date|date:"d/m/Y" }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Replacement date</span>
+          <span class="text-primary">{{ equipment.replacement_date|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-12 col-lg-3">
-          <span class="text-muted small pe-2">Value(£):</span> {{ equipment.value|default:"" }}
+        <div class="col-6 col-lg-3 mb-3">
+          <span class="text-muted small d-block">Value (£)</span>
+          <span class="text-primary">{{ equipment.value|default:"" }}</span>
         </div>
       </div>
     </div>
@@ -89,7 +101,7 @@
             </div>
             <div class="col-6 col-lg-9">
               <span class="pe-3"><a href="{{ file.file.url }}">{{ file.name }}</a></span>
-              <span>{{ file.description|default:"" }}</span>
+              <span class="text-primary">{{ file.description|default:"" }}</span>
             </div>
             <div class="d-none d-lg-block col-lg-1 text-end">
               <a hx-get="{% url 'equipment_attachment_update' file.id %}"
@@ -126,14 +138,12 @@
           </div>
           <div class="col-6 col-lg-2 text-muted fw-bold">{{ record.record_type }}</div>
           <div class="d-none d-lg-block col-lg-8 small">
-            <span>{{ record.description|truncatewords:25 }}</span>
+            <span class="text-primary">{{ record.description|truncatewords:25 }}</span>
           </div>
           <div class="d-none d-lg-block col-lg-1 text-end">
             <span>
               {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
             </span>
-            <a href="{% url 'equipmentrecord_update' record.id %}"><i class="bi bi-pencil-square"></i></a>
-            <a href="{% url 'equipmentrecord_delete' record.id %}"><i class="bi bi-trash"></i></a>
           </div>
         </div>
       {% endfor %}

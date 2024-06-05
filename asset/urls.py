@@ -27,11 +27,6 @@ urlpatterns = [
     path("equipment/<int:pk>/update/", equipment.EquipmentUpdateView.as_view(), name="equipment_update"),
     path("equipment/<int:pk>/delete/", equipment.EquipmentDeleteView.as_view(), name="equipment_delete"),
     path(
-        "equipment/<int:equipment_id>/record/",
-        equipment_record.EquipmentRecordListView.as_view(),
-        name="equipmentrecord_list",
-    ),
-    path(
         "equipment/<int:equipment_id>/record/create/",
         equipment_record.EquipmentRecordCreateView.as_view(),
         name="equipmentrecord_create",

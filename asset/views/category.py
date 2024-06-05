@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from asset.forms import CategoryForm
 from asset.models import Category
 
 
@@ -20,7 +21,7 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
 
     model = Category
     template_name = "asset/category_form.html"
-    fields = ["name", "description"]
+    form_class = CategoryForm
     success_url = reverse_lazy("category_list")
 
 
@@ -29,7 +30,7 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Category
     template_name = "asset/category_form.html"
-    fields = ["name", "description"]
+    form_class = CategoryForm
     success_url = reverse_lazy("category_list")
 
 
@@ -37,5 +38,11 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     """Delete view for the category model"""
 
     model = Category
-    template_name = "asset/category_delete.html"
+    template_name = "partials/object_delete.html"
     success_url = reverse_lazy("category_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy("category_list")
+        return context
+

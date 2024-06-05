@@ -1,9 +1,12 @@
-{% extends "base.html" %}
-{% block content %}
-  <h1 class="text-primary">Equipment Record</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
-{% endblock content %}
+{% extends "partials/object_form.html" %}
+{% block title_object_name %}
+  Equipment Record
+{% endblock title_object_name %}
+{% block heading_object_name %}
+  <i class="bi bi-calendar3"></i>
+  {% if form.instance.pk %}
+    Update equipment record: <i class="text-danger">{{ form.instance }}</i>
+  {% else %}
+    New equipment record
+  {% endif %}
+{% endblock heading_object_name %}

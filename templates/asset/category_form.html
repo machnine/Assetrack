@@ -1,9 +1,18 @@
-{% extends "base.html" %}
-{% block content %}
-  <h1 class="text-primary">Asset Category</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
-{% endblock content %}
+{% extends "partials/object_form.html" %}
+{% block title_object_name %}
+  Category
+{% endblock title_object_name %}
+{% block object_icon %}
+  <i class="bi bi-ui-checks-grid"></i>
+{% endblock object_icon %}
+{% block object_name %}
+  Category
+{% endblock object_name %}
+{% block heading_object_name %}
+  <i class="bi bi-ui-checks-grid"></i>
+  {% if form.instance.pk %}
+    Update category: <i class="text-danger">{{ form.instance }}</i>
+  {% else %}
+    New category
+  {% endif %}
+{% endblock heading_object_name %}

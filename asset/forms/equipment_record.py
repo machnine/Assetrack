@@ -13,6 +13,13 @@ class EquipmentRecordForm(forms.ModelForm):
         model = EquipmentRecord
         fields = ["date", "record_type", "description"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # all fields css class
+        for field in self.fields.values():
+            field.widget.attrs.update({"class": "form-control"})
+        self.fields["description"].widget.attrs.update({"rows": 3})
+
 
 class EquipmentRecordAttachmentUploadForm(AttachmentForm):
     """Form for uploading an attachment for equipment."""

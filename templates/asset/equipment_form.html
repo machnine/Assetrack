@@ -1,9 +1,101 @@
-{% extends "base.html" %}
-{% block content %}
-  <h1 class="text-primary">Asset Equipment</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
-{% endblock content %}
+{% extends "partials/object_form.html" %}
+{% block title_object_name %}
+  Equipment
+{% endblock title_object_name %}
+{% block heading_object_name %}
+  <i class="bi bi-plugin"></i>
+  {% if form.instance.pk %}
+    Update equipment: <i class="text-danger">{{ form.instance }}</i>
+  {% else %}
+    New equipment
+  {% endif %}
+{% endblock heading_object_name %}
+{% block object_form %}
+  <div class="row">
+    <div class="mb-3 col-12 col-md-9">
+      <label class="form-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}<div class="text-danger">{{ form.name.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-3">
+      <label class="form-label" for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+      {{ form.status }}
+      {% if form.status.errors %}<div class="text-danger">{{ form.status.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-12 col-md-4">
+      <label class="form-label" for="{{ form.model_number.id_for_label }}">{{ form.model_number.label }}</label>
+      {{ form.model_number }}
+      {% if form.model_number.errors %}<div class="text-danger">{{ form.model_number.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-4">
+      <label class="form-label" for="{{ form.serial_number.id_for_label }}">{{ form.serial_number.label }}</label>
+      {{ form.serial_number }}
+      {% if form.serial_number.errors %}<div class="text-danger">{{ form.serial_number.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-4">
+      <label class="form-label" for="{{ form.inventory_number.id_for_label }}">{{ form.inventory_number.label }}</label>
+      {{ form.inventory_number }}
+      {% if form.inventory_number.errors %}<div class="text-danger">{{ form.inventory_number.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-12 col-md-5">
+      <label class="form-label" for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+      {{ form.category }}
+      {% if form.category.errors %}<div class="text-danger">{{ form.category.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-5">
+      <label class="form-label" for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
+      {{ form.location }}
+      {% if form.location.errors %}<div class="text-danger">{{ form.location.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-12 col-md-6">
+      <label class="form-label" for="{{ form.manufacturer.id_for_label }}">{{ form.manufacturer.label }}</label>
+      {{ form.manufacturer }}
+      {% if form.manufacturer.errors %}<div class="text-danger">{{ form.manufacturer.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-3">
+      <label class="form-label" for="{{ form.procurement_date.id_for_label }}">{{ form.procurement_date.label }}</label>
+      {{ form.procurement_date }}
+      {% if form.procurement_date.errors %}<div class="text-danger">{{ form.procurement_date.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-3">
+      <label class="form-label" for="{{ form.value.id_for_label }}">{{ form.value.label }}(£)</label>
+      {{ form.value }}
+      {% if form.value.errors %}<div class="text-danger">{{ form.value.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-12 col-md-3">
+      <label class="form-label" for="{{ form.commission_date.id_for_label }}">{{ form.commission_date.label }}</label>
+      {{ form.commission_date }}
+      {% if form.commission_date.errors %}<div class="text-danger">{{ form.commission_date.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-3">
+      <label class="form-label" for="{{ form.replacement_date.id_for_label }}">{{ form.replacement_date.label }}</label>
+      {{ form.replacement_date }}
+      {% if form.replacement_date.errors %}<div class="text-danger">{{ form.replacement_date.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-3">
+      <label class="form-label" for="{{ form.warranty_end.id_for_label }}">{{ form.warranty_end.label }} date</label>
+      {{ form.warranty_end }}
+      {% if form.warranty_end.errors %}<div class="text-danger">{{ form.warranty_end.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-12 col-md-6">
+      <label class="form-label" for="{{ form.service_provider.id_for_label }}">{{ form.service_provider.label }}</label>
+      {{ form.service_provider }}
+      {% if form.service_provider.errors %}<div class="text-danger">{{ form.service_provider.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="mb-3 col-12">
+    <label class="form-label" for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+    {{ form.notes }}
+    {% if form.notes.errors %}<div class="text-danger">{{ form.notes.errors }}</div>{% endif %}
+  </div>
+{% endblock object_form %}

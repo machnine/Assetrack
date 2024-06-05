@@ -13,6 +13,19 @@ class EquipmentForm(forms.ModelForm):
         model = Equipment
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # all fields css class
+        for field in self.fields.values():
+            field.widget.attrs.update({"class": "form-control"})
+        # Date fields
+        date_fields = ["procurement_date", "commission_date", "warranty_end", "replacement_date"]
+        for date_field in date_fields:
+            self.fields[date_field].widget = forms.DateInput(attrs={"type": "date", "class": "form-control"})
+        # other fields
+        self.fields["name"].widget.attrs.update({"autofocus": True})
+        self.fields["notes"].widget.attrs.update({"rows": 3})
+
 
 class EquipmentAttachmentUploadForm(AttachmentForm):
     """Form for uploading an attachment for equipment."""
