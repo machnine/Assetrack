@@ -20,6 +20,7 @@ class EquipmentListView(ListView):
         queryset = super().get_queryset()
         query = self.request.GET.get("q")
         manufacturer = self.request.GET.get("m")
+        service_provider = self.request.GET.get("sp")
         location = self.request.GET.get("l")
         status = self.request.GET.get("s")
         category = self.request.GET.get("c")
@@ -34,6 +35,8 @@ class EquipmentListView(ListView):
             queryset = queryset.filter(status_id=status)
         if category:
             queryset = queryset.filter(category_id=category)
+        if service_provider:
+            queryset = queryset.filter(service_provider_id=service_provider)
 
         return queryset
 
@@ -44,6 +47,7 @@ class EquipmentListView(ListView):
         location = self.request.GET.get("l")
         status = self.request.GET.get("s")
         category = self.request.GET.get("c")
+        service_provider = self.request.GET.get("sp")
 
         if query:
             query = f"Filter: {query}"
@@ -55,6 +59,8 @@ class EquipmentListView(ListView):
             query = f"Status: {Status.objects.get(id=status)}"
         if category:
             query = f"Category: {Category.objects.get(id=category)}"
+        if service_provider:
+            query = f"Service Provider: {Company.objects.get(id=service_provider)}"
 
         context["query"] = query
 

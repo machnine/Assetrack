@@ -5,6 +5,8 @@ from django.db import models
 
 from attachment.models import Attachment
 
+from .record import EquipmentRecord
+
 USER = settings.AUTH_USER_MODEL
 
 
@@ -37,6 +39,14 @@ class Equipment(models.Model):
         if EquipmentAttachment.objects.filter(object_id=self.id).exists():
             return True
         return False
+
+    def last_serviced(self):
+        """Return the last service date"""
+        records = EquipmentRecord.objects.filter(
+            models.Q(equipment=self) & models.Q(record_type__name="Service")
+        ).order_by("-date")
+        if records.exists():
+            return records[0].date
 
     class Meta:
         ordering = ["name"]

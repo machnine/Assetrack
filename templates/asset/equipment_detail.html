@@ -19,57 +19,63 @@
     </div>
     <div class="panel-content">
       <div class="row">
-        <div class="col-6 col-lg-3 mb-3">
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Manufacturer</span>
-          <span class="text-primary">{{ equipment.manufacturer }}</span>
+          <span class="text-primary"><a href="{% url 'equipment_list' %}?m={{ equipment.manufacturer.id }}">{{ equipment.manufacturer }}</a></span>
         </div>
-        <div class="col-6 col-lg-3 mb-3">
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Model number</span>
           <span class="text-primary">{{ equipment.model_number }}</span>
         </div>
-        <div class="col-6 col-lg-3 mb-3">
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Serial number</span>
           <span class="text-primary">{{ equipment.serial_number }}</span>
         </div>
-        <div class="col-6 col-lg-3 mb-3">
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block" title="Medical Inventory Number">Inventory number</span>
           <span class="text-primary">{{ equipment.inventory_number|default:"" }}</span>
         </div>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Value (£)</span>
+          <span class="text-primary">{{ equipment.value|default:"" }}</span>
+        </div>
       </div>
       <div class="row">
-        <div class="col-6 col-lg-3 mb-3">
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Category</span>
-          <span class="text-primary">{{ equipment.category }}</span>
+          <span class="text-primary"><a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a></span>
         </div>
-        <div class="col-6 col-lg-3 mb-3">
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Location</span>
-          <span class="text-primary">{{ equipment.location }}</span>
-        </div>
-        <div class="col-6 col-lg-3 mb-3">
-          <span class="text-muted small d-block">Procurement date</span>
-          <span class="text-primary">{{ equipment.procurement_date|date:"d/m/Y" }}</span>
-        </div>
-        <div class="col-6 col-lg-3 mb-3">
-          <span class="text-muted small d-block" title="Medical Inventory Number">Commission date</span>
-          <span class="text-primary">{{ equipment.commission_date|date:"d/m/Y" }}</span>
+          <span class="text-primary"><a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a></span>
         </div>
       </div>
       <div class="row pb-2">
-        <div class="col-6 col-lg-3 mb-3">
-          <span class="text-muted small d-block">Warranty end</span>
-          <span class="text-primary">{{ equipment.warranty_end|date:"d/m/Y" }}</span>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Procurement date</span>
+          <span class="text-primary">{{ equipment.procurement_date|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-6 col-lg-3 mb-3">
-          <span class="text-muted small d-block">Serviced by</span>
-          <span class="text-primary">{{ equipment.service_provider|default:"" }}</span>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block" title="Medical Inventory Number">Commission date</span>
+          <span class="text-primary">{{ equipment.commission_date|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-6 col-lg-3 mb-3">
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Replacement date</span>
           <span class="text-primary">{{ equipment.replacement_date|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-6 col-lg-3 mb-3">
-          <span class="text-muted small d-block">Value (£)</span>
-          <span class="text-primary">{{ equipment.value|default:"" }}</span>
+        <div class="col-6 col-lg-2 mb-2">
+          <span class="text-muted small d-block">Warranty end</span>
+          <span class="text-primary">{{ equipment.warranty_end|date:"d/m/Y" }}</span>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-6 col-lg-2 mb-2">
+          <span class="text-muted small d-block">Serviced by</span>
+          <span class="text-primary"><a href="{% url 'equipment_list' %}?sp={{ equipment.service_provider.id }}">{{ equipment.service_provider|default:"" }}</a></span>
+        </div>
+        <div class="col-6 col-lg-2 mb-2">
+          <span class="text-muted small d-block">Last serviced</span>
+          <span class="text-primary">{{ equipment.last_serviced|date:"d/m/Y" }}</span>
         </div>
       </div>
     </div>
@@ -132,20 +138,16 @@
       <span class="text-primary"><i class="bi bi-calendar3"></i> Equipment records</span>
       <a href="{% url 'equipmentrecord_create' equipment.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
     </div>
-    <div class="panel-content">
+    <div class="panel-content pb-5">
       {% for record in equipment.equipmentrecord_set.all %}
-        <div class="row pb-2">
-          <div class="col-6 col-lg-1">
-            <a href="{% url 'equipmentrecord_detail' record.id %}">{{ record.date|date:'d/m/Y' }}</a>
+        <div class="row align-items-center py-2 g-0 border-bottom {% if not forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+          <div class="col-6 col-lg-1 ps-2">
+            <a href="{% url 'equipmentrecord_detail' record.id %}"><i class="bi bi-caret-right-fill"></i> {{ record.date|date:'d/m/Y' }}</a>
           </div>
           <div class="col-6 col-lg-2 text-muted fw-bold">{{ record.record_type }}</div>
-          <div class="d-none d-lg-block col-lg-8 small">
+          <div class="d-none d-lg-block col-lg-9 small">
+            {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
             <span class="text-primary">{{ record.description|truncatewords:25 }}</span>
-          </div>
-          <div class="d-none d-lg-block col-lg-1 text-end">
-            <span>
-              {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
-            </span>
           </div>
         </div>
       {% endfor %}

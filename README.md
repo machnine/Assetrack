@@ -11,6 +11,3 @@ This is a boilerplate project for Django web development using the following tec
 ### TODO
 - Software/Firmware Logs
 - Log Equipment creation/update (USER and datetime)
-- Equipment
-  - Last serviced
-  - Last calibrated
