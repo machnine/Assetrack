@@ -20,6 +20,7 @@ class EquipmentRecordCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         # get the equipment id from the url
         form.instance.equipment_id = self.kwargs.get("equipment_id")
+        form.instance.created_by = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -33,6 +34,10 @@ class EquipmentRecordUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "asset/equipmentrecord_form.html"
     form_class = EquipmentRecordForm
     context_object_name = "record"
+
+    def form_valid(self, form):
+        form.instance.last_updated_by = self.request.user
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("equipment_detail", kwargs={"pk": self.object.equipment.id})

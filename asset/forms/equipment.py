@@ -11,7 +11,23 @@ class EquipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        fields = "__all__"
+        fields = [
+            "name",
+            "manufacturer",
+            "model_number",
+            "serial_number",
+            "inventory_number",
+            "procurement_date",
+            "commission_date",
+            "warranty_end",
+            "replacement_date",
+            "value",
+            "notes",
+            "category",
+            "location",
+            "status",
+            "service_provider",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

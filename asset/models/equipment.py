@@ -30,6 +30,10 @@ class Equipment(models.Model):
     service_provider = models.ForeignKey(
         "Company", on_delete=models.PROTECT, related_name="service_provider", blank=True, null=True
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    last_updated_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True, related_name="+")
 
     def __str__(self):
         return self.name

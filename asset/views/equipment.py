@@ -75,6 +75,10 @@ class EquipmentCreateView(CreateView):
     form_class = EquipmentForm
     success_url = reverse_lazy("equipment_list")
 
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
 
 class EquipmentDetailView(DetailView):
     """Detail view for equipment"""
@@ -96,6 +100,12 @@ class EquipmentUpdateView(UpdateView):
     template_name = "asset/equipment_form.html"
     form_class = EquipmentForm
     context_object_name = "equipment"
+
+    def form_valid(self, form):
+        print(form.instance.created_by)
+        form.instance.last_updated_by = self.request.user
+        print(form.instance.created_by)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("equipment_detail", kwargs={"pk": self.object.id})
