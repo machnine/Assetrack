@@ -7,9 +7,12 @@
 {% endblock new_object_url %}
 {% block panel_heading %}
   <i class="bi bi-buildings text-muted"></i> Company List
+  {% if query %}
+    <i class="ps-3 small text-success">{{ query }}</i>
+    <a href="{% url 'company_list' %}" title="Clear filter"><i class="bi bi-arrow-clockwise small"></i></a>
+  {% endif %}
 {% endblock panel_heading %}
 {% block panel_heading_search %}
-  
 {% endblock panel_heading_search %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
@@ -20,21 +23,22 @@
     <div class="d-none d-lg-block col-lg-4 d-lg-flex justify-content-between align-items-center">
       <div>Notes</div>
       <div>
-      <form method="get" action="{% url 'company_list' %}">
-      <input type="text"
-             name="q"
-             size="40"
-             class="form-control form-control-sm"
-             placeholder="Search companies..."
-             value="{{ request.GET.q }}">
-      <button type="submit" class="d-none">Search</button>
-    </form>
+        <form method="get" action="{% url 'company_list' %}">
+          <input type="text"
+                 name="q"
+                 size="40"
+                 class="form-control form-control-sm"
+                 placeholder="Search companies..."
+                 onfocus="this.select();"
+                 value="{{ request.GET.q }}">
+          <button type="submit" class="d-none">Search</button>
+        </form>
+      </div>
     </div>
-  </div>    
   </div>
   {% for company in companies %}
-    <div class="row border-top align-items-center">
-      <div class="col col-lg-2 fw-bold pb-2 text-muted">{{ company.name }}</div>
+    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+      <div class="col col-lg-2 fw-bold text-muted">{{ company.name }}</div>
       <div class="col col-lg-1">{{ company.phone |default:"" }}</div>
       <div class="col col-lg-2 small">{{ company.email |default:"" }}</div>
       <div class="d-none d-lg-block col-lg-3 small">
@@ -46,7 +50,7 @@
       <div class="d-none d-lg-block col-lg-1 justify-content-between align-items-center text-end">
         <a href="{% url 'company_update' company.id %}" title="Update '{{ company.name }}'"><i class="bi bi-pencil-square"></i></a>
         <a href="{% url 'company_delete' company.id %}" title="Delete '{{ company.name }}'"><i class="bi bi-trash"></i></a>
-        <a href="#"><i class="bi bi-card-list" title="List all '{{ company.name }}' equipment"></i></a>
+        <a href="{% url 'equipment_list' %}?m={{ company.id }}"><i class="bi bi-card-list" title="List all '{{ company.name }}' equipment"></i></a>
       </div>
     </div>
   {% endfor %}

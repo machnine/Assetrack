@@ -7,24 +7,56 @@
 {% endblock new_object_url %}
 {% block panel_heading %}
   <i class="bi bi-plugin text-muted"></i> Equipment List
+  {% if query %}
+    <i class="ps-3 small text-success">{{ query }}</i>
+    <a href="{% url 'equipment_list' %}" title="Clear filter"><i class="bi bi-arrow-clockwise small"></i></a>
+  {% endif %}
 {% endblock panel_heading %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold">
-    <div class="col">Name</div>
-    <div class="col">Category</div>
-    <div class="d-none col-lg-6 d-lg-block">Notes</div>
-    <div class="d-none col-lg-2 d-lg-block text-end">Actions</div>
+  <div class="row pb-2 text-muted small fw-bold align-items-center">
+    <div class="col-lg-2">Name</div>
+    <div class="col-lg-1">Model Number</div>
+    <div class="col-lg-1">Serial Number</div>
+    <div class="col-lg-1">Manufacturer</div>
+    <div class="col-lg-1">Status</div>
+    <div class="col-lg-1">Category</div>
+    <div class="col-lg-1">Location</div>
+    <div class="d-none col-lg-4 d-lg-flex justify-content-between align-items-center">
+      <div>Notes</div>
+      <div>
+        <form method="get" action="{% url 'equipment_list' %}">
+          <input type="text"
+                 name="q"
+                 size="40"
+                 class="form-control form-control-sm"
+                 placeholder="Search equipment..."
+                 onfocus="this.select();"
+                 value="{{ request.GET.q }}">
+          <button type="submit" class="d-none">Search</button>
+        </form>
+      </div>
+    </div>
   </div>
   {% for equipment in equipments %}
-    <div class="row">
-      <div class="col-6 col-lg-2 text-primary fw-bold pb-2"><a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a></div>
-      <div class="col-6 col-lg-2"><a href="#">{{ equipment.category }}</a></div>
-      <div class="d-none col-lg-6 d-lg-block">{{ equipment.notes }}</div>
-      <div class="d-none col-lg-2 d-lg-block justify-content-between align-items-center text-end">
-        <a href="{% url 'equipment_update' equipment.id %}" title="Update '{{ equipment.name }}'"><i class="bi bi-pencil-square"></i></a>
-        <a href="{% url 'equipment_delete' equipment.id %}" title="Delete '{{ equipment.name }}'"><i class="bi bi-trash"></i></a>
-        <a href="#"><i class="bi bi-card-list" title="List all '{{ equipment.name }}' equipment"></i></a>
+    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+      <div class="col-lg-2 text-primary fw-bold">
+        <a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a>
       </div>
+      <div class="col-lg-1">{{ equipment.model_number|default:"" }}</div>
+      <div class="col-lg-1">{{ equipment.serial_number|default:"" }}</div>
+      <div class="col-lg-1 small">
+        <a href="{% url 'equipment_list' %}?m={{ equipment.manufacturer.id }}">{{ equipment.manufacturer }}</a>
+      </div>
+      <div class="col-lg-1">
+        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
+      </div>
+      <div class="col-lg-1">
+        <a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a>
+      </div>
+      <div class="col-lg-1">
+        <a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a>
+      </div>
+      <div class="d-none col-lg-4 d-lg-block">{{ equipment.notes }}</div>
     </div>
   {% endfor %}
 {% endblock panel_content %}

@@ -1,10 +1,11 @@
 """CRUD operations for equipment"""
 
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import EquipmentAttachmentUpdateForm, EquipmentAttachmentUploadForm, EquipmentForm
-from asset.models import Equipment, EquipmentAttachment
+from asset.models import Category, Company, Equipment, EquipmentAttachment, Location, Status
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
@@ -14,6 +15,50 @@ class EquipmentListView(ListView):
     model = Equipment
     template_name = "asset/equipment_list.html"
     context_object_name = "equipments"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get("q")
+        manufacturer = self.request.GET.get("m")
+        location = self.request.GET.get("l")
+        status = self.request.GET.get("s")
+        category = self.request.GET.get("c")
+
+        if query:
+            queryset = queryset.filter(Q(name__icontains=query) | Q(notes__icontains=query))
+        if manufacturer:
+            queryset = queryset.filter(manufacturer_id=manufacturer)
+        if location:
+            queryset = queryset.filter(location_id=location)
+        if status:
+            queryset = queryset.filter(status_id=status)
+        if category:
+            queryset = queryset.filter(category_id=category)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get("q")
+        manufacturer = self.request.GET.get("m")
+        location = self.request.GET.get("l")
+        status = self.request.GET.get("s")
+        category = self.request.GET.get("c")
+
+        if query:
+            query = f"Filter: {query}"
+        if manufacturer:
+            query = f"Manufacturer: {Company.objects.get(id=manufacturer)}"
+        if location:
+            query = f"Location: {Location.objects.get(id=location)}"
+        if status:
+            query = f"Status: {Status.objects.get(id=status)}"
+        if category:
+            query = f"Category: {Category.objects.get(id=category)}"
+
+        context["query"] = query
+
+        return context
 
 
 class EquipmentCreateView(CreateView):
@@ -61,7 +106,6 @@ class EquipmentDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("equipment_list")
         return context
-
 
 
 ### EquipmentAttachment CRUD operations

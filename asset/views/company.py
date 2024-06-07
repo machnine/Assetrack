@@ -23,6 +23,15 @@ class CompanyListView(LoginRequiredMixin, ListView):
             queryset = queryset.filter(Q(name__icontains=query) | Q(notes__icontains=query))
         return queryset.order_by("name")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get("q")
+
+        if query:
+            context["query"] = f"Filter: {query}"
+
+        return context
+
 
 class CompanyCreateView(LoginRequiredMixin, CreateView):
     """Create view for the company model"""
