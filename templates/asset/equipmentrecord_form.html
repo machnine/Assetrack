@@ -10,3 +10,20 @@
     New equipment record
   {% endif %}
 {% endblock heading_object_name %}
+{% block object_form %}
+  <div class="mb-3">
+    <label class="form-label" for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+    {{ form.date }}
+    {% if form.date.errors %}<div class="text-danger">{{ form.date.errors }}</div>{% endif %}
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="{{ form.record_type.id_for_label }}">{{ form.record_type.label }}</label>
+    {{ form.record_type }}
+    {% if form.record_type.errors %}<div class="text-danger">{{ form.record_type.errors }}</div>{% endif %}
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+    {{ form.description }}
+    {% if form.description.errors %}<div class="text-danger">{{ form.description.errors }}</div>{% endif %}
+  </div>
+{% endblock object_form %}

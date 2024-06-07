@@ -15,10 +15,9 @@ class EquipmentRecordForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # all fields css class
-        for field in self.fields.values():
-            field.widget.attrs.update({"class": "form-control"})
-        self.fields["description"].widget.attrs.update({"rows": 3})
+        self.fields["date"].widget = forms.DateInput(attrs={"type": "date", "class": "form-control"})
+        self.fields["record_type"].widget.attrs.update({"class": "form-control"})
+        self.fields["description"].widget.attrs.update({"rows": 3, "class": "form-control"})
 
 
 class EquipmentRecordAttachmentUploadForm(AttachmentForm):
