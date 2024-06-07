@@ -9,16 +9,16 @@
   <i class="bi bi-geo-alt-fill text-muted"></i> Location List
 {% endblock panel_heading %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold">
+  <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col">Name</div>
     <div class="col">Description</div>
-    <div class="d-none col-lg-2 d-lg-block">Actions</div>
+    <div class="d-none col-lg-2 d-lg-block"></div>
   </div>
   {% for location in locations %}
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col text-muted fw-bold pb-2">{{ location.name }}</div>
       <div class="col">{{ location.description }}</div>
-      <div class="d-none col-lg-2 d-lg-block justify-content-between align-items-center">
+      <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         <a href="{% url 'location_update' location.id %}" title="Update '{{ location.name }}'"><i class="bi bi-pencil-square"></i></a>
         <a href="{% url 'location_delete' location.id %}" title="Delete '{{ location.name }}'"><i class="bi bi-trash"></i></a>
         <a href="#"><i class="bi bi-card-list" title="List all '{{ location.name }}' equipment"></i></a>
