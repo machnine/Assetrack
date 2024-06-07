@@ -15,7 +15,7 @@ class EquipmentRecordForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["date"].widget = forms.DateInput(attrs={"type": "date", "class": "form-control"})
+        self.fields["date"].widget = forms.DateInput(attrs={"type": "date", "class": "form-control"}, format="%Y-%m-%d")
         self.fields["record_type"].widget.attrs.update({"class": "form-control"})
         self.fields["description"].widget.attrs.update({"rows": 3, "class": "form-control"})
 

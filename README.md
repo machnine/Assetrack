@@ -9,7 +9,6 @@ This is a boilerplate project for Django web development using the following tec
 
 
 ### TODO
-- Redirect to previous request url
 - Software/Firmware Logs
 - Log Equipment creation/update (USER and datetime)
 - Equipment

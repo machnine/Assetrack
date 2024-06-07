@@ -16,12 +16,14 @@ class EquipmentRecordCreateView(LoginRequiredMixin, CreateView):
     model = EquipmentRecord
     template_name = "asset/equipmentrecord_form.html"
     form_class = EquipmentRecordForm
-    success_url = reverse_lazy("equipment_list")
 
     def form_valid(self, form):
         # get the equipment id from the url
         form.instance.equipment_id = self.kwargs.get("equipment_id")
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("equipment_detail", kwargs={"pk": self.object.equipment.id})
 
 
 class EquipmentRecordUpdateView(LoginRequiredMixin, UpdateView):

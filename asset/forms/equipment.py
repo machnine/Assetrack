@@ -21,7 +21,9 @@ class EquipmentForm(forms.ModelForm):
         # Date fields
         date_fields = ["procurement_date", "commission_date", "warranty_end", "replacement_date"]
         for date_field in date_fields:
-            self.fields[date_field].widget = forms.DateInput(attrs={"type": "date", "class": "form-control"})
+            self.fields[date_field].widget = forms.DateInput(
+                attrs={"type": "date", "class": "form-control"}, format="%Y-%m-%d"
+            )
         # other fields
         self.fields["name"].widget.attrs.update({"autofocus": True})
         self.fields["notes"].widget.attrs.update({"rows": 3})
