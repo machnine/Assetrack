@@ -19,8 +19,10 @@
       <div class="col text-muted fw-bold">{{ status.name }}</div>
       <div class="col">{{ status.description }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
-        <a href="{% url 'status_update' status.id %}" title="Update '{{ status.name }}'"><i class="bi bi-pencil-square"></i></a>
-        <a href="{% url 'status_delete' status.id %}" title="Delete '{{ status.name }}'"><i class="bi bi-trash"></i></a>
+        {% if request.user.is_superuser %}
+          <a href="{% url 'status_update' status.id %}" title="Update '{{ status.name }}'"><i class="bi bi-pencil-square"></i></a>
+          <a href="{% url 'status_delete' status.id %}" title="Delete '{{ status.name }}'"><i class="bi bi-trash"></i></a>
+        {% endif %}
         <a href="{% url 'equipment_list' %}?s={{ status.id }}"><i class="bi bi-card-list" title="List all '{{ status.name }}' equipment"></i></a>
       </div>
     </div>

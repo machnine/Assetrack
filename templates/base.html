@@ -59,7 +59,7 @@
                 </ul>
                 <ul class="navbar-nav ms-auto ps-lg-3">
                   <li class="nav-item">
-                    <a href="#" class="nav-link" title="{{ request.user.email }}"><i class="bi bi-person text-success"></i> {{ request.user }}</a>
+                    <a href="#" class="nav-link" title="{{ request.user.email }}"><i class="bi bi-person text-success"></i> {{ request.user.first_name }}</a>
                   </li>
                   <li class="nav-item">
                     {% block logout_link %}

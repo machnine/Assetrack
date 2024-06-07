@@ -19,8 +19,10 @@
       <div class="col text-muted fw-bold">{{ category.name }}</div>
       <div class="col">{{ category.description }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
-        <a href="{% url 'category_update' category.id %}" title="Update '{{ category.name }}'"><i class="bi bi-pencil-square"></i></a>
-        <a href="{% url 'category_delete' category.id %}" title="Delete '{{ category.name }}'"><i class="bi bi-trash"></i></a>
+        {% if request.user.is_superuser %}
+          <a href="{% url 'category_update' category.id %}" title="Update '{{ category.name }}'"><i class="bi bi-pencil-square"></i></a>
+          <a href="{% url 'category_delete' category.id %}" title="Delete '{{ category.name }}'"><i class="bi bi-trash"></i></a>
+        {% endif %}
         <a href="{% url 'equipment_list' %}?c={{ category.id }}"><i class="bi bi-card-list" title="List all '{{ category.name }}' equipment"></i></a>
       </div>
     </div>

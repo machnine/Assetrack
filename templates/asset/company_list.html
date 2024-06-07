@@ -48,8 +48,10 @@
       </div>
       <div class="d-none d-lg-block col-lg-3 small">{{ company.notes|truncatewords:10 }}</div>
       <div class="d-none d-lg-block col-lg-1 justify-content-between align-items-center text-end">
-        <a href="{% url 'company_update' company.id %}" title="Update '{{ company.name }}'"><i class="bi bi-pencil-square"></i></a>
-        <a href="{% url 'company_delete' company.id %}" title="Delete '{{ company.name }}'"><i class="bi bi-trash"></i></a>
+        {% if request.user.is_superuser %}
+          <a href="{% url 'company_update' company.id %}" title="Update '{{ company.name }}'"><i class="bi bi-pencil-square"></i></a>
+          <a href="{% url 'company_delete' company.id %}" title="Delete '{{ company.name }}'"><i class="bi bi-trash"></i></a>
+        {% endif %}
         <a href="{% url 'equipment_list' %}?m={{ company.id }}"><i class="bi bi-card-list" title="List all '{{ company.name }}' equipment"></i></a>
       </div>
     </div>
