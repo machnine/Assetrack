@@ -56,7 +56,7 @@
       <div class="col-lg-1">
         <a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a>
       </div>
-      <div class="d-none col-lg-4 d-lg-block">{{ equipment.notes }}</div>
+      <div class="d-none col-lg-4 d-lg-block small">{{ equipment.notes|truncatewords:16 }}</div>
     </div>
   {% endfor %}
 {% endblock panel_content %}

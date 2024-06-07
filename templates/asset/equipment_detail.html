@@ -65,7 +65,7 @@
         </div>
         <div class="col-6 col-lg-2 mb-2">
           <span class="text-muted small d-block">Warranty end</span>
-          <span class="text-primary">{{ equipment.warranty_end|date:"d/m/Y" }}</span>
+          <span class="text-primary">{{ equipment.warranty_end|date:"d/m/Y"|default:"&nbsp;" }}</span>
         </div>
       </div>
       <div class="row pb-2">
@@ -75,7 +75,13 @@
         </div>
         <div class="col-6 col-lg-2 mb-2">
           <span class="text-muted small d-block">Last serviced</span>
-          <span class="text-primary">{{ equipment.last_serviced|date:"d/m/Y" }}</span>
+          <span class="text-primary">{{ equipment.last_serviced|date:"d/m/Y"|default:"&nbsp;" }}</span>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-12 mb-2">
+          <span class="text-muted small d-block">Notes</span>
+          <span class="text-primary">{{ equipment.notes|default:"&nbsp;" }}</span>
         </div>
       </div>
     </div>
