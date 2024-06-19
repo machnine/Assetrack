@@ -59,9 +59,9 @@
       {% if form.manufacturer.errors %}<div class="text-danger">{{ form.manufacturer.errors }}</div>{% endif %}
     </div>
     <div class="mb-3 col-12 col-md-3">
-      <label class="form-label" for="{{ form.procurement_date.id_for_label }}">{{ form.procurement_date.label }}</label>
-      {{ form.procurement_date }}
-      {% if form.procurement_date.errors %}<div class="text-danger">{{ form.procurement_date.errors }}</div>{% endif %}
+      <label class="form-label" for="{{ form.received_date.id_for_label }}">{{ form.received_date.label }}</label>
+      {{ form.received_date }}
+      {% if form.received_date.errors %}<div class="text-danger">{{ form.received_date.errors }}</div>{% endif %}
     </div>
     <div class="mb-3 col-12 col-md-3">
       <label class="form-label" for="{{ form.value.id_for_label }}">{{ form.value.label }}(£)</label>

@@ -18,7 +18,7 @@ class Equipment(models.Model):
     model_number = models.CharField(max_length=100)
     serial_number = models.CharField(max_length=100, unique=True)
     inventory_number = models.CharField(max_length=100, null=True, blank=True, unique=True)
-    procurement_date = models.DateField(null=True, blank=True)
+    received_date = models.DateField(null=True, blank=True)
     commission_date = models.DateField(null=True, blank=True)
     warranty_end = models.DateField(null=True, blank=True)
     replacement_date = models.DateField(null=True, blank=True)

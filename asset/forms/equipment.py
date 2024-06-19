@@ -17,7 +17,7 @@ class EquipmentForm(forms.ModelForm):
             "model_number",
             "serial_number",
             "inventory_number",
-            "procurement_date",
+            "received_date",
             "commission_date",
             "warranty_end",
             "replacement_date",
@@ -35,7 +35,7 @@ class EquipmentForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs.update({"class": "form-control"})
         # Date fields
-        date_fields = ["procurement_date", "commission_date", "warranty_end", "replacement_date"]
+        date_fields = ["received_date", "commission_date", "warranty_end", "replacement_date"]
         for date_field in date_fields:
             self.fields[date_field].widget = forms.DateInput(
                 attrs={"type": "date", "class": "form-control"}, format="%Y-%m-%d"
