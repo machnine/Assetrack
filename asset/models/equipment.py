@@ -27,6 +27,7 @@ class Equipment(models.Model):
     category = models.ForeignKey("Category", on_delete=models.PROTECT)
     location = models.ForeignKey("Location", on_delete=models.PROTECT)
     status = models.ForeignKey("Status", on_delete=models.PROTECT)
+    calibration = models.ForeignKey("Calibration", on_delete=models.PROTECT, null=True, blank=True)
     service_provider = models.ForeignKey(
         "Company", on_delete=models.PROTECT, related_name="service_provider", blank=True, null=True
     )

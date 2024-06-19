@@ -15,6 +15,13 @@ class Status(models.Model):
     def __str__(self):
         return self.name
 
+class Calibration(models.Model):
+    """Type of calibration required"""
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Category(models.Model):
     """category of the asset"""
