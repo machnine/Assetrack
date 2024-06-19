@@ -1,4 +1,4 @@
-"""URL Configuration for hardboiledegg"""
+"""URL Configuration for core"""
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from asset import urls as asset_urls
-from hardboiledegg.views import HomeView
+from core.views import HomeView
 from user import urls as user_urls
 
 urlpatterns = [

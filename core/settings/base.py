@@ -6,7 +6,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # WSGI application
-WSGI_APPLICATION = "hardboiledegg.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 # Installed apps
 INSTALLED_APPS = [
@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     # third-party
     "django_htmx",
     # local
-    "hardboiledegg",
+    "core",
     "user",
     "asset",
     "attachment",
@@ -85,7 +85,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Root URL configuration
-ROOT_URLCONF = "hardboiledegg.urls"
+ROOT_URLCONF = "core.urls"
 
 # Static files
 STATIC_URL = "static/"
