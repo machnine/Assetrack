@@ -2,12 +2,12 @@
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.html import format_html
-from django.contrib.auth.forms import PasswordChangeForm
 
 
 class UserLoginView(LoginView):
