@@ -39,6 +39,10 @@
           <span class="text-muted small d-block">Value (£)</span>
           <span class="text-primary">{{ equipment.value|default:"" }}</span>
         </div>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Calibration</span>
+          <span class="text-primary {% if equipment.calibration.name == 'UKAS' %}text-danger fw-bold{% endif %}">{{ equipment.calibration.name }}</span>
+        </div>
       </div>
       <div class="row">
         <div class="col-6 col-lg-2 mb-3">

@@ -41,12 +41,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="mb-3 col-12 col-md-5">
+    <div class="mb-3 col-12 col-md-6">
       <label class="form-label" for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
       {{ form.category }}
       {% if form.category.errors %}<div class="text-danger">{{ form.category.errors }}</div>{% endif %}
     </div>
-    <div class="mb-3 col-12 col-md-5">
+    <div class="mb-3 col-12 col-md-6">
       <label class="form-label" for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
       {{ form.location }}
       {% if form.location.errors %}<div class="text-danger">{{ form.location.errors }}</div>{% endif %}
@@ -58,18 +58,18 @@
       {{ form.manufacturer }}
       {% if form.manufacturer.errors %}<div class="text-danger">{{ form.manufacturer.errors }}</div>{% endif %}
     </div>
-    <div class="mb-3 col-12 col-md-3">
-      <label class="form-label" for="{{ form.received_date.id_for_label }}">{{ form.received_date.label }}</label>
-      {{ form.received_date }}
-      {% if form.received_date.errors %}<div class="text-danger">{{ form.received_date.errors }}</div>{% endif %}
-    </div>
-    <div class="mb-3 col-12 col-md-3">
+    <div class="mb-3 col-12 col-md-6">
       <label class="form-label" for="{{ form.value.id_for_label }}">{{ form.value.label }}(£)</label>
       {{ form.value }}
       {% if form.value.errors %}<div class="text-danger">{{ form.value.errors }}</div>{% endif %}
     </div>
   </div>
   <div class="row">
+    <div class="mb-3 col-12 col-md-3">
+      <label class="form-label" for="{{ form.received_date.id_for_label }}">{{ form.received_date.label }}</label>
+      {{ form.received_date }}
+      {% if form.received_date.errors %}<div class="text-danger">{{ form.received_date.errors }}</div>{% endif %}
+    </div>
     <div class="mb-3 col-12 col-md-3">
       <label class="form-label" for="{{ form.commission_date.id_for_label }}">{{ form.commission_date.label }}</label>
       {{ form.commission_date }}
@@ -91,6 +91,11 @@
       <label class="form-label" for="{{ form.service_provider.id_for_label }}">{{ form.service_provider.label }}</label>
       {{ form.service_provider }}
       {% if form.service_provider.errors %}<div class="text-danger">{{ form.service_provider.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-6">
+      <label class="form-label" for="{{ form.calibration.id_for_label }}">{{ form.calibration.label }}</label>
+      {{ form.calibration }}
+      {% if form.calibration.errors %}<div class="text-danger">{{ form.calibration.errors }}</div>{% endif %}
     </div>
   </div>
   <div class="mb-3 col-12">

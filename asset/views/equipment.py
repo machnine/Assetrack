@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import EquipmentAttachmentUpdateForm, EquipmentAttachmentUploadForm, EquipmentForm
-from asset.models import Category, Company, Equipment, EquipmentAttachment, Location, Status
+from asset.models import Calibration, Category, Company, Equipment, EquipmentAttachment, Location, Status
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
@@ -24,6 +24,7 @@ class EquipmentListView(ListView):
         location = self.request.GET.get("l")
         status = self.request.GET.get("s")
         category = self.request.GET.get("c")
+        calibration = self.request.GET.get("cal")
 
         if query:
             queryset = queryset.filter(Q(name__icontains=query) | Q(notes__icontains=query))
@@ -37,6 +38,8 @@ class EquipmentListView(ListView):
             queryset = queryset.filter(category_id=category)
         if service_provider:
             queryset = queryset.filter(service_provider_id=service_provider)
+        if calibration:
+            queryset = queryset.filter(calibration_id=calibration)
 
         return queryset
 
@@ -48,9 +51,10 @@ class EquipmentListView(ListView):
         status = self.request.GET.get("s")
         category = self.request.GET.get("c")
         service_provider = self.request.GET.get("sp")
+        calibration = self.request.GET.get("cal")
 
         if query:
-            query = f"Filter: {query}"
+            query = f"Search Filter: {query}"
         if manufacturer:
             query = f"Manufacturer: {Company.objects.get(id=manufacturer)}"
         if location:
@@ -61,6 +65,8 @@ class EquipmentListView(ListView):
             query = f"Category: {Category.objects.get(id=category)}"
         if service_provider:
             query = f"Service Provider: {Company.objects.get(id=service_provider)}"
+        if calibration:
+            query = f"Calibration: {Calibration.objects.get(id=calibration)}"
 
         context["query"] = query
 

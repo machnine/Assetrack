@@ -8,7 +8,7 @@
 {% block panel_heading %}
   <i class="bi bi-plugin text-muted"></i> Equipment List
   {% if query %}
-    <i class="ps-3 small text-success">{{ query }}</i>
+    <i class="ps-3 small text-danger">{{ query }}</i>
     <a href="{% url 'equipment_list' %}" title="Clear filter"><i class="bi bi-repeat small"></i></a>
   {% endif %}
 {% endblock panel_heading %}
@@ -17,11 +17,12 @@
     <div class="col-lg-2">Name</div>
     <div class="col-lg-1">Model Number</div>
     <div class="col-lg-1">Serial Number</div>
-    <div class="col-lg-1">Manufacturer</div>
+    <div class="col-lg-1">Calibration</div>
     <div class="col-lg-1">Status</div>
+    <div class="col-lg-1">Manufacturer</div>
     <div class="col-lg-1">Category</div>
     <div class="col-lg-1">Location</div>
-    <div class="d-none col-lg-4 d-lg-flex justify-content-between align-items-center">
+    <div class="d-none col-lg-3 d-lg-flex justify-content-between align-items-center">
       <div>Notes</div>
       <div>
         <form method="get" action="{% url 'equipment_list' %}">
@@ -42,21 +43,24 @@
       <div class="col-lg-2 text-primary fw-bold">
         <a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a>
       </div>
-      <div class="col-lg-1">{{ equipment.model_number|default:"" }}</div>
-      <div class="col-lg-1">{{ equipment.serial_number|default:"" }}</div>
+      <div class="col-lg-1 small">{{ equipment.model_number|default:"" }}</div>
+      <div class="col-lg-1 small">{{ equipment.serial_number|default:"" }}</div>
+      <div class="col-lg-1 small">
+        <a href="{% url 'equipment_list' %}?cal={{ equipment.calibration.id }}">{{ equipment.calibration.name }}</a>
+      </div>
+      <div class="col-lg-1 small">
+        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
+      </div>
       <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?m={{ equipment.manufacturer.id }}">{{ equipment.manufacturer }}</a>
       </div>
-      <div class="col-lg-1">
-        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
-      </div>
-      <div class="col-lg-1">
+      <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a>
       </div>
-      <div class="col-lg-1">
+      <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a>
       </div>
-      <div class="d-none col-lg-4 d-lg-block small">{{ equipment.notes|truncatewords:16 }}</div>
+      <div class="d-none col-lg-3 d-lg-block small">{{ equipment.notes|truncatewords:16 }}</div>
     </div>
   {% endfor %}
 {% endblock panel_content %}

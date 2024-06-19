@@ -26,6 +26,7 @@ class EquipmentForm(forms.ModelForm):
             "category",
             "location",
             "status",
+            "calibration",
             "service_provider",
         ]
 
