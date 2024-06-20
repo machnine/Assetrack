@@ -12,7 +12,6 @@ class AbstractRecord(models.Model):
     """Abstract record for repair and maintenance records of the asset"""
 
     date = models.DateField()
-    record_type = models.ForeignKey("RecordType", on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
@@ -21,15 +20,16 @@ class AbstractRecord(models.Model):
 
     class Meta:
         abstract = True
-        
 
     def __str__(self):
         return f"{self.date} - {self.description[:50]}"
 
 
+# equipment record models
 class EquipmentRecord(AbstractRecord):
     """Record for the equipment"""
 
+    record_type = models.ForeignKey("RecordType", on_delete=models.CASCADE)
     equipment = models.ForeignKey("Equipment", on_delete=models.CASCADE)
 
     class Meta:
@@ -60,5 +60,17 @@ class RecordType(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:        
+    class Meta:
         ordering = ["name"]
+
+
+# software record model
+class SoftwareRecord(AbstractRecord):
+    """Record for the software"""
+
+    software = models.ForeignKey("Software", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Software Record"
+        verbose_name_plural = "Software Records"
+        ordering = ["-date"]

@@ -16,14 +16,16 @@
   </div>
   {% for location in locations %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
-      <div class="col text-muted fw-bold">{{ location.name }}</div>
+      <div class="col text-muted fw-bold">
+        <a href="{% url 'equipment_list' %}?l={{ location.id }}"
+           title="List all '{{ location.name }}' equipment">{{ location.name }}</a>
+      </div>
       <div class="col">{{ location.description|default:"" }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'location_update' location.id %}" title="Update '{{ location.name }}'"><i class="bi bi-pencil-square"></i></a>
           <a href="{% url 'location_delete' location.id %}" title="Delete '{{ location.name }}'"><i class="bi bi-trash"></i></a>
         {% endif %}
-        <a href="{% url 'equipment_list' %}?l={{ location.id }}"><i class="bi bi-card-list" title="List all '{{ location.name }}' equipment"></i></a>
       </div>
     </div>
   {% endfor %}

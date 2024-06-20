@@ -75,7 +75,7 @@ class EquipmentRecordDetailView(LoginRequiredMixin, DetailView):
 ### EquipmentRecordAttachment CRUD operations
 
 
-class EquipmentRecordAttachmentUploadView(AttachmentUploadView):
+class EquipmentRecordAttachmentUploadView(LoginRequiredMixin, AttachmentUploadView):
     """Upload view for equipment record attachments"""
 
     owner_model = EquipmentRecord
@@ -84,7 +84,7 @@ class EquipmentRecordAttachmentUploadView(AttachmentUploadView):
     success_url_name = "equipmentrecord_detail"
 
 
-class EquipmentRecordAttachmentUpdateView(AttachmentUpdateView):
+class EquipmentRecordAttachmentUpdateView(LoginRequiredMixin, AttachmentUpdateView):
     """Update view for equipment record attachments"""
 
     owner_model = EquipmentRecord
@@ -94,7 +94,7 @@ class EquipmentRecordAttachmentUpdateView(AttachmentUpdateView):
     success_url_name = "equipmentrecord_detail"
 
 
-class EquipmentRecordAttachmentDeleteView(AttachmentDeleteView):
+class EquipmentRecordAttachmentDeleteView(LoginRequiredMixin, AttachmentDeleteView):
     """Delete view for equipment record attachments"""
 
     owner_model = EquipmentRecord

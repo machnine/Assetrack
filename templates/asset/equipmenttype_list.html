@@ -16,14 +16,15 @@
   </div>
   {% for et in eqipment_types %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
-      <div class="col text-muted fw-bold">{{ et.name }}</div>
+      <div class="col text-muted fw-bold">
+        <a href="{% url 'equipment_list' %}?t={{ et.id }}" title="List all '{{ et.name }}' equipment">{{ et.name }}</a>
+      </div>
       <div class="col">{{ et.description|default:"" }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'equipmenttype_update' et.id %}" title="Update '{{ et.name }}'"><i class="bi bi-pencil-square"></i></a>
           <a href="{% url 'equipmenttype_delete' et.id %}" title="Delete '{{ et.name }}'"><i class="bi bi-trash"></i></a>
         {% endif %}
-        <a href="{% url 'equipment_list' %}?t={{ et.id }}"><i class="bi bi-card-list" title="List all '{{ et.name }}' equipment"></i></a>
       </div>
     </div>
   {% endfor %}

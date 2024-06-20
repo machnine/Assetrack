@@ -1,15 +1,16 @@
 """software related views"""
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import SoftwareAttachmentUpdateForm, SoftwareAttachmentUploadForm, SoftwareForm
-from asset.models import License, SofewareType, Software, SoftwareAttachment
+from asset.models import License, Software, SoftwareAttachment, SoftwareType
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
-class SoftwareListView(ListView):
+class SoftwareListView(LoginRequiredMixin, ListView):
     """List view for software"""
 
     model = Software
@@ -48,7 +49,7 @@ class SoftwareListView(ListView):
         descriptions = {
             "q": ("Search Filter", self.request.GET.get("q")),
             "l": ("License", self.get_object_description(License, self.request.GET.get("l"))),
-            "t": ("Software Type", self.get_object_description(SofewareType, self.request.GET.get("t"))),
+            "t": ("Software Type", self.get_object_description(SoftwareType, self.request.GET.get("t"))),
             "a": ("Active", self.request.GET.get("a")),
         }
         descriptions = [f"{label}: {value}" for key, (label, value) in descriptions.items() if value]
@@ -63,7 +64,7 @@ class SoftwareListView(ListView):
         return None
 
 
-class SoftwareDetailView(DetailView):
+class SoftwareDetailView(LoginRequiredMixin, DetailView):
     """Detail view for software"""
 
     model = Software
@@ -76,7 +77,7 @@ class SoftwareDetailView(DetailView):
         return context
 
 
-class SoftwareCreateView(CreateView):
+class SoftwareCreateView(LoginRequiredMixin, CreateView):
     """Create view for software"""
 
     model = Software
@@ -85,7 +86,7 @@ class SoftwareCreateView(CreateView):
     success_url = reverse_lazy("software_list")
 
 
-class SoftwareUpdateView(UpdateView):
+class SoftwareUpdateView(LoginRequiredMixin, UpdateView):
     """Update view for software"""
 
     model = Software
@@ -97,7 +98,7 @@ class SoftwareUpdateView(UpdateView):
         return reverse_lazy("software_detail", kwargs={"pk": self.object.id})
 
 
-class SoftwareDeleteView(DeleteView):
+class SoftwareDeleteView(LoginRequiredMixin, DeleteView):
     """Delete view for software"""
 
     model = Software
@@ -106,7 +107,7 @@ class SoftwareDeleteView(DeleteView):
 
 
 # Attachment views
-class SoftwareAttachmentUploadView(AttachmentUploadView):
+class SoftwareAttachmentUploadView(LoginRequiredMixin, AttachmentUploadView):
     """Upload view for software attachment"""
 
     owner_model = Software
@@ -115,7 +116,7 @@ class SoftwareAttachmentUploadView(AttachmentUploadView):
     success_url_name = "software_detail"
 
 
-class SoftwareAttachmentUpdateView(AttachmentUpdateView):
+class SoftwareAttachmentUpdateView(LoginRequiredMixin, AttachmentUpdateView):
     """Update view for software attachment"""
 
     owner_model = Software
@@ -125,7 +126,7 @@ class SoftwareAttachmentUpdateView(AttachmentUpdateView):
     success_url_name = "software_detail"
 
 
-class SoftwareAttachmentDeleteView(AttachmentDeleteView):
+class SoftwareAttachmentDeleteView(LoginRequiredMixin, AttachmentDeleteView):
     """Delete view for software attachment"""
 
     owner_model = Software

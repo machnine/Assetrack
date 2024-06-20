@@ -2,10 +2,10 @@
 
 from django.contrib import admin
 
-from asset.models import Calibration, EquipmentType, License, RecordType, SofewareType
+from asset.models import Calibration, EquipmentType, License, RecordType, SoftwareType
 
 admin.site.register(Calibration)
 admin.site.register(EquipmentType)
 admin.site.register(RecordType)
 admin.site.register(License)
-admin.site.register(SofewareType)
+admin.site.register(SoftwareType)

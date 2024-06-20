@@ -20,7 +20,7 @@ class License(models.Model):
         ordering = ["name"]
 
 
-class SofewareType(models.Model):
+class SoftwareType(models.Model):
     """Software type model"""
 
     name = models.CharField(max_length=100, unique=True)
@@ -39,7 +39,7 @@ class Software(models.Model):
     long_name = models.CharField(max_length=255, blank=True, null=True)
     version = models.CharField(max_length=50)
     license_type = models.ForeignKey(License, on_delete=models.CASCADE)
-    software_type = models.ForeignKey(SofewareType, on_delete=models.CASCADE)
+    software_type = models.ForeignKey(SoftwareType, on_delete=models.CASCADE)
     website = models.URLField(blank=True, null=True)
     active = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)

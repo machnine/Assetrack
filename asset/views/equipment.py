@@ -1,5 +1,6 @@
 """CRUD operations for equipment"""
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -10,7 +11,7 @@ from asset.models import Calibration, Category, Company, Equipment, EquipmentAtt
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
-class EquipmentListView(ListView):
+class EquipmentListView(LoginRequiredMixin, ListView):
     """List view for equipment"""
 
     model = Equipment
@@ -45,7 +46,7 @@ class EquipmentListView(ListView):
 
         # Remove queries with None values
         filtered_queries = {key: query for key, query in queries.items() if filters[key]}
- 
+
         for query in filtered_queries.values():
             queryset = queryset.filter(query)
 
@@ -90,7 +91,7 @@ class EquipmentListView(ListView):
         return None
 
 
-class EquipmentCreateView(CreateView):
+class EquipmentCreateView(LoginRequiredMixin, CreateView):
     """Create view for equipment"""
 
     model = Equipment
@@ -103,7 +104,7 @@ class EquipmentCreateView(CreateView):
         return super().form_valid(form)
 
 
-class EquipmentDetailView(DetailView):
+class EquipmentDetailView(LoginRequiredMixin, DetailView):
     """Detail view for equipment"""
 
     model = Equipment
@@ -116,7 +117,7 @@ class EquipmentDetailView(DetailView):
         return context
 
 
-class EquipmentUpdateView(UpdateView):
+class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
     """Update view for equipment"""
 
     model = Equipment
@@ -134,7 +135,7 @@ class EquipmentUpdateView(UpdateView):
         return reverse_lazy("equipment_detail", kwargs={"pk": self.object.id})
 
 
-class EquipmentDeleteView(DeleteView):
+class EquipmentDeleteView(LoginRequiredMixin, DeleteView):
     """Delete view for equipment"""
 
     model = Equipment
@@ -150,7 +151,7 @@ class EquipmentDeleteView(DeleteView):
 ### EquipmentAttachment CRUD operations
 
 
-class EquipmentAttachmentUploadView(AttachmentUploadView):
+class EquipmentAttachmentUploadView(LoginRequiredMixin, AttachmentUploadView):
     """Upload view for equipment attachments"""
 
     owner_model = Equipment
@@ -159,7 +160,7 @@ class EquipmentAttachmentUploadView(AttachmentUploadView):
     success_url_name = "equipment_detail"
 
 
-class EquipmentAttachmentUpdateView(AttachmentUpdateView):
+class EquipmentAttachmentUpdateView(LoginRequiredMixin, AttachmentUpdateView):
     """Update view for equipment attachments"""
 
     owner_model = Equipment
@@ -169,7 +170,7 @@ class EquipmentAttachmentUpdateView(AttachmentUpdateView):
     success_url_name = "equipment_detail"
 
 
-class EquipmentAttachmentDeleteView(AttachmentDeleteView):
+class EquipmentAttachmentDeleteView(LoginRequiredMixin, AttachmentDeleteView):
     """Delete view for equipment attachments"""
 
     owner_model = Equipment

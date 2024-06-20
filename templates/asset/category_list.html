@@ -16,14 +16,16 @@
   </div>
   {% for category in categories %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
-      <div class="col text-muted fw-bold">{{ category.name }}</div>
+      <div class="col text-muted fw-bold">
+        <a href="{% url 'equipment_list' %}?c={{ category.id }}"
+           title="List all '{{ category.name }}' equipment">{{ category.name }}</a>
+      </div>
       <div class="col">{{ category.description|default:"" }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'category_update' category.id %}" title="Update '{{ category.name }}'"><i class="bi bi-pencil-square"></i></a>
           <a href="{% url 'category_delete' category.id %}" title="Delete '{{ category.name }}'"><i class="bi bi-trash"></i></a>
         {% endif %}
-        <a href="{% url 'equipment_list' %}?c={{ category.id }}"><i class="bi bi-card-list" title="List all '{{ category.name }}' equipment"></i></a>
       </div>
     </div>
   {% endfor %}
