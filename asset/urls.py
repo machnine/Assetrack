@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from asset.views import category, company, equipment, equipment_record, location, status
+from asset.views import category, company, equipment, equipment_record, equipment_type, location, status
 
 urlpatterns = [
     path("location/", location.LocationListView.as_view(), name="location_list"),
@@ -75,5 +75,13 @@ urlpatterns = [
         "equipment/record/attachment/<int:pk>/delete/",
         equipment_record.EquipmentRecordAttachmentDeleteView.as_view(),
         name="equipmentrecord_attachment_delete",
+    ),
+    path("equipmenttype/", equipment_type.EquipmentTypeListView.as_view(), name="equipmenttype_list"),
+    path("equipmenttype/create/", equipment_type.EquipmentTypeCreateView.as_view(), name="equipmenttype_create"),
+    path(
+        "equipmenttype/<int:pk>/update/", equipment_type.EquipmentTypeUpdateView.as_view(), name="equipmenttype_update"
+    ),
+    path(
+        "equipmenttype/<int:pk>/delete/", equipment_type.EquipmentTypeDeleteView.as_view(), name="equipmenttype_delete"
     ),
 ]

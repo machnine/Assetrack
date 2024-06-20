@@ -1,0 +1,18 @@
+{% extends "partials/object_form.html" %}
+{% block title_object_name %}
+  Equipment type
+{% endblock title_object_name %}
+{% block object_icon %}
+  <i class="bi bi-plug-fill"></i>
+{% endblock object_icon %}
+{% block object_name %}
+  Equipment type
+{% endblock object_name %}
+{% block heading_object_name %}
+  <i class="bi bi-plug-fill"></i>
+  {% if form.instance.pk %}
+    Update equipment type: <i class="text-danger">{{ form.instance }}</i>
+  {% else %}
+    New equipment type
+  {% endif %}
+{% endblock heading_object_name %}

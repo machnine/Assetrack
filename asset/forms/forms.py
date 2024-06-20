@@ -2,7 +2,7 @@
 
 from django import forms
 
-from asset.models import Category, Company, Location, Status
+from asset.models import Category, Company, EquipmentType, Location, Status
 
 
 class CompanyForm(forms.ModelForm):
@@ -52,6 +52,20 @@ class StatusForm(forms.ModelForm):
 
     class Meta:
         model = Status
+        fields = ["name", "description"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({"class": "form-control"})
+        self.fields["description"].widget.attrs.update({"rows": 3})
+
+
+class EquipmentTypeForm(forms.ModelForm):
+    """EquipmentType Form """
+
+    class Meta:
+        model = EquipmentType
         fields = ["name", "description"]
 
     def __init__(self, *args, **kwargs):

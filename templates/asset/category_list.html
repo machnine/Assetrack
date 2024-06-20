@@ -17,7 +17,7 @@
   {% for category in categories %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
       <div class="col text-muted fw-bold">{{ category.name }}</div>
-      <div class="col">{{ category.description }}</div>
+      <div class="col">{{ category.description|default:"" }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'category_update' category.id %}" title="Update '{{ category.name }}'"><i class="bi bi-pencil-square"></i></a>

@@ -17,7 +17,7 @@
   {% for location in locations %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
       <div class="col text-muted fw-bold">{{ location.name }}</div>
-      <div class="col">{{ location.description }}</div>
+      <div class="col">{{ location.description|default:"" }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'location_update' location.id %}" title="Update '{{ location.name }}'"><i class="bi bi-pencil-square"></i></a>
