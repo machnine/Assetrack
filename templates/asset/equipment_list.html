@@ -5,13 +5,29 @@
 {% block new_object_url %}
   {% url 'equipment_create' %}
 {% endblock new_object_url %}
-{% block panel_heading %}
+{% block panel_heading_start %}
   <i class="bi bi-plugin text-muted"></i> Equipment List
   {% if query %}
-    <i class="ps-3 small text-danger">{{ query }}</i>
-    <a href="{% url 'equipment_list' %}" title="Clear filter"><i class="bi bi-repeat small"></i></a>
+    <span>
+      <a href="{% url 'equipment_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
+    </span>
   {% endif %}
-{% endblock panel_heading %}
+{% endblock panel_heading_start %}
+{% block panel_heading_center %}
+  <form method="get" action="{% url 'equipment_list' %}">
+    <input type="text"
+           name="q"
+           size="40"
+           class="form-control form-control-sm"
+           placeholder="Search equipment..."
+           onfocus="this.select();"
+           value="{{ request.GET.q }}">
+    <button type="submit" class="d-none">Search</button>
+  </form>
+{% endblock panel_heading_center %}
+{% block panel_heading_before_end %}
+  <i class="pe-2 bi bi-toggle-off text-primary" id="showall" title="Show/Hide decommissioned equipment"></i>
+{% endblock panel_heading_before_end %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col-lg-2">Name</div>
@@ -19,24 +35,10 @@
     <div class="col-lg-1">Serial Number</div>
     <div class="col-lg-1">Calibration</div>
     <div class="col-lg-1">Status</div>
-    <div class="col-lg-1">Manufacturer</div>
     <div class="col-lg-1">Category</div>
+    <div class="col-lg-1">Type</div>
     <div class="col-lg-1">Location</div>
-    <div class="d-none col-lg-3 d-lg-flex justify-content-between align-items-center">
-      <div>Notes</div>
-      <div>
-        <form method="get" action="{% url 'equipment_list' %}">
-          <input type="text"
-                 name="q"
-                 size="40"
-                 class="form-control form-control-sm"
-                 placeholder="Search equipment..."
-                 onfocus="this.select();"
-                 value="{{ request.GET.q }}">
-          <button type="submit" class="d-none">Search</button>
-        </form>
-      </div>
-    </div>
+    <div class="col-lg-1">Notes</div>
   </div>
   {% for equipment in equipments %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
@@ -49,18 +51,54 @@
         <a href="{% url 'equipment_list' %}?cal={{ equipment.calibration.id }}">{{ equipment.calibration.name }}</a>
       </div>
       <div class="col-lg-1 small">
-        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
-      </div>
-      <div class="col-lg-1 small">
-        <a href="{% url 'equipment_list' %}?m={{ equipment.manufacturer.id }}">{{ equipment.manufacturer }}</a>
+        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}{% if equipment.status.name == 'Decommissioned' %}&all=true{% endif %}">{{ equipment.status }}</a>
       </div>
       <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a>
       </div>
       <div class="col-lg-1 small">
+        <a href="{% url 'equipment_list' %}?t={{ equipment.equipment_type.id }}">{{ equipment.equipment_type }}</a>
+      </div>
+      <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a>
       </div>
-      <div class="d-none col-lg-3 d-lg-block small">{{ equipment.notes|truncatewords:16 }}</div>
+      <div class="col-lg-1">
+        {% if equipment.notes|length %}<i class="bi bi-chat-dots text-warning" title="{{ equipment.notes }}"></i>{% endif %}
+      </div>
     </div>
   {% endfor %}
 {% endblock panel_content %}
+{% block extra_js %}
+  <script>
+  document.getElementById('showall').addEventListener('click', function() {
+    var url = new URL(window.location.href);
+    var allParam = url.searchParams.get('all');
+    var icon = document.getElementById('showall');
+
+    if (allParam === 'true') {
+        url.searchParams.set('all', 'false');
+
+    } else {
+        url.searchParams.set('all', 'true');
+
+    }
+
+    window.location.href = url.toString();
+  });
+
+  // Update button class on page load based on the 'all' parameter
+  window.addEventListener('load', function() {
+    var url = new URL(window.location.href);
+    var allParam = url.searchParams.get('all');
+    var icon = document.getElementById('showall');
+
+    if (allParam === 'true') {
+        icon.classList.add('bi-toggle-on');
+        icon.classList.remove('bi-toggle-off');
+    } else {
+        icon.classList.add('bi-toggle-off');
+        icon.classList.remove('bi-toggle-on');
+    }
+  });
+  </script>
+{% endblock extra_js %}

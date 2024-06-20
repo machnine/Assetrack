@@ -2,8 +2,8 @@
 
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.utils import timezone
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import EquipmentAttachmentUpdateForm, EquipmentAttachmentUploadForm, EquipmentForm
 from asset.models import Calibration, Category, Company, Equipment, EquipmentAttachment, EquipmentType, Location, Status
@@ -29,6 +29,7 @@ class EquipmentListView(ListView):
             "service_provider_id": self.request.GET.get("sp"),
             "calibration_id": self.request.GET.get("cal"),
             "replacement": self.request.GET.get("rp"),
+            "show_all": self.request.GET.get("all"),
         }
 
         queries = {
@@ -52,6 +53,10 @@ class EquipmentListView(ListView):
         if filters["replacement"] == "true":
             one_year_from_now = timezone.now() + timezone.timedelta(days=365)
             queryset = queryset.filter(replacement_date__lte=one_year_from_now).exclude(status__name="Decommissioned")
+        else:
+            # Apply default exclusion of 'Decommissioned' status unless 'show_all' is true
+            if filters["show_all"] != "true":
+                queryset = queryset.exclude(status__name="Decommissioned")
 
         return queryset
 
@@ -70,6 +75,7 @@ class EquipmentListView(ListView):
             "t": ("Equipment Type", self.get_object_description(EquipmentType, self.request.GET.get("t"))),
             "sp": ("Service Provider", self.get_object_description(Company, self.request.GET.get("sp"))),
             "cal": ("Calibration", self.get_object_description(Calibration, self.request.GET.get("cal"))),
+            "rp": ("Replacement due in 365 days", self.request.GET.get("rp")),
         }
 
         descriptions = [f"{label}: {value}" for key, (label, value) in descriptions.items() if value]

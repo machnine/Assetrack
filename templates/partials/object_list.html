@@ -4,16 +4,26 @@
 {% block content %}
   <div class="panel">
     <div class="panel-heading">
-      <div class="d-flex align-items-center justify-content-between pe-2">
-        <h5>
-          {% block panel_heading %}
-          {% endblock panel_heading %}
-        </h5>
-        {% block panel_heading_search %}
-        {% endblock panel_heading_search %}
-        <a href="{% block new_object_url %}{% endblock new_object_url %}" title="Create a new record">
-          <i class="bi bi-plus-circle"></i>
-        </a>
+      <div class="row">
+        <div class="col-lg-6">
+          <h5>
+            {% block panel_heading_start %}
+            {% endblock panel_heading_start %}
+          </h5>
+        </div>
+        <div class="col-lg-3">
+          {% block panel_heading_center %}
+          {% endblock panel_heading_center %}
+        </div>
+        <div class="col-lg-3 text-end pe-4">
+          {% block panel_heading_before_end %}
+          {% endblock panel_heading_before_end %}
+          {% block panel_heading_end %}
+            <a href="{% block new_object_url %}{% endblock new_object_url %}" title="Create a new record">
+              <i class="bi bi-plus-circle"></i>
+            </a>
+          {% endblock panel_heading_end %}
+        </div>
       </div>
     </div>
     <div class="panel-content px-3">

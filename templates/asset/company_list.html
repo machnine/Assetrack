@@ -5,36 +5,32 @@
 {% block new_object_url %}
   {% url 'company_create' %}
 {% endblock new_object_url %}
-{% block panel_heading %}
-  <i class="bi bi-buildings text-muted"></i> Company List
+{% block panel_heading_start %}
+  <i class="bi bi-buildings text-muted"></i> Companies
   {% if query %}
     <i class="ps-3 small text-success">{{ query }}</i>
     <a href="{% url 'company_list' %}" title="Clear filter"><i class="bi bi-repeat small"></i></a>
   {% endif %}
-{% endblock panel_heading %}
-{% block panel_heading_search %}
-{% endblock panel_heading_search %}
+{% endblock panel_heading_start %}
+{% block panel_heading_center %}
+  <form method="get" action="{% url 'company_list' %}">
+    <input type="text"
+           name="q"
+           size="40"
+           class="form-control form-control-sm"
+           placeholder="Search companies..."
+           onfocus="this.select();"
+           value="{{ request.GET.q }}">
+    <button type="submit" class="d-none">Search</button>
+  </form>
+{% endblock panel_heading_center %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col col-lg-2">Name</div>
     <div class="col col-lg-1">Phone</div>
     <div class="col col-lg-2">Email</div>
     <div class="d-none d-lg-block col-lg-3">Website</div>
-    <div class="d-none d-lg-block col-lg-4 d-lg-flex justify-content-between align-items-center">
-      <div>Notes</div>
-      <div>
-        <form method="get" action="{% url 'company_list' %}">
-          <input type="text"
-                 name="q"
-                 size="40"
-                 class="form-control form-control-sm"
-                 placeholder="Search companies..."
-                 onfocus="this.select();"
-                 value="{{ request.GET.q }}">
-          <button type="submit" class="d-none">Search</button>
-        </form>
-      </div>
-    </div>
+    <div class="col col-lg-3">Notes</div>
   </div>
   {% for company in companies %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
