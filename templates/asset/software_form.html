@@ -1,0 +1,12 @@
+{% extends "partials/object_form.html" %}
+{% block title_object_name %}
+  Software
+{% endblock title_object_name %}
+{% block heading_object_name %}
+  <i class="bi bi-building"></i>
+  {% if form.instance.pk %}
+    Update software: <i class="text-danger">{{ form.instance }}</i>
+  {% else %}
+    New software
+  {% endif %}
+{% endblock heading_object_name %}

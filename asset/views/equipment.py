@@ -45,7 +45,7 @@ class EquipmentListView(ListView):
 
         # Remove queries with None values
         filtered_queries = {key: query for key, query in queries.items() if filters[key]}
-        print(filtered_queries)
+ 
         for query in filtered_queries.values():
             queryset = queryset.filter(query)
 

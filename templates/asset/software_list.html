@@ -1,0 +1,68 @@
+{% extends "partials/object_list.html" %}
+{% block page_title %}
+  Software List
+{% endblock page_title %}
+{% block new_object_url %}
+  {% url 'software_create' %}
+{% endblock new_object_url %}
+{% block panel_heading_start %}
+  <i class="bi bi-floppy text-muted"></i> Software List
+  {% if query %}
+    <span>
+      <a href="{% url 'software_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
+    </span>
+  {% endif %}
+{% endblock panel_heading_start %}
+{% block panel_heading_center %}
+  <form method="get" action="{% url 'software_list' %}">
+    <input type="text"
+           name="q"
+           size="40"
+           class="form-control form-control-sm"
+           placeholder="Search software..."
+           onfocus="this.select();"
+           value="{{ request.GET.q }}">
+    <button type="submit" class="d-none">Search</button>
+  </form>
+{% endblock panel_heading_center %}
+{% block panel_content %}
+  <div class="row pb-2 text-muted small fw-bold align-items-center">
+    <div class="col-lg-3">Name</div>
+    <div class="col-lg-1">License</div>
+    <div class="col-lg-1">Version</div>
+    <div class="col-lg-1">Software type</div>
+    <div class="col-lg-1">Active</div>
+    <div class="col-lg-4">Description</div>
+    <div class="col-lg-1"></div>
+  </div>
+  {% for software in object_list %}
+    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+      <div class="col-lg-3 fw-bold">
+        <a href="{% url 'software_detail' software.id %}" title="{{ software.long_name|default:"" }}">{{ software.name }}</a>
+      </div>
+      <div class="col-lg-1">
+        <a href="{% url 'software_list' %}?l={{ software.license_type.id }}">{{ software.license_type.name }}</a>
+      </div>
+      <div class="col-lg-1">{{ software.version }}</div>
+      <div class="col-lg-1">
+        <a href="{% url 'software_list' %}?t={{ software.software_type.id }}">{{ software.software_type.name }}</a>
+      </div>
+      <div class="col-lg-1">
+        <a href="{% url 'software_list' %}?a={{ software.active }}">
+          {% if software.active %}
+            <i class="bi bi-check2-circle text-success"></i>
+          {% else %}
+            <i class="bi bi-x-circle text-danger"></i>
+          {% endif %}
+        </a>
+      </div>
+      <div class="col-lg-4">{{ software.description }}</div>
+      <div class="col-lg-1 text-end">
+        {% if request.user.is_superuser %}
+          <a href="{% url 'software_update' software.id %}" title="Update '{{ software.name }}'"><i class="bi bi-pencil-square"></i></a>
+          <a href="{% url 'software_delete' software.id %}" title="Delete '{{ software.name }}'"><i class="bi bi-trash"></i></a>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock panel_content %}

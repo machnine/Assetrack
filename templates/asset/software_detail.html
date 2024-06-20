@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block page_title %}
+  Software detail - {{ software.name }}
+{% endblock page_title %}
+{% block content %}
+  <div class="panel">
+    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
+      <h5 class="panel-title text-primary">
+        <i class="bi bi-floppy"></i> {{ software.name }}
+      </h5>
+      <div class="panel-actions">
+        <a href="{% url 'software_update' software.id %}"><i class="bi bi-pencil-square"></i></a>
+        {% if request.user.is_superuser %}
+          <a href="{% url 'software_delete' software.id %}"><i class="bi bi-trash"></i></a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="panel-content">
+      <div class="row">
+        <div class="col-12 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Name</span>
+          <span class="text-primary">{{ software.name }}</span>
+        </div>
+        <div class="col-12 col-lg-10 mb-3">
+          <span class="text-muted small d-block">Long Name</span>
+          <span class="text-primary">{{ software.long_name|default:"" }}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Version</span>
+          <span class="text-primary">{{ software.version }}</span>
+        </div>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">License</span>
+          <span class="text-primary">{{ software.license_type.name }}</span>
+        </div>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Software Type</span>
+          <span class="text-primary">{{ software.software_type.name }}</span>
+        </div>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Status</span>
+          <span class="text-primary">
+            <a href="{% url 'software_list' %}?a={{ software.active }}">
+              {% if software.active %}
+                <i class="bi bi-check2-circle text-success"></i>
+              {% else %}
+                <i class="bi bi-x-circle text-danger"></i>
+              {% endif %}
+            </a>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mb-3">
+          <span class="text-muted small d-block">Description</span>
+          <span class="text-primary">{{ software.description|default:"" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# software attachment #}
+  <div class="panel">
+    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
+      <span class="text-primary"><i class="bi bi-folder"></i> Software documents</span>
+      <a hx-get="{% url 'software_attachment_upload' software.id %}"
+         hx-trigger="click"
+         hx-target="#modal-box .modal-content"
+         hx-swap="innerHTML"
+         data-bs-toggle="modal"
+         data-bs-target="#modal-box"
+         href="javascript:"><i class="bi bi-file-earmark-arrow-up"></i></a>
+    </div>
+    <div class="panel-content">
+      {% if attachments|length %}
+        {% for file in attachments %}
+          <div class="row pb-2">
+            <div class="d-none d-lg-block col-lg-1">
+              <span class="text-muted small">{{ file.uploaded_at|date:"d/m/Y" }}</span>
+            </div>
+            <div class="d-none d-lg-block col-lg-1">
+              {% if file.filetype %}
+                <i class="bi bi-filetype-{{ file.filetype }} text-danger"></i>
+              {% else %}
+                <i class="bi bi-file-earmark text-danger"></i>
+              {% endif %}
+              <i class="text-muted small">{{ file.file.size|filesizeformat }}</i>
+            </div>
+            <div class="col-6 col-lg-9">
+              <span class="pe-3"><a href="{{ file.file.url }}">{{ file.name }}</a></span>
+              <span class="text-primary">{{ file.description|default:"" }}</span>
+            </div>
+            <div class="d-none d-lg-block col-lg-1 text-end">
+              <a hx-get="{% url 'software_attachment_update' file.id %}"
+                 hx-trigger="click"
+                 hx-target="#modal-box .modal-content"
+                 hx-swap="innerHTML"
+                 data-bs-toggle="modal"
+                 data-bs-target="#modal-box"
+                 href="javascript:"><i class="bi bi-pencil-square"></i></a>
+              <a hx-get="{% url 'software_attachment_delete' file.id %}"
+                 hx-trigger="click"
+                 hx-target="#modal-box .modal-content"
+                 hx-swap="innerHTML"
+                 data-bs-toggle="modal"
+                 data-bs-target="#modal-box"
+                 href="javascript:"><i class="bi bi-trash"></i></a>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}
+{% block modals %}
+  <div class="modal fade" id="modal-box" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HTMX rendered content -->
+      </div>
+    </div>
+  </div>
+{% endblock modals %}

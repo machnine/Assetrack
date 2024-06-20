@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from asset.views import category, company, equipment, equipment_record, equipment_type, location, status
+from asset.views import category, company, equipment, equipment_record, equipment_type, location, software, status
 
 urlpatterns = [
     path("location/", location.LocationListView.as_view(), name="location_list"),
@@ -47,7 +47,7 @@ urlpatterns = [
         name="equipmentrecord_detail",
     ),
     path(
-        "equipment/<int:pk>/attachment/upload/",
+        "equipment/attachment/<int:pk>/upload/",
         equipment.EquipmentAttachmentUploadView.as_view(),
         name="equipment_attachment_upload",
     ),
@@ -62,7 +62,7 @@ urlpatterns = [
         name="equipment_attachment_delete",
     ),
     path(
-        "equipment/record/<int:pk>/attachment/upload/",
+        "equipment/record/attachment/<int:pk>/upload/",
         equipment_record.EquipmentRecordAttachmentUploadView.as_view(),
         name="equipmentrecord_attachment_upload",
     ),
@@ -83,5 +83,25 @@ urlpatterns = [
     ),
     path(
         "equipmenttype/<int:pk>/delete/", equipment_type.EquipmentTypeDeleteView.as_view(), name="equipmenttype_delete"
+    ),
+    path("software/", software.SoftwareListView.as_view(), name="software_list"),
+    path("software/create/", software.SoftwareCreateView.as_view(), name="software_create"),
+    path("software/<int:pk>/detail/", software.SoftwareDetailView.as_view(), name="software_detail"),
+    path("software/<int:pk>/update/", software.SoftwareUpdateView.as_view(), name="software_update"),
+    path("software/<int:pk>/delete/", software.SoftwareDeleteView.as_view(), name="software_delete"),
+    path(
+        "software/attachment/<int:pk>/upload/",
+        software.SoftwareAttachmentUploadView.as_view(),
+        name="software_attachment_upload",
+    ),
+    path(
+        "software/attachment/<int:pk>/update/",
+        software.SoftwareAttachmentUpdateView.as_view(),
+        name="software_attachment_update",
+    ),
+    path(
+        "software/attachment/<int:pk>/delete/",
+        software.SoftwareAttachmentDeleteView.as_view(),
+        name="software_attachment_delete",
     ),
 ]

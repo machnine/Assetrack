@@ -44,22 +44,25 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a href="{% url 'equipment_list' %}" class="nav-link ps-3"><i class="small bi bi-plugin"></i>Equipment</a>
+                    <a href="{% url 'equipment_list' %}" class="nav-link ps-3"><i class="small bi bi-plugin"></i> Equipment</a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'location_list' %}" class="nav-link ps-3"><i class="small bi bi-geo-alt-fill"></i>Location</a>
+                    <a href="{% url 'location_list' %}" class="nav-link ps-3"><i class="small bi bi-geo-alt-fill"></i> Location</a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'company_list' %}" class="nav-link ps-3"><i class="small bi bi-buildings"></i>Company</a>
+                    <a href="{% url 'company_list' %}" class="nav-link ps-3"><i class="small bi bi-buildings"></i> Company</a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'category_list' %}" class="nav-link ps-3"><i class="small bi bi-ui-checks-grid"></i>Category</a>
+                    <a href="{% url 'category_list' %}" class="nav-link ps-3"><i class="small bi bi-ui-checks-grid"></i> Category</a>
                   </li>
                   <li class="nav-item">
                     <a href="{% url 'equipmenttype_list' %}" class="nav-link ps-3"><i class="small bi bi-plug-fill"></i>Type</a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'status_list' %}" class="nav-link ps-3"><i class="small bi bi-diamond-half"></i>Status</a>
+                    <a href="{% url 'status_list' %}" class="nav-link ps-3"><i class="small bi bi-diamond-half"></i> Status</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'software_list' %}" class="nav-link ps-3"><i class="small bi bi-floppy"></i> Software</a>
                   </li>
                 </ul>
                 <ul class="navbar-nav ms-auto ps-lg-3">
@@ -73,7 +76,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                       <li>
                         <div class="text-center">
-                          <span title="{{ request.user.get_full_name }}"><b>{{ request.user.first_name }}</b></span>
+                          <span title="{{ request.user.get_full_name }}"><b>{{ request.user.first_name|default:"User" }}</b></span>
                         </div>
                       </li>
                       {% if request.user.is_superuser %}
@@ -92,7 +95,7 @@
                              class="dropdown-item"
                              title="Log out"
                              onclick="document.getElementById('logout-form').submit(); return false;">
-                            <i class="bi bi-box-arrow-right text-danger"></i> User log out
+                            <i class="bi bi-box-arrow-right text-danger"></i> User sign out
                           </a>
                         {% endblock logout_link %}
                       </li>
