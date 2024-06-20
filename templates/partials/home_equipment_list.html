@@ -1,0 +1,32 @@
+<div class="row px-3 text-muted small">
+  <div class="col-lg-2">Equipment</div>
+  <div class="col-lg-1">Model Number</div>
+  <div class="col-lg-1">Location</div>
+  <div class="col-lg-1">Category</div>
+  <div class="col-lg-1">Type</div>
+  <div class="col-lg-1">Calibration</div>
+  <div class="col-lg-2">Notes</div>
+</div>
+{% for equipment in equipment_objects %}
+  <div class="row px-3">
+    <div class="col-lg-2">
+      <a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a>
+    </div>
+    <div class="col-lg-1">{{ equipment.model_number|default:"" }}</div>
+    <div class="col-lg-1">
+      <a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a>
+    </div>
+    <div class="col-lg-1">
+      <a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a>
+    </div>
+    <div class="col-lg-1">
+      <a href="{% url 'equipment_list' %}?t={{ equipment.equipment_type.id }}">{{ equipment.equipment_type }}</a>
+    </div>
+    <div class="col-lg-1">
+      <a href="{% url 'equipment_list' %}?cal={{ equipment.calibration.id }}">{{ equipment.calibration.name }}</a>
+    </div>
+    <div class="col-lg-2">
+      {% if equipment.notes|length %}<i class="bi bi-chat-dots text-warning" title="{{ equipment.notes }}"></i>{% endif %}
+    </div>
+  </div>
+{% endfor %}

@@ -25,6 +25,7 @@ class Equipment(models.Model):
     value = models.IntegerField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     category = models.ForeignKey("Category", on_delete=models.PROTECT)
+    equipment_type = models.ForeignKey("EquipmentType", on_delete=models.PROTECT)
     location = models.ForeignKey("Location", on_delete=models.PROTECT)
     status = models.ForeignKey("Status", on_delete=models.PROTECT)
     calibration = models.ForeignKey("Calibration", on_delete=models.PROTECT, null=True, blank=True)

@@ -9,7 +9,9 @@
       <h5 class="panel-title text-primary">
         <i class="bi bi-plugin"></i> {{ equipment.name }}
       </h5>
-      <span class="fw-bold small text-info">{{ equipment.status }}</span>
+      <span class="fw-bold small text-info">
+        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
+      </span>
       <div class="panel-actions">
         <a href="{% url 'equipment_update' equipment.id %}"><i class="bi bi-pencil-square"></i></a>
         {% if request.user.is_superuser %}
@@ -50,13 +52,17 @@
           <span class="text-primary"><a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a></span>
         </div>
         <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Equipment type</span>
+          <span class="text-primary"><a href="{% url 'equipment_list' %}?t={{ equipment.equipment_type.id }}">{{ equipment.equipment_type }}</a></span>
+        </div>
+        <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Location</span>
           <span class="text-primary"><a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a></span>
         </div>
       </div>
       <div class="row pb-2">
         <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Procurement date</span>
+          <span class="text-muted small d-block">Received date</span>
           <span class="text-primary">{{ equipment.received_date|date:"d/m/Y" }}</span>
         </div>
         <div class="col-6 col-lg-2 mb-3">

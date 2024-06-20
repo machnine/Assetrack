@@ -24,6 +24,7 @@ class EquipmentForm(forms.ModelForm):
             "value",
             "notes",
             "category",
+            "equipment_type",
             "location",
             "status",
             "calibration",

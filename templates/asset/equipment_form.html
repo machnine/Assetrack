@@ -41,12 +41,17 @@
     </div>
   </div>
   <div class="row">
-    <div class="mb-3 col-12 col-md-6">
+    <div class="mb-3 col-12 col-md-4">
       <label class="form-label" for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
       {{ form.category }}
       {% if form.category.errors %}<div class="text-danger">{{ form.category.errors }}</div>{% endif %}
     </div>
-    <div class="mb-3 col-12 col-md-6">
+    <div class="mb-3 col-12 col-md-4">
+      <label class="form-label" for="{{ form.equipment_type.id_for_label }}">{{ form.equipment_type.label }}</label>
+      {{ form.equipment_type }}
+      {% if form.equipment_type.errors %}<div class="text-danger">{{ form.equipment_type.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-4">
       <label class="form-label" for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
       {{ form.location }}
       {% if form.location.errors %}<div class="text-danger">{{ form.location.errors }}</div>{% endif %}

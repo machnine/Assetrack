@@ -1,8 +1,8 @@
+""" register models to the admin site"""
 from django.contrib import admin
 
-# Register your models here.
-from asset.models import RecordType, Calibration
+from asset.models import Calibration, EquipmentType, RecordType
 
-admin.site.register(RecordType)
 admin.site.register(Calibration)
-
+admin.site.register(EquipmentType)
+admin.site.register(RecordType)

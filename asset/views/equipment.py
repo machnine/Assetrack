@@ -3,9 +3,10 @@
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.utils import timezone
 
 from asset.forms import EquipmentAttachmentUpdateForm, EquipmentAttachmentUploadForm, EquipmentForm
-from asset.models import Calibration, Category, Company, Equipment, EquipmentAttachment, Location, Status
+from asset.models import Calibration, Category, Company, Equipment, EquipmentAttachment, EquipmentType, Location, Status
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
@@ -18,59 +19,69 @@ class EquipmentListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        query = self.request.GET.get("q")
-        manufacturer = self.request.GET.get("m")
-        service_provider = self.request.GET.get("sp")
-        location = self.request.GET.get("l")
-        status = self.request.GET.get("s")
-        category = self.request.GET.get("c")
-        calibration = self.request.GET.get("cal")
+        filters = {
+            "q": self.request.GET.get("q"),
+            "manufacturer_id": self.request.GET.get("m"),
+            "location_id": self.request.GET.get("l"),
+            "status_id": self.request.GET.get("s"),
+            "category_id": self.request.GET.get("c"),
+            "equipment_type_id": self.request.GET.get("t"),
+            "service_provider_id": self.request.GET.get("sp"),
+            "calibration_id": self.request.GET.get("cal"),
+            "replacement": self.request.GET.get("rp"),
+        }
 
-        if query:
-            queryset = queryset.filter(Q(name__icontains=query) | Q(notes__icontains=query))
-        if manufacturer:
-            queryset = queryset.filter(manufacturer_id=manufacturer)
-        if location:
-            queryset = queryset.filter(location_id=location)
-        if status:
-            queryset = queryset.filter(status_id=status)
-        if category:
-            queryset = queryset.filter(category_id=category)
-        if service_provider:
-            queryset = queryset.filter(service_provider_id=service_provider)
-        if calibration:
-            queryset = queryset.filter(calibration_id=calibration)
+        queries = {
+            "q": Q(name__icontains=filters["q"]) | Q(notes__icontains=filters["q"]),
+            "manufacturer_id": Q(manufacturer_id=filters["manufacturer_id"]),
+            "location_id": Q(location_id=filters["location_id"]),
+            "status_id": Q(status_id=filters["status_id"]),
+            "category_id": Q(category_id=filters["category_id"]),
+            "equipment_type_id": Q(equipment_type_id=filters["equipment_type_id"]),
+            "service_provider_id": Q(service_provider_id=filters["service_provider_id"]),
+            "calibration_id": Q(calibration_id=filters["calibration_id"]),
+        }
+
+        # Remove queries with None values
+        filtered_queries = {key: query for key, query in queries.items() if filters[key]}
+        print(filtered_queries)
+        for query in filtered_queries.values():
+            queryset = queryset.filter(query)
+
+        # Apply the special 'replacement' filter
+        if filters["replacement"] == "true":
+            one_year_from_now = timezone.now() + timezone.timedelta(days=365)
+            queryset = queryset.filter(replacement_date__lte=one_year_from_now).exclude(status__name="Decommissioned")
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        query = self.request.GET.get("q")
-        manufacturer = self.request.GET.get("m")
-        location = self.request.GET.get("l")
-        status = self.request.GET.get("s")
-        category = self.request.GET.get("c")
-        service_provider = self.request.GET.get("sp")
-        calibration = self.request.GET.get("cal")
-
-        if query:
-            query = f"Search Filter: {query}"
-        if manufacturer:
-            query = f"Manufacturer: {Company.objects.get(id=manufacturer)}"
-        if location:
-            query = f"Location: {Location.objects.get(id=location)}"
-        if status:
-            query = f"Status: {Status.objects.get(id=status)}"
-        if category:
-            query = f"Category: {Category.objects.get(id=category)}"
-        if service_provider:
-            query = f"Service Provider: {Company.objects.get(id=service_provider)}"
-        if calibration:
-            query = f"Calibration: {Calibration.objects.get(id=calibration)}"
-
-        context["query"] = query
-
+        context["query"] = self.get_filter_description()
         return context
+
+    def get_filter_description(self):
+        descriptions = {
+            "q": ("Search Filter", self.request.GET.get("q")),
+            "m": ("Manufacturer", self.get_object_description(Company, self.request.GET.get("m"))),
+            "l": ("Location", self.get_object_description(Location, self.request.GET.get("l"))),
+            "s": ("Status", self.get_object_description(Status, self.request.GET.get("s"))),
+            "c": ("Category", self.get_object_description(Category, self.request.GET.get("c"))),
+            "t": ("Equipment Type", self.get_object_description(EquipmentType, self.request.GET.get("t"))),
+            "sp": ("Service Provider", self.get_object_description(Company, self.request.GET.get("sp"))),
+            "cal": ("Calibration", self.get_object_description(Calibration, self.request.GET.get("cal"))),
+        }
+
+        descriptions = [f"{label}: {value}" for key, (label, value) in descriptions.items() if value]
+        return ", ".join(descriptions)
+
+    def get_object_description(self, model, object_id):
+        if object_id:
+            try:
+                return model.objects.get(id=object_id)
+            except model.DoesNotExist:
+                return None
+        return None
 
 
 class EquipmentCreateView(CreateView):

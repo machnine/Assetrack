@@ -22,6 +22,18 @@ class Calibration(models.Model):
 
     def __str__(self):
         return self.name
+    
+class EquipmentType(models.Model):
+    """type of equipment e.g. centrifuge, microscope etc."""
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = "equipment types"
+        ordering = ["name"]
 
 class Category(models.Model):
     """category of the asset"""
@@ -31,6 +43,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = "categories"
+        ordering = ["name"]
 
 
 class Location(models.Model):
@@ -42,6 +58,9 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "locations"
+        ordering = ["name"]
 
 class Company(models.Model):
     """associated company of the asset"""
