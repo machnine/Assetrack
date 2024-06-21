@@ -1,12 +1,14 @@
-<div class="row px-3 text-muted small">
-  <div class="col-lg-2">Equipment</div>
-  <div class="col-lg-1">Model Number</div>
-  <div class="col-lg-1">Location</div>
-  <div class="col-lg-1">Category</div>
-  <div class="col-lg-1">Type</div>
-  <div class="col-lg-1">Calibration</div>
-  <div class="col-lg-2">Notes</div>
-</div>
+{% if equipment_objects|length %}
+  <div class="row px-3 text-muted small">
+    <div class="col-lg-2">Equipment</div>
+    <div class="col-lg-1">Model Number</div>
+    <div class="col-lg-1">Location</div>
+    <div class="col-lg-1">Category</div>
+    <div class="col-lg-1">Type</div>
+    <div class="col-lg-1">Calibration</div>
+    <div class="col-lg-2">Notes</div>
+  </div>
+{% endif %}
 {% for equipment in equipment_objects %}
   <div class="row px-3">
     <div class="col-lg-2">

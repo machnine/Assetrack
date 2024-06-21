@@ -4,32 +4,32 @@
   Home
 {% endblock page_title %}
 {% block content %}
-  <div class="panel" style="min-height: 30vh;">
+  <div class="panel">
     <div class="panel-heading d-flex justify-content-between">
-      <h5>
-        <i class="bi bi-hammer text-danger pe-2"></i> <a href="{% url 'equipment_list' %}?s={{ repair_id }}">Under Repair</a>
-      </h5>
-      <span class="pe-3"><a href="{% url 'equipment_list' %}?s={{ repair_id }}"><i class="bi bi-box-arrow-up-right small"></i></a></span>
+      <h6>
+        <i class="bi bi-hammer text-danger"></i> <a href="{% url 'equipment_list' %}?s={{ repair_id }}">Under Repair</a>
+      </h6>
+      <span class="pe-3">{% if under_repair|length %}<a href="{% url 'equipment_list' %}?s={{ repair_id }}"><i class="bi bi-box-arrow-up-right small"></i></a>{% endif %}</span>
     </div>
     <div class="panel-content">{% include "partials/home_equipment_list.html" with equipment_objects=under_repair %}</div>
   </div>
-  <div class="panel" style="min-height: 30vh;">
+  <div class="panel">
     <div class="panel-heading d-flex justify-content-between">
-      <h5>
-        <i class="bi bi-check2-all text-success pe-2"></i> <a href="{% url 'equipment_list' %}?s={{ verification_id }}">Pending Verification/Validation</a>
-      </h5>
-      <span class="pe-3"><a href="{% url 'equipment_list' %}?s={{ verification_id }}"><i class="bi bi-box-arrow-up-right small"></i></a></span>
+      <h6>
+        <i class="bi bi-check2-all text-success"></i> <a href="{% url 'equipment_list' %}?s={{ verification_id }}">Pending Verification/Validation</a>
+      </h6>
+      <span class="pe-3">{% if pending_verification|length %}<a href="{% url 'equipment_list' %}?s={{ verification_id }}"><i class="bi bi-box-arrow-up-right small"></i></a>{% endif %}</span>
     </div>
     <div class="panel-content">
       {% include "partials/home_equipment_list.html" with equipment_objects=pending_verification %}
     </div>
   </div>
-  <div class="panel" style="min-height: 30vh;">
+  <div class="panel">
     <div class="panel-heading d-flex justify-content-between">
-      <h5>
-        <i class="bi bi-cart4 text-warning pe-2"></i> <a href="{% url 'equipment_list' %}?rp=true">Replacement due in a year</a>
-      </h5>
-      <span class="pe-3"><a href="{% url 'equipment_list' %}?rp=true"><i class="bi bi-box-arrow-up-right small"></i></a></span>
+      <h6>
+        <i class="bi bi-cart4 text-warning"></i> <a href="{% url 'equipment_list' %}?rp=true">Replacement due in a year</a>
+      </h6>
+      <span class="pe-3">{% if replacement_due|length %}<a href="{% url 'equipment_list' %}?rp=true"><i class="bi bi-box-arrow-up-right small"></i></a>{% endif %}</span>
     </div>
     <div class="panel-content">
       {% include "partials/home_equipment_list.html" with equipment_objects=replacement_due %}

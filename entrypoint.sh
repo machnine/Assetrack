@@ -12,14 +12,10 @@ python manage.py check
 echo "Collect static files..."
 python manage.py collectstatic --noinput
 
-# create superuser
-echo "Creating superuser..."
-python manage.py createadmin
-
 # Start Gunicorn processes
 echo Starting Gunicorn...
 exec gunicorn core.wsgi:application \
-    --bind "0.0.0.0:8000" \
+    --bind "127.0.0.1:8000" \
     --workers 3 \
     --timeout 300
     
