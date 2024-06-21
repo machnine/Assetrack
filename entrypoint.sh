@@ -15,7 +15,7 @@ python manage.py collectstatic --noinput
 # Start Gunicorn processes
 echo Starting Gunicorn...
 exec gunicorn core.wsgi:application \
-    --bind "127.0.0.1:8000" \
+    --bind "0.0.0.0:8000" \
     --workers 3 \
     --timeout 300
     
