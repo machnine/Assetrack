@@ -1,0 +1,23 @@
+[
+  {
+    "model": "asset.calibration",
+    "fields": {
+      "name": "Not required",
+      "description": "Calibration not required"
+    }
+  },
+  {
+    "model": "asset.calibration",
+    "fields": {
+      "name": "UKAS",
+      "description": "UKAS accredited calibration required"
+    }
+  },
+  {
+    "model": "asset.calibration",
+    "fields": {
+      "name": "Standard",
+      "description": "Standard calibration required"
+    }
+  }
+]

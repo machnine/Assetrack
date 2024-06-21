@@ -1,0 +1,35 @@
+[
+  {
+    "model": "asset.license",
+    "fields": {
+      "name": "Free"
+    }
+  },
+  {
+    "model": "asset.license",
+    "fields": {
+      "name": "Commercial"
+    }
+  },
+
+  {
+    "model": "asset.license",
+    "fields": {
+      "name": "Open Source"
+    }
+  },
+
+  {
+    "model": "asset.license",
+    "fields": {
+      "name": "Vendor Supplied"
+    }
+  },
+
+  {
+    "model": "asset.license",
+    "fields": {
+      "name": "In-House"
+    }
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "model": "asset.recordtype",
+    "fields": {
+      "name": "Repair"
+    }
+  },
+  {
+    "model": "asset.recordtype",
+    "fields": {
+      "name": "Modification"
+    }
+  },
+  {
+    "model": "asset.recordtype",
+    "fields": {
+      "name": "Service"
+    }
+  },
+  {
+    "model": "asset.recordtype",
+    "fields": {
+      "name": "Calibration"
+    }
+  },
+  {
+    "model": "asset.recordtype",
+    "fields": {
+      "name": "Mulfuntion"
+    }
+  },
+  {
+    "model": "asset.recordtype",
+    "fields": {
+      "name": "General"
+    }
+  }
+]

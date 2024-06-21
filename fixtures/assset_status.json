@@ -1,0 +1,44 @@
+[
+  {
+    "model": "asset.status",
+    "fields": {
+      "name": "Active",
+      "description": "Active status indicates that a piece of equipment is in active use."
+    }
+  },
+  {
+    "model": "asset.status",
+    "fields": {
+      "name": "Quarantine",
+      "description": "Equipment is temporarily in quarantine."
+    }
+  },
+  {
+    "model": "asset.status",
+    "fields": {
+      "name": "Suspended",
+      "description": "Active status being suspended. Check equipment record for details."
+    }
+  },
+  {
+    "model": "asset.status",
+    "fields": {
+      "name": "Decommissioned",
+      "description": "Decommissioned equipment. Check equipment record for details."
+    }
+  },
+  {
+    "model": "asset.status",
+    "fields": {
+      "name": "Under Repair",
+      "description": "Equipment which is being repaired, needs status change and re-validation."
+    }
+  },
+  {
+    "model": "asset.status",
+    "fields": {
+      "name": "Pending Verification",
+      "description": "New equipment which requires validation/verification."
+    }
+  }
+]

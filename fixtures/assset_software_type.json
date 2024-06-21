@@ -1,0 +1,21 @@
+[
+  {
+    "model": "asset.softwaretype",
+    "fields": {
+      "name": "LIMS"
+    }
+  },
+  {
+    "model": "asset.softwaretype",
+    "fields": {
+      "name": "Analysis"
+    }
+  },
+
+  {
+    "model": "asset.softwaretype",
+    "fields": {
+      "name": "Other"
+    }
+  }
+]
