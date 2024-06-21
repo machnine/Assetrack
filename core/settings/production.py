@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
 # CSRF settings
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False # Set to True if using HTTPS
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Strict"
 # Set the CSRF_TRUSTED_ORIGINS to the domain of the website
@@ -25,7 +25,7 @@ CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(",")
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_COOKIE_AGE = 60 * 15  # 15 minutes
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False # Set to True if using HTTPS
 
 # Logging settings
 LOGGING = {
