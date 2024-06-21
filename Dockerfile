@@ -14,7 +14,7 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # copy the shell scripts
-COPY entrypoint.sh /app/entrypoint.sh
+COPY entrypoint.sh /app/
 
 # make the shell scripts executable
 RUN chmod +x /app/entrypoint.sh
