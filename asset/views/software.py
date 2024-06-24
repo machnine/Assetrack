@@ -16,6 +16,7 @@ class SoftwareListView(LoginRequiredMixin, ListView):
     model = Software
     template_name = "asset/software_list.html"
     context_object_name = "software_list"
+    paginate_by = 15
 
     def get_queryset(self):
         queryset = super().get_queryset()

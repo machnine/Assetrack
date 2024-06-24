@@ -1,0 +1,47 @@
+<div class="row pt-4">
+  <div class="col d-flex justify-content-end">
+    <nav>
+      <ul class="pagination pagination-sm">
+        {# PREVIOUS #}
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link"
+               href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page={{ page_obj.previous_page_number }}">
+              <i class="bi bi-caret-left"></i>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-caret-left"></i></span>
+          </li>
+        {% endif %}
+        {# CENTER #}
+        {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="page-item active">
+              <span class="page-link">{{ i }}</span>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link"
+                 href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page={{ i }}">{{ i }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        {# NEXT #}
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link"
+               href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page={{ page_obj.next_page_number }}">
+              <i class="bi bi-caret-right"></i>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-caret-right"></i></span>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>

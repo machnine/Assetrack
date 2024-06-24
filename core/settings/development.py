@@ -1,4 +1,5 @@
-""" devlopment settings """
+"""devlopment settings"""
+
 # pylint: disable=wildcard-import, unused-wildcard-import
 from .base import *  # noqa: F403
 
@@ -19,6 +20,8 @@ INSTALLED_APPS += [  # noqa: F405
     "debug_toolbar",
     "django_extensions",
 ]
+# internal IPs for debug toolbar to work
+INTERNAL_IPS = ["127.0.0.1"]
 
 # middlewares
 MIDDLEWARE += [  # noqa: F405
