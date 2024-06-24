@@ -44,6 +44,7 @@ class Software(models.Model):
     decommission_date = models.DateField(blank=True, null=True)
     active = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)
+    source_code = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True, related_name="+")
     last_updated_at = models.DateTimeField(auto_now=True)

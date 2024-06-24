@@ -56,6 +56,13 @@
   </div>
   <div class="row">
     <div class="mb-3">
+      <label class="form-label" for="{{ form.source_code.id_for_label }}">{{ form.source_code.label }}</label>
+      {{ form.source_code }}
+      {% if form.source_code.errors %}<div class="text-danger">{{ form.source_code.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3">
       <label class="form-label" for="{{ form.website.id_for_label }}">{{ form.website.label }}</label>
       {{ form.website }}
       {% if form.website.errors %}<div class="text-danger">{{ form.website.errors }}</div>{% endif %}

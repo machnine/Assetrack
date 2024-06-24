@@ -16,6 +16,7 @@ class SoftwareForm(forms.ModelForm):
             "version",
             "license_type",
             "software_type",
+            "source_code",
             "website",
             "implemented_date",
             "decommission_date",
