@@ -27,9 +27,7 @@ class SoftwareListView(LoginRequiredMixin, ListView):
         }
 
         queries = {
-            "q": Q(name__icontains=filters["q"])
-            | Q(long_name__icontains=filters["q"])
-            | Q(description__icontains=filters["q"]),
+            "q": Q(name__icontains=filters["q"]) | Q(description__icontains=filters["q"]),
             "l": Q(license_type_id=filters["l"]),
             "t": Q(software_type_id=filters["t"]),
             "a": Q(active=filters["a"]),

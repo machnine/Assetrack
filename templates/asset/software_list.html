@@ -38,7 +38,7 @@
   {% for software in object_list %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
       <div class="col-lg-3 fw-bold">
-        <a href="{% url 'software_detail' software.id %}" title="{{ software.long_name|default:"" }}">{{ software.name }}</a>
+        <a href="{% url 'software_detail' software.id %}">{{ software.name }}</a>
       </div>
       <div class="col-lg-1">
         <a href="{% url 'software_list' %}?l={{ software.license_type.id }}">{{ software.license_type.name }}</a>
