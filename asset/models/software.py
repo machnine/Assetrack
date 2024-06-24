@@ -39,7 +39,7 @@ class Software(models.Model):
     version = models.CharField(max_length=50)
     license_type = models.ForeignKey(License, on_delete=models.CASCADE)
     software_type = models.ForeignKey(SoftwareType, on_delete=models.CASCADE)
-    website = models.URLField(blank=True, null=True)
+    website = models.CharField(max_length=100, blank=True, null=True)
     implemented_date = models.DateField(blank=True, null=True)
     decommission_date = models.DateField(blank=True, null=True)
     active = models.BooleanField(default=False)
@@ -52,6 +52,9 @@ class Software(models.Model):
 
     def __str__(self):
         return f"{self.name} {self.version}"
+
+    class Meta:
+        ordering = ["name"]
 
 
 class SoftwareAttachment(Attachment):
