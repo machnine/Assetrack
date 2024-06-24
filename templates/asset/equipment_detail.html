@@ -94,6 +94,15 @@
           <span class="text-primary">{{ equipment.notes|default:"&nbsp;" }}</span>
         </div>
       </div>
+      <div class="row pb-2">
+        <div class="col-12 text-end small text-muted">
+          {% if equipment.last_updated_at %}
+            <i class="small">last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }}</i>
+          {% else %}
+          <i class="small">created: {{ equipment.created_at|date:"d/m/Y H:i" }}</i>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
   {# equipment documents #}

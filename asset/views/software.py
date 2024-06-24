@@ -85,6 +85,10 @@ class SoftwareCreateView(LoginRequiredMixin, CreateView):
     form_class = SoftwareForm
     success_url = reverse_lazy("software_list")
 
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
 
 class SoftwareUpdateView(LoginRequiredMixin, UpdateView):
     """Update view for software"""
@@ -93,6 +97,10 @@ class SoftwareUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "asset/software_form.html"
     form_class = SoftwareForm
     context_object_name = "software"
+
+    def form_valid(self, form):
+        form.instance.last_updated_by = self.request.user
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("software_detail", kwargs={"pk": self.object.id})

@@ -126,9 +126,7 @@ class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
     context_object_name = "equipment"
 
     def form_valid(self, form):
-        print(form.instance.created_by)
         form.instance.last_updated_by = self.request.user
-        print(form.instance.created_by)
         return super().form_valid(form)
 
     def get_success_url(self):

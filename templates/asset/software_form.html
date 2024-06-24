@@ -10,3 +10,62 @@
     New software
   {% endif %}
 {% endblock heading_object_name %}
+{% block object_form %}
+  <div class="row">
+    <div class="mb-3 col-6 col-md-9">
+      <label class="form-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}<div class="text-danger">{{ form.name.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-6 col-md-3">
+      <label class="form-label" for="{{ form.version.id_for_label }}">{{ form.version.label }}</label>
+      {{ form.version }}
+      {% if form.version.errors %}<div class="text-danger">{{ form.version.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-6">
+      <label class="form-label" for="{{ form.license_type.id_for_label }}">{{ form.license_type.label }}</label>
+      {{ form.license_type }}
+      {% if form.license_type.errors %}<div class="text-danger">{{ form.license_type.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-6">
+      <label class="form-label" for="{{ form.software_type.id_for_label }}">{{ form.software_type.label }}</label>
+      {{ form.software_type }}
+      {% if form.software_type.errors %}<div class="text-danger">{{ form.software_type.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-5">
+      <label class="form-label" for="{{ form.implemented_date.id_for_label }}">{{ form.implemented_date.label }}</label>
+      {{ form.implemented_date }}
+      {% if form.implemented_date.errors %}<div class="text-danger">{{ form.implemented_date.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-5">
+      <label class="form-label" for="{{ form.decommission_date.id_for_label }}">{{ form.decommission_date.label }}</label>
+      {{ form.decommission_date }}
+      {% if form.decommission_date.errors %}<div class="text-danger">{{ form.decommission_date.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-2">
+      <label class="form-check-label" for="{{ form.active.id_for_label }}">{{ form.active.label }}</label>
+      <div class="form-check pt-2 ps-5 fs-4"> 
+        {{ form.active }}
+      </div>
+      {% if form.active.errors %}<div class="text-danger">{{ form.active.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3">
+      <label class="form-label" for="{{ form.website.id_for_label }}">{{ form.website.label }}</label>
+      {{ form.website }}
+      {% if form.website.errors %}<div class="text-danger">{{ form.website.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3">
+      <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+      {{ form.description }}
+      {% if form.description.errors %}<div class="text-danger">{{ form.description.errors }}</div>{% endif %}
+    </div>
+  </div>
+{% endblock object_form %}

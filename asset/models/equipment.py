@@ -34,7 +34,7 @@ class Equipment(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True)
-    last_updated = models.DateTimeField(auto_now=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
     last_updated_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, blank=True, related_name="+")
 
     def __str__(self):

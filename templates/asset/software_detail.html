@@ -16,28 +16,14 @@
       </div>
     </div>
     <div class="panel-content">
-      <div class="row">
+      <div class="row pb-2">
         <div class="col-12 col-lg-2 mb-3">
           <span class="text-muted small d-block">Name</span>
           <span class="text-primary">{{ software.name }}</span>
         </div>
-        <div class="col-12 col-lg-10 mb-3">
-          <span class="text-muted small d-block">Long Name</span>
-          <span class="text-primary">{{ software.long_name|default:"" }}</span>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Version</span>
           <span class="text-primary">{{ software.version }}</span>
-        </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">License</span>
-          <span class="text-primary">{{ software.license_type.name }}</span>
-        </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Software Type</span>
-          <span class="text-primary">{{ software.software_type.name }}</span>
         </div>
         <div class="col-6 col-lg-2 mb-3">
           <span class="text-muted small d-block">Status</span>
@@ -52,10 +38,39 @@
           </span>
         </div>
       </div>
-      <div class="row">
+      <div class="row pb-2">
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">License</span>
+          <span class="text-primary">{{ software.license_type.name }}</span>
+        </div>
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Software Type</span>
+          <span class="text-primary">{{ software.software_type.name }}</span>
+        </div>        
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Implemented Date</span>
+          <span class="text-primary">{{ software.implemented_date|date:"d/m/Y" }}</span>
+        </div> 
+        <div class="col-6 col-lg-2 mb-3">
+          <span class="text-muted small d-block">Decommission Date</span>
+          <span class="text-primary">{{ software.decommission|date:"d/m/Y" }}</span>
+        </div> 
+      </div>
+      <div class="row pb-2">
+        <div class="col-12 mb-3">
+          <span class="text-muted small d-block">Website</span>
+          <span class="text-primary">{{ software.website|default:"&nbsp;" }}</span>
+        </div>
+      </div>
+      <div class="row pb-2">
         <div class="col-12 mb-3">
           <span class="text-muted small d-block">Description</span>
-          <span class="text-primary">{{ software.description|default:"" }}</span>
+          <span class="text-primary">{{ software.description|default:"&nbsp;" }}</span>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-12 text-end small text-muted">
+          <i class="small">last updated: {{ software.last_updated_at|date:"d/m/Y H:i" }}</i>
         </div>
       </div>
     </div>
