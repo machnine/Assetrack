@@ -40,11 +40,11 @@
       <div class="col-lg-3 fw-bold">
         <a href="{% url 'software_detail' software.id %}">{{ software.name }}</a>
       </div>
-      <div class="col-lg-1">
+      <div class="col-lg-1 small">
         <a href="{% url 'software_list' %}?l={{ software.license_type.id }}">{{ software.license_type.name }}</a>
       </div>
       <div class="col-lg-1">{{ software.version }}</div>
-      <div class="col-lg-1">
+      <div class="col-lg-1 small">
         <a href="{% url 'software_list' %}?t={{ software.software_type.id }}">{{ software.software_type.name }}</a>
       </div>
       <div class="col-lg-1">
