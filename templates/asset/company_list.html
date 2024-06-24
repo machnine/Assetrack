@@ -26,22 +26,23 @@
 {% endblock panel_heading_center %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
-    <div class="col col-lg-2">Name</div>
-    <div class="col col-lg-1">Phone</div>
+    <div class="col col-lg-4">Name</div>
+    <div class="col col-lg-2">Phone</div>
     <div class="col col-lg-2">Email</div>
-    <div class="d-none d-lg-block col-lg-3">Website</div>
     <div class="col col-lg-3">Notes</div>
   </div>
   {% for company in companies %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
-      <div class="col col-lg-2 fw-bold text-muted">{{ company.name }}</div>
-      <div class="col col-lg-1">{{ company.phone |default:"" }}</div>
-      <div class="col col-lg-2 small">{{ company.email |default:"" }}</div>
-      <div class="d-none d-lg-block col-lg-3 small">
+      <div class="col col-lg-4 fw-bold">
+        {{ company.name }}
         {% if company.website %}
-          <a href="{{ company.website }}" target="_blank">{{ company.website|truncatechars:45 }}</a>
+          <a href="{{ company.website }}" class="ps-2" target="_blank" title="Visit '{{ company.name }}' website">
+            <i class="bi bi-link-45deg"></i>
+          </a>
         {% endif %}
       </div>
+      <div class="col col-lg-2">{{ company.phone |default:"" }}</div>
+      <div class="col col-lg-2 small">{{ company.email |default:"" }}</div>
       <div class="d-none d-lg-block col-lg-3 small">{{ company.notes|truncatewords:10 }}</div>
       <div class="d-none d-lg-block col-lg-1 justify-content-between align-items-center text-end">
         {% if request.user.is_superuser %}
