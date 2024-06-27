@@ -59,8 +59,7 @@
       <div class="col-lg-4">{{ software.description }}</div>
       <div class="col-lg-1 text-end">
         {% if request.user.is_superuser %}
-          <a href="{% url 'software_update' software.id %}" title="Update '{{ software.name }}'"><i class="bi bi-pencil-square"></i></a>
-          <a href="{% url 'software_delete' software.id %}" title="Delete '{{ software.name }}'"><i class="bi bi-trash"></i></a>
+          <a href="{% url 'software_update' software.id %}?next={{ request.path }}" title="Update '{{ software.name }}'"><i class="bi bi-pencil-square"></i></a>
         {% endif %}
       </div>
     </div>

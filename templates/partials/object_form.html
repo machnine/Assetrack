@@ -20,6 +20,7 @@
       <div class="col col-sm-10 col-md-8 col-lg-6 col-xl-5">
         <form method="post">
           {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.GET.next }}">
           {% block object_form %}
             {% for field in form %}
               <div class="mb-3">

@@ -131,7 +131,12 @@ class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("equipment_detail", kwargs={"pk": self.object.id})
+        """return the URL to redirect to, after processing a valid form."""
+
+        if next_url := self.request.POST.get("next") or self.request.GET.get("next"):
+            return next_url
+        else:
+            return reverse_lazy("equipment_detail", kwargs={"pk": self.object.id})
 
 
 class EquipmentDeleteView(LoginRequiredMixin, DeleteView):

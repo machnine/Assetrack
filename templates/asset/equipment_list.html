@@ -38,7 +38,8 @@
     <div class="col-lg-1">Category</div>
     <div class="col-lg-1">Type</div>
     <div class="col-lg-1">Location</div>
-    <div class="col-lg-1">Notes</div>
+    <div class="col-lg-2">Notes</div>
+    <div class="col-lg-1"></div>
   </div>
   {% for equipment in equipments %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
@@ -64,6 +65,11 @@
       </div>
       <div class="col-lg-1">
         {% if equipment.notes|length %}<i class="bi bi-chat-dots text-warning" title="{{ equipment.notes }}"></i>{% endif %}
+      </div>
+      <div class="col-lg-2 text-end">
+        {% if request.user.is_superuser %}
+          <a href="{% url 'equipment_update' equipment.id %}?next={{ request.path }}" title="Update '{{ equipment.name }}'"><i class="bi bi-pencil-square"></i></a>          
+        {% endif %}
       </div>
     </div>
   {% endfor %}
