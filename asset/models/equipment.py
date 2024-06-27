@@ -13,7 +13,7 @@ USER = settings.AUTH_USER_MODEL
 class Equipment(models.Model):
     """Equipment model"""
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     manufacturer = models.ForeignKey("Company", on_delete=models.PROTECT, related_name="manufacturer")
     model_number = models.CharField(max_length=100)
     serial_number = models.CharField(max_length=100, unique=True)
