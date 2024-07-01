@@ -1,4 +1,4 @@
-""" Base settings """
+"""Base settings"""
 
 from pathlib import Path
 
@@ -98,3 +98,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Set the maximum size for the entire request body in bytes (e.g., 10MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2 ** 20 * 12  # 12MB (request body + files)
+
+# This controls the size of individual files before they are streamed to disk.
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2 ** 20 * 10  # 10MB in bytes (2 ** 10 = 1KB, 2 ** 20 = 1MB, file size in bytes)
