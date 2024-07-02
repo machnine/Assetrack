@@ -6,7 +6,7 @@
   {% url 'software_create' %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-floppy text-muted"></i> Software List
+  <i class="bi bi-floppy-fill text-success"></i> Software List
   {% if query %}
     <span>
       <a href="{% url 'software_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
@@ -30,17 +30,17 @@
 {% endblock panel_heading_before_end %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
-    <div class="col-lg-3">Name</div>
+    <div class="col-lg-2">Name</div>
     <div class="col-lg-1">License</div>
     <div class="col-lg-1">Version</div>
     <div class="col-lg-1">Software type</div>
     <div class="col-lg-1">Active</div>
-    <div class="col-lg-4">Description</div>
+    <div class="col-lg-5">Description</div>
     <div class="col-lg-1"></div>
   </div>
   {% for software in object_list %}
     <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
-      <div class="col-lg-3 fw-bold">
+      <div class="col-lg-2 fw-bold">
         <a href="{% url 'software_detail' software.id %}">{{ software.name }}</a>
       </div>
       <div class="col-lg-1 small">
@@ -59,7 +59,7 @@
           {% endif %}
         </a>
       </div>
-      <div class="col-lg-4">{{ software.description }}</div>
+      <div class="col-lg-5 small">{{ software.description }}</div>
       <div class="col-lg-1 text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'software_update' software.id %}?next={{ request.path }}" title="Update '{{ software.name }}'"><i class="bi bi-pencil-square"></i></a>
