@@ -80,6 +80,7 @@ class EquipmentListView(LoginRequiredMixin, ListView):
             "sp": ("Service Provider", self.get_object_description(Company, self.request.GET.get("sp"))),
             "cal": ("Calibration", self.get_object_description(Calibration, self.request.GET.get("cal"))),
             "rp": ("Replacement due in 365 days", self.request.GET.get("rp")),
+            "n": ("Model Number", self.request.GET.get("n")),
         }
 
         descriptions = [f"{label}: {value}" for key, (label, value) in descriptions.items() if value]
