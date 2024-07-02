@@ -46,13 +46,15 @@
       <div class="col-lg-2 text-primary fw-bold">
         <a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a>
       </div>
-      <div class="col-lg-1 small">{{ equipment.model_number|default:"" }}</div>
+      <div class="col-lg-1 small">
+        <a href="{% url 'equipment_list' %}?n={{ equipment.model_number }}">{{ equipment.model_number|default:"" }}</a>
+      </div>
       <div class="col-lg-1 small">{{ equipment.serial_number|default:"" }}</div>
       <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?cal={{ equipment.calibration.id }}">{{ equipment.calibration.name }}</a>
       </div>
       <div class="col-lg-1 small">
-        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}{% if equipment.status.name == 'Decommissioned' %}&all=true" class="text-danger{% endif %}" >{{ equipment.status }}</a>
+        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}{% if equipment.status.name == 'Decommissioned' %}&all=true" class="text-danger{% endif %}">{{ equipment.status }}</a>
       </div>
       <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a>
@@ -68,7 +70,8 @@
       </div>
       <div class="col-lg-2 text-end">
         {% if request.user.is_superuser %}
-          <a href="{% url 'equipment_update' equipment.id %}?next={{ request.path }}" title="Update '{{ equipment.name }}'"><i class="bi bi-pencil-square"></i></a>          
+          <a href="{% url 'equipment_update' equipment.id %}?next={{ request.path }}"
+             title="Update '{{ equipment.name }}'"><i class="bi bi-pencil-square"></i></a>
         {% endif %}
       </div>
     </div>

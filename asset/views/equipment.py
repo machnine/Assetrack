@@ -31,6 +31,7 @@ class EquipmentListView(LoginRequiredMixin, ListView):
             "service_provider_id": self.request.GET.get("sp"),
             "calibration_id": self.request.GET.get("cal"),
             "replacement": self.request.GET.get("rp"),
+            "model_number": self.request.GET.get("n"),
             "show_all": self.request.GET.get("all"),
         }
 
@@ -43,6 +44,7 @@ class EquipmentListView(LoginRequiredMixin, ListView):
             "equipment_type_id": Q(equipment_type_id=filters["equipment_type_id"]),
             "service_provider_id": Q(service_provider_id=filters["service_provider_id"]),
             "calibration_id": Q(calibration_id=filters["calibration_id"]),
+            "model_number": Q(model_number__icontains=filters["model_number"]),
         }
 
         # Remove queries with None values
