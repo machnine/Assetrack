@@ -7,7 +7,24 @@
 {% endblock new_object_url %}
 {% block panel_heading_start %}
   <i class="bi bi-plug-fill text-muted"></i> Equipment Types
+  {% if query %}
+    <span>
+      <a href="{% url 'equipmenttype_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
+    </span>
+  {% endif %}
 {% endblock panel_heading_start %}
+{% block panel_heading_center %}
+  <form method="get" action="{% url 'equipmenttype_list' %}">
+    <input type="text"
+           name="q"
+           size="40"
+           class="form-control form-control-sm"
+           placeholder="Search equipment type..."
+           onfocus="this.select();"
+           value="{{ request.GET.q }}">
+    <button type="submit" class="d-none">Search</button>
+  </form>
+{% endblock panel_heading_center %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col">Name</div>
@@ -28,4 +45,5 @@
       </div>
     </div>
   {% endfor %}
+  {% include "partials/pagination.html" %}
 {% endblock panel_content %}

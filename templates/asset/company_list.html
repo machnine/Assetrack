@@ -8,8 +8,9 @@
 {% block panel_heading_start %}
   <i class="bi bi-buildings text-muted"></i> Companies
   {% if query %}
-    <i class="ps-3 small text-success">{{ query }}</i>
-    <a href="{% url 'company_list' %}" title="Clear filter"><i class="bi bi-repeat small"></i></a>
+    <span>
+      <a href="{% url 'company_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
+    </span>
   {% endif %}
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
@@ -36,7 +37,10 @@
       <div class="col col-lg-4 fw-bold">
         {{ company.name }}
         {% if company.website %}
-          <a href="{{ company.website }}" class="ps-2" target="_blank" title="Visit '{{ company.name }}' website">
+          <a href="{{ company.website }}"
+             class="ps-2"
+             target="_blank"
+             title="Visit '{{ company.name }}' website">
             <i class="bi bi-link-45deg"></i>
           </a>
         {% endif %}
