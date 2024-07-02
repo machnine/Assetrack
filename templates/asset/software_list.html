@@ -25,6 +25,9 @@
     <button type="submit" class="d-none">Search</button>
   </form>
 {% endblock panel_heading_center %}
+{% block panel_heading_before_end %}
+  <i class="pe-2 bi bi-toggle-off text-primary" id="showall" title="Show/hide inactive software"></i>
+{% endblock panel_heading_before_end %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col-lg-3">Name</div>
@@ -48,7 +51,7 @@
         <a href="{% url 'software_list' %}?t={{ software.software_type.id }}">{{ software.software_type.name }}</a>
       </div>
       <div class="col-lg-1">
-        <a href="{% url 'software_list' %}?a={{ software.active }}">
+        <a href="{% url 'software_list' %}?a={{ software.active }}{% if software.active == False %}&all=true{% endif %}">
           {% if software.active %}
             <i class="bi bi-check2-circle text-success"></i>
           {% else %}
@@ -66,3 +69,37 @@
   {% endfor %}
   {% include "partials/pagination.html" %}
 {% endblock panel_content %}
+{% block extra_js %}
+  <script>
+  document.getElementById('showall').addEventListener('click', function() {
+    var url = new URL(window.location.href);
+    var allParam = url.searchParams.get('all');
+    var icon = document.getElementById('showall');
+
+    if (allParam === 'true') {
+        url.searchParams.set('all', 'false');
+
+    } else {
+        url.searchParams.set('all', 'true');
+
+    }
+
+    window.location.href = url.toString();
+  });
+
+  // Update button class on page load based on the 'all' parameter
+  window.addEventListener('load', function() {
+    var url = new URL(window.location.href);
+    var allParam = url.searchParams.get('all');
+    var icon = document.getElementById('showall');
+
+    if (allParam === 'true') {
+        icon.classList.add('bi-toggle-on');
+        icon.classList.remove('bi-toggle-off');
+    } else {
+        icon.classList.add('bi-toggle-off');
+        icon.classList.remove('bi-toggle-on');
+    }
+  });
+  </script>
+{% endblock extra_js %}

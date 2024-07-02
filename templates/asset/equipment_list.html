@@ -52,7 +52,7 @@
         <a href="{% url 'equipment_list' %}?cal={{ equipment.calibration.id }}">{{ equipment.calibration.name }}</a>
       </div>
       <div class="col-lg-1 small">
-        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}{% if equipment.status.name == 'Decommissioned' %}&all=true{% endif %}">{{ equipment.status }}</a>
+        <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}{% if equipment.status.name == 'Decommissioned' %}&all=true" class="text-danger{% endif %}" >{{ equipment.status }}</a>
       </div>
       <div class="col-lg-1 small">
         <a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a>

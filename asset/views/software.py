@@ -25,6 +25,7 @@ class SoftwareListView(LoginRequiredMixin, ListView):
             "l": self.request.GET.get("l"),
             "t": self.request.GET.get("t"),
             "a": self.request.GET.get("a"),
+            "show_all": self.request.GET.get("all"),
         }
 
         queries = {
@@ -37,6 +38,8 @@ class SoftwareListView(LoginRequiredMixin, ListView):
         filtered_queries = {key: query for key, query in queries.items() if filters[key]}
         for query in filtered_queries.values():
             queryset = queryset.filter(query)
+        if filters["show_all"] != "true":
+            queryset = queryset.exclude(active=False)
         return queryset
 
     def get_context_data(self, **kwargs):
