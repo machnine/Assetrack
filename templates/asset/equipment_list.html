@@ -25,16 +25,13 @@
     <button type="submit" class="d-none">Search</button>
   </form>
 {% endblock panel_heading_center %}
-{% block panel_heading_before_end %}
-  <i class="pe-2 bi bi-toggle-off text-primary" id="showall" title="Show/Hide decommissioned equipment"></i>
-{% endblock panel_heading_before_end %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col-lg-2">Name</div>
     <div class="col-lg-1">Model Number</div>
     <div class="col-lg-1">Serial Number</div>
     <div class="col-lg-1">Calibration</div>
-    <div class="col-lg-1">Status</div>
+    <div class="col-lg-1">Status <i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/Hide decommissioned equipment"></i></div>
     <div class="col-lg-1">Category</div>
     <div class="col-lg-1">Type</div>
     <div class="col-lg-1">Location</div>
@@ -103,11 +100,11 @@
     var icon = document.getElementById('showall');
 
     if (allParam === 'true') {
-        icon.classList.add('bi-toggle-on');
-        icon.classList.remove('bi-toggle-off');
+        icon.classList.add('bi-toggle2-on');
+        icon.classList.remove('bi-toggle2-off');
     } else {
-        icon.classList.add('bi-toggle-off');
-        icon.classList.remove('bi-toggle-on');
+        icon.classList.add('bi-toggle2-off');
+        icon.classList.remove('bi-toggle2-on');
     }
   });
   </script>

@@ -25,16 +25,13 @@
     <button type="submit" class="d-none">Search</button>
   </form>
 {% endblock panel_heading_center %}
-{% block panel_heading_before_end %}
-  <i class="pe-2 bi bi-toggle-off text-primary" id="showall" title="Show/hide inactive software"></i>
-{% endblock panel_heading_before_end %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col-lg-2">Name</div>
     <div class="col-lg-1">License</div>
     <div class="col-lg-1">Version</div>
     <div class="col-lg-1">Software type</div>
-    <div class="col-lg-1">Active</div>
+    <div class="col-lg-1">Active<i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/hide inactive software"></i></div>
     <div class="col-lg-5">Description</div>
     <div class="col-lg-1"></div>
   </div>
@@ -94,11 +91,11 @@
     var icon = document.getElementById('showall');
 
     if (allParam === 'true') {
-        icon.classList.add('bi-toggle-on');
-        icon.classList.remove('bi-toggle-off');
+        icon.classList.add('bi-toggle2-on');
+        icon.classList.remove('bi-toggle2-off');
     } else {
-        icon.classList.add('bi-toggle-off');
-        icon.classList.remove('bi-toggle-on');
+        icon.classList.add('bi-toggle2-off');
+        icon.classList.remove('bi-toggle2-on');
     }
   });
   </script>
