@@ -1,8 +1,8 @@
 # virtual environment
 env/
-
-# environment file
+.venv/
 .env
+activate.bat
 
 # python
 __pycache__/
