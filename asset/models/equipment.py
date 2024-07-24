@@ -16,7 +16,7 @@ class Equipment(models.Model):
     name = models.CharField(max_length=100, unique=True)
     manufacturer = models.ForeignKey("Company", on_delete=models.PROTECT, related_name="manufacturer")
     model_number = models.CharField(max_length=100)
-    serial_number = models.CharField(max_length=100, unique=True)
+    serial_number = models.CharField(max_length=100, unique=True, null=True, blank=True)
     inventory_number = models.CharField(max_length=100, null=True, blank=True, unique=True)
     received_date = models.DateField(null=True, blank=True)
     commission_date = models.DateField(null=True, blank=True)
