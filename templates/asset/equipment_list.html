@@ -67,7 +67,7 @@
       </div>
       <div class="col-lg-2 text-end">
         {% if request.user.is_superuser %}
-          <a href="{% url 'equipment_update' equipment.id %}?next={{ request.path }}"
+          <a href="{% url 'equipment_update' equipment.id %}?next={{ request.get_full_path|urlencode }}"
              title="Update '{{ equipment.name }}'"><i class="bi bi-pencil-square"></i></a>
         {% endif %}
       </div>

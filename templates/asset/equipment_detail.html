@@ -13,7 +13,7 @@
         <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
       </span>
       <div class="panel-actions">
-        <a href="{% url 'equipment_update' equipment.id %}"><i class="bi bi-pencil-square"></i></a>
+        <a href="{% url 'equipment_update' equipment.id %}?next={{ request.path }}"><i class="bi bi-pencil-square"></i></a>
         {% if request.user.is_superuser %}
           <a href="{% url 'equipment_delete' equipment.id %}"><i class="bi bi-trash"></i></a>
         {% endif %}
@@ -99,7 +99,7 @@
           {% if equipment.last_updated_at %}
             <i class="small">last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }}</i>
           {% else %}
-          <i class="small">created: {{ equipment.created_at|date:"d/m/Y H:i" }}</i>
+            <i class="small">created: {{ equipment.created_at|date:"d/m/Y H:i" }}</i>
           {% endif %}
         </div>
       </div>
