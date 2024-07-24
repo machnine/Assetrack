@@ -125,16 +125,19 @@
               <span class="text-muted small">{{ file.uploaded_at|date:"d/m/Y" }}</span>
             </div>
             <div class="d-none d-lg-block col-lg-1">
-              {% if file.filetype %}
-                <i class="bi bi-filetype-{{ file.filetype }} text-danger"></i>
-              {% else %}
-                <i class="bi bi-file-earmark text-danger"></i>
-              {% endif %}
-              <i class="text-muted small">{{ file.file.size|filesizeformat }}</i>
+              <a href="{{ file.file.url }}">
+                {% if file.filetype %}
+                  <i class="bi bi-filetype-{{ file.filetype }} text-danger"></i>
+                {% else %}
+                  <i class="bi bi-file-earmark text-danger"></i>
+                {% endif %}
+                <i class="text-muted small">{{ file.file.size|filesizeformat }}</i></a>
             </div>
             <div class="col-6 col-lg-9">
-              <span class="pe-3"><a href="{{ file.file.url }}">{{ file.name }}</a></span>
-              <span class="text-primary">{{ file.description|default:"" }}</span>
+              <a href="{{ file.file.url }}">
+                <span class="pe-3">{{ file.name }}</span>
+                <span class="text-primary">{{ file.description|default:"" }}</span>
+              </a>
             </div>
             <div class="d-none d-lg-block col-lg-1 text-end">
               <a hx-get="{% url 'equipment_attachment_update' file.id %}"

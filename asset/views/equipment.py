@@ -17,7 +17,7 @@ class EquipmentListView(LoginRequiredMixin, ListView):
     model = Equipment
     template_name = "asset/equipment_list.html"
     context_object_name = "equipments"
-    paginate_by = 15
+    paginate_by = 16
 
     def get_queryset(self):
         queryset = super().get_queryset()
