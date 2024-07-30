@@ -9,7 +9,7 @@
     </div>
     <div class="panel-content">
       <p>
-        Are you sure you want to delete <span class="fw-bold text-danger">{{ object.name }}</span>?
+        Are you sure you want to delete <span class="fw-bold text-danger">{% if object.name %}{{ object.name }}{% else %}{{ object_name }}{% endif %}</span>?
       </p>
       <p>
         <form method="post">

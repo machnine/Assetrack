@@ -54,5 +54,6 @@ class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["object_name"] = str(self.get_object())
         context["cancel_url"] = reverse_lazy("schedule_list")
         return context

@@ -1,4 +1,5 @@
 """CRUD operations for equipment"""
+import re
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -34,6 +35,10 @@ class EquipmentListView(LoginRequiredMixin, ListView):
             "model_number": self.request.GET.get("n"),
             "show_all": self.request.GET.get("all"),
         }
+
+        # normalise the query string
+        if filters["q"]:
+            filters["q"] = re.sub(r"[^A-Za-z0-9 ]+", "", filters["q"]).strip()
 
         queries = {
             "q": Q(name__icontains=filters["q"]) | Q(notes__icontains=filters["q"]),

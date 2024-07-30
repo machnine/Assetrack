@@ -6,7 +6,7 @@
   {% url 'equipment_create' %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-plugin text-muted"></i> Equipment List
+  <i class="bi bi-plugin text-primary"></i> Equipment List
   {% if query %}
     <span>
       <a href="{% url 'equipment_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>

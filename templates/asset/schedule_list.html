@@ -20,8 +20,8 @@
       <div class="col-10 col-lg-7">{{ schedule.description|default:"" }}</div>
       <div class="col-lg-2 d-none d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
-          <a href="{% url 'schedule_update' schedule.id %}" title="Update '{{ schedule.date }}'"><i class="bi bi-pencil-square"></i></a>
-          <a href="{% url 'schedule_delete' schedule.id %}" title="Delete '{{ schedule.date }}'"><i class="bi bi-trash"></i></a>
+          <a href="{% url 'schedule_update' schedule.id %}" title="Update '{{ schedule.schedule_date }}'"><i class="bi bi-pencil-square"></i></a>
+          <a href="{% url 'schedule_delete' schedule.id %}" title="Delete '{{ schedule.schedule_date }}'"><i class="bi bi-trash"></i></a>
         {% endif %}
       </div>
     </div>

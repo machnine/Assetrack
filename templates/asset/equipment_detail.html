@@ -6,8 +6,8 @@
   {# equipment details #}
   <div class="panel">
     <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
-      <h5 class="panel-title text-primary">
-        <i class="bi bi-plugin"></i> {{ equipment.name }}
+      <h5 class="panel-title">
+        <i class="bi bi-plugin text-primary"></i> {{ equipment.name }}
       </h5>
       <span class="fw-bold small text-info">
         <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
