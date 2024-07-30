@@ -90,6 +90,11 @@ class Schedule(models.Model):
 
     schedule_date = models.DateField()
     description = models.TextField()
+    status = models.CharField(
+        choices=[("Active", "Active"), ("Actioned", "Actioned"), ("Cancelled", "Cancelled")],
+        default="Active",
+        max_length=10,
+    )
     created_by = models.ForeignKey(USER, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
 

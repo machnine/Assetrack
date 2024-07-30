@@ -22,7 +22,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
         # data for the dashboard
         # schedules between today and 14 days from now
         context["schedules"] = Schedule.objects.filter(
-            schedule_date__range=[timezone.now(), timezone.now() + timezone.timedelta(days=14)]
+            schedule_date__range=[timezone.now(), timezone.now() + timezone.timedelta(days=14)], status="Active"
         )
         context["under_repair"] = Equipment.objects.filter(status=repair)
         context["pending_verification"] = Equipment.objects.filter(status=verification)
