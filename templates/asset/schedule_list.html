@@ -1,0 +1,29 @@
+{% extends "partials/object_list.html" %}
+{% block page_title %}
+  Schedule Management
+{% endblock page_title %}
+{% block new_object_url %}
+  {% url 'schedule_create' %}
+{% endblock new_object_url %}
+{% block panel_heading_start %}
+  <i class="bi bi-calendar-week text-danger"></i> Schedules
+{% endblock panel_heading_start %}
+{% block panel_content %}
+  <div class="row pb-2 text-muted small fw-bold align-items-center">
+    <div class="col-lg-3 d-none d-lg-block">Schedule Date</div>
+    <div class="col-lg-7 d-none d-lg-block">Activity Description</div>
+    <div class="col-lg-2 d-none d-lg-block"></div>
+  </div>
+  {% for schedule in schedules %}
+    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+      <div class="col-2 col-lg-3 text-muted">{{ schedule.schedule_date|date:'d/m/Y' }}</div>
+      <div class="col-10 col-lg-7">{{ schedule.description|default:"" }}</div>
+      <div class="col-lg-2 d-none d-lg-block justify-content-between text-end">
+        {% if request.user.is_superuser %}
+          <a href="{% url 'schedule_update' schedule.id %}" title="Update '{{ schedule.date }}'"><i class="bi bi-pencil-square"></i></a>
+          <a href="{% url 'schedule_delete' schedule.id %}" title="Delete '{{ schedule.date }}'"><i class="bi bi-trash"></i></a>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock panel_content %}

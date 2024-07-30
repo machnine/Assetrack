@@ -1,0 +1,12 @@
+{% extends "partials/object_form.html" %}
+{% block title_object_name %}
+  Schedule
+{% endblock title_object_name %}
+{% block heading_object_name %}
+  <i class="bi bi-calendar-week text-danger"></i>
+  {% if form.instance.pk %}
+    Update Schedule: <i class="text-danger">{{ form.instance }}</i>
+  {% else %}
+    New Schedule
+  {% endif %}
+{% endblock heading_object_name %}

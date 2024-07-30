@@ -9,6 +9,7 @@ from asset.views import (
     equipment_record,
     equipment_type,
     location,
+    schedule,
     software,
     software_record,
     status,
@@ -31,6 +32,7 @@ urlpatterns = [
     path("status/create/", status.StatusCreateView.as_view(), name="status_create"),
     path("status/<int:pk>/update/", status.StatusUpdateView.as_view(), name="status_update"),
     path("status/<int:pk>/delete/", status.StatusDeleteView.as_view(), name="status_delete"),
+    # Equipment
     path("equipment/", equipment.EquipmentListView.as_view(), name="equipment_list"),
     path("equipment/create/", equipment.EquipmentCreateView.as_view(), name="equipment_create"),
     path("equipment/<int:pk>/detail/", equipment.EquipmentDetailView.as_view(), name="equipment_detail"),
@@ -94,6 +96,7 @@ urlpatterns = [
     path(
         "equipmenttype/<int:pk>/delete/", equipment_type.EquipmentTypeDeleteView.as_view(), name="equipmenttype_delete"
     ),
+    # Software
     path("software/", software.SoftwareListView.as_view(), name="software_list"),
     path("software/create/", software.SoftwareCreateView.as_view(), name="software_create"),
     path("software/<int:pk>/detail/", software.SoftwareDetailView.as_view(), name="software_detail"),
@@ -129,4 +132,9 @@ urlpatterns = [
         software_record.SoftwareRecordDeleteView.as_view(),
         name="softwarerecord_delete",
     ),
+    # Schedule
+    path("schedule/", schedule.ScheduleListView.as_view(), name="schedule_list"),
+    path("schedule/create/", schedule.ScheduleCreateView.as_view(), name="schedule_create"),    
+    path("schedule/<int:pk>/update/", schedule.ScheduleUpdateView.as_view(), name="schedule_update"),
+    path("schedule/<int:pk>/delete/", schedule.ScheduleDeleteView.as_view(), name="schedule_delete"),
 ]

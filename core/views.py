@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from asset.models import Equipment, Status
+from asset.models import Equipment, Schedule, Status
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -16,8 +16,14 @@ class HomeView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         repair = Status.objects.get(name="Under Repair")
         verification = Status.objects.get(name="Pending Verification")
+        # ids of the Objects
         context["repair_id"] = repair.id
         context["verification_id"] = verification.id
+        # data for the dashboard
+        # schedules between today and 14 days from now
+        context["schedules"] = Schedule.objects.filter(
+            schedule_date__range=[timezone.now(), timezone.now() + timezone.timedelta(days=14)]
+        )
         context["under_repair"] = Equipment.objects.filter(status=repair)
         context["pending_verification"] = Equipment.objects.filter(status=verification)
         # replacement of equipment due in a year and not decommissioned

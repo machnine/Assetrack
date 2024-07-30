@@ -1,0 +1,12 @@
+{% if schedules|length %}
+  <div class="row px-3 text-muted small">
+    <div class="col-lg-2">Scheduled date</div>
+    <div class="col-lg-10">Activity</div>
+  </div>
+{% endif %}
+{% for schedule in schedules %}
+  <div class="row px-3">
+    <div class="col-lg-2">{{ schedule.schedule_date|date:"d/m/Y" }}</div>
+    <div class="col-lg-10">{{ schedule.description }}</div>
+  </div>
+{% endfor %}

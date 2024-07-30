@@ -2,7 +2,7 @@
 
 from django import forms
 
-from asset.models import Category, Company, EquipmentType, Location, Status
+from asset.models import Category, Company, EquipmentType, Location, Schedule, Status
 
 
 class CompanyForm(forms.ModelForm):
@@ -62,7 +62,7 @@ class StatusForm(forms.ModelForm):
 
 
 class EquipmentTypeForm(forms.ModelForm):
-    """EquipmentType Form """
+    """EquipmentType Form"""
 
     class Meta:
         model = EquipmentType
@@ -73,3 +73,20 @@ class EquipmentTypeForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs.update({"class": "form-control"})
         self.fields["description"].widget.attrs.update({"rows": 3})
+
+
+class ScheduleForm(forms.ModelForm):
+    """Asset Schedule Form"""
+
+    class Meta:
+        model = Schedule
+        fields = ["schedule_date", "description"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["schedule_date"].widget = forms.DateInput(
+            attrs={"type": "date", "class": "form-control"},
+            format="%Y-%m-%d",
+        )
+        self.fields["description"].widget.attrs.update({"class": "form-control", "rows": 3})
