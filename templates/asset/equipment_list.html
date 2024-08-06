@@ -31,7 +31,9 @@
     <div class="col-lg-1">Model Number</div>
     <div class="col-lg-1">Serial Number</div>
     <div class="col-lg-1">Calibration</div>
-    <div class="col-lg-1">Status <i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/Hide decommissioned equipment"></i></div>
+    <div class="col-lg-1">
+      Status <i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/Hide decommissioned equipment"></i>
+    </div>
     <div class="col-lg-1">Category</div>
     <div class="col-lg-1">Type</div>
     <div class="col-lg-1">Location</div>
@@ -39,7 +41,7 @@
     <div class="col-lg-1"></div>
   </div>
   {% for equipment in equipments %}
-    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+    <div class="row align-items-center border-top py-2 alternate-row">
       <div class="col-lg-2 text-primary fw-bold">
         <a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a>
       </div>
@@ -75,37 +77,3 @@
   {% endfor %}
   {% include "partials/pagination.html" %}
 {% endblock panel_content %}
-{% block extra_js %}
-  <script>
-  document.getElementById('showall').addEventListener('click', function() {
-    var url = new URL(window.location.href);
-    var allParam = url.searchParams.get('all');
-    var icon = document.getElementById('showall');
-
-    if (allParam === 'true') {
-        url.searchParams.set('all', 'false');
-
-    } else {
-        url.searchParams.set('all', 'true');
-
-    }
-
-    window.location.href = url.toString();
-  });
-
-  // Update button class on page load based on the 'all' parameter
-  window.addEventListener('load', function() {
-    var url = new URL(window.location.href);
-    var allParam = url.searchParams.get('all');
-    var icon = document.getElementById('showall');
-
-    if (allParam === 'true') {
-        icon.classList.add('bi-toggle2-on');
-        icon.classList.remove('bi-toggle2-off');
-    } else {
-        icon.classList.add('bi-toggle2-off');
-        icon.classList.remove('bi-toggle2-on');
-    }
-  });
-  </script>
-{% endblock extra_js %}

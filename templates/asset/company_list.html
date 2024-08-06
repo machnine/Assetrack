@@ -33,7 +33,7 @@
     <div class="col col-lg-3">Notes</div>
   </div>
   {% for company in companies %}
-    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+    <div class="row align-items-center border-top py-2 alternate-row">
       <div class="col col-lg-4 fw-bold">
         {{ company.name }}
         {% if company.website %}

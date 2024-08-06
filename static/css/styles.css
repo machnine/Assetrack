@@ -48,11 +48,9 @@ a:hover {
   margin-right: 0.1rem;
 }
 
-
 .navbar {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
-
 
 .panel {
   margin-bottom: 0.75rem;
@@ -105,4 +103,12 @@ a:hover {
 
 .input-group-text-fw-lg {
   width: 12rem;
+}
+
+.alternate-row:nth-child(even) {
+  background-color: var(--bs-light);
+}
+
+.alternate-row:nth-child(odd) {
+  background-color: var(--bs-white);
 }

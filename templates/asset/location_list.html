@@ -15,7 +15,7 @@
     <div class="d-none col-lg-2 d-lg-block"></div>
   </div>
   {% for location in locations %}
-    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+    <div class="row align-items-center border-top py-2 alternate-row">
       <div class="col text-muted fw-bold">
         <a href="{% url 'equipment_list' %}?l={{ location.id }}"
            title="List all '{{ location.name }}' equipment">{{ location.name }}</a>
