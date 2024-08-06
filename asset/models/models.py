@@ -100,7 +100,7 @@ class Schedule(models.Model):
     ]
 
     STATUS_CHOICES = [
-        ("P", "Planned"),
+        ("A", "Active"),
         ("C", "Completed"),
         ("X", "Cancelled"),
     ]
@@ -108,7 +108,7 @@ class Schedule(models.Model):
     schedule_date = models.DateField()
     next_action_date = models.DateField(blank=True, null=True)  # for recurring schedules
     description = models.TextField()
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="A")
     frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES, default="O")
     created_by = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="schedules")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -153,5 +153,5 @@ class Schedule(models.Model):
         else:
             self.schedule_date = self.next_action_date
             self.next_action_date = self.get_next_action_date()
-            self.status = "P"
+            self.status = "A"
         self.save()

@@ -6,8 +6,8 @@
   <div class="col col-lg-1">{{ schedule.schedule_date|date:'d/m/Y' }}</div>
   <div class="col col-lg-1">{{ schedule.get_frequency_display }}</div>
   <div class="col col-lg-2">
-    <span class="pe-lg-2 {% if schedule.status == 'P' %}text-success{% endif %}{% if schedule.status == 'C' %}text-secondary{% endif %}{% if schedule.status == 'X' %}text-danger{% endif %}">{{ schedule.get_status_display }}</span>
-    {% if schedule.status == 'P' %}
+    <span class="pe-lg-2 {% if schedule.status == 'A' %}text-success{% endif %}{% if schedule.status == 'C' %}text-secondary{% endif %}{% if schedule.status == 'X' %}text-danger{% endif %}">{{ schedule.get_status_display }}</span>
+    {% if schedule.status == 'A' %}
       <a title="Action this schedule"
          hx-post="{% url 'schedule_action' schedule.pk %}"
          hx-target="#schedule-{{ schedule.pk }}"

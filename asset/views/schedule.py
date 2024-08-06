@@ -40,7 +40,7 @@ class ScheduleListView(LoginRequiredMixin, ListView):
         query_set = Schedule.objects.filter(schedule_date__gte=two_weeks_ago).order_by("schedule_date")
         if show_all == "true":
             return query_set
-        return query_set.filter(status="P")
+        return query_set.filter(status="A")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
