@@ -57,7 +57,7 @@
           {% endif %}
         </a>
       </div>
-      <div class="col-lg-5 small">{{ software.description|default:""|md_link }}</div>
+      <div class="col-lg-5 small">{{ software.description|default:""|md_link:"text-danger" }}</div>
       <div class="col-lg-1 text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'software_update' software.id %}?next={{ request.get_full_path|urlencode }}" title="Update '{{ software.name }}'"><i class="bi bi-pencil-square"></i></a>
