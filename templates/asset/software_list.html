@@ -67,37 +67,3 @@
   {% endfor %}
   {% include "partials/pagination.html" %}
 {% endblock panel_content %}
-{% block extra_js %}
-  <script>
-  document.getElementById('showall').addEventListener('click', function() {
-    var url = new URL(window.location.href);
-    var allParam = url.searchParams.get('all');
-    var icon = document.getElementById('showall');
-
-    if (allParam === 'true') {
-        url.searchParams.set('all', 'false');
-
-    } else {
-        url.searchParams.set('all', 'true');
-
-    }
-
-    window.location.href = url.toString();
-  });
-
-  // Update button class on page load based on the 'all' parameter
-  window.addEventListener('load', function() {
-    var url = new URL(window.location.href);
-    var allParam = url.searchParams.get('all');
-    var icon = document.getElementById('showall');
-
-    if (allParam === 'true') {
-        icon.classList.add('bi-toggle2-on');
-        icon.classList.remove('bi-toggle2-off');
-    } else {
-        icon.classList.add('bi-toggle2-off');
-        icon.classList.remove('bi-toggle2-on');
-    }
-  });
-  </script>
-{% endblock extra_js %}
