@@ -1,4 +1,5 @@
 {% extends "partials/object_list.html" %}
+{% load markdown_filters %}
 {% block page_title %}
   Software List
 {% endblock page_title %}
@@ -56,7 +57,7 @@
           {% endif %}
         </a>
       </div>
-      <div class="col-lg-5 small">{{ software.description }}</div>
+      <div class="col-lg-5 small">{{ software.description|default:""|md_link }}</div>
       <div class="col-lg-1 text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'software_update' software.id %}?next={{ request.get_full_path|urlencode }}" title="Update '{{ software.name }}'"><i class="bi bi-pencil-square"></i></a>
