@@ -1,8 +1,10 @@
 """CRUD views for Asset Schedule"""
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import HttpResponse, HttpResponseRedirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from asset.forms import ScheduleForm
@@ -29,10 +31,20 @@ class ScheduleListView(LoginRequiredMixin, ListView):
     template_name = "asset/schedule_list.html"
     context_object_name = "schedules"
 
+    def get_queryset(self):
+        """
+        Return the schedules for the last 2 weeks and upcoming
+        """
+        show_all = self.request.GET.get("all")
+        two_weeks_ago = timezone.now() - timezone.timedelta(weeks=4)
+        query_set = Schedule.objects.filter(schedule_date__gte=two_weeks_ago).order_by("schedule_date")
+        if show_all == "true":
+            return query_set
+        return query_set.filter(status="P")
+
     def get_context_data(self, **kwargs):
-        """only show schedules >= today"""
         context = super().get_context_data(**kwargs)
-        context["schedules"] = Schedule.objects.filter(schedule_date__gte=timezone.now())
+        context["today"] = timezone.now().date()
         return context
 
 
@@ -43,6 +55,10 @@ class ScheduleUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ScheduleForm
     template_name = "asset/schedule_form.html"
     success_url = reverse_lazy("schedule_list")
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
 
 class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
@@ -57,3 +73,22 @@ class ScheduleDeleteView(LoginRequiredMixin, DeleteView):
         context["object_name"] = str(self.get_object())
         context["cancel_url"] = reverse_lazy("schedule_list")
         return context
+
+
+class ScheduleActionView(LoginRequiredMixin, View):
+    """Action view for Schedule to update status or recurrence"""
+
+    def post(self, request, *args, **kwargs):
+        schedule = get_object_or_404(Schedule, pk=kwargs.get("pk"))
+
+        # Update updated_by
+        schedule.updated_by = request.user
+        # Mark as completed or move to next date
+        schedule.update_scheduel_status()
+
+        if request.htmx:
+            if schedule.frequency == "O":  # One-off schedule
+                return HttpResponse("")
+            else:
+                return render(request, "partials/asset/schedule_item.html", {"schedule": schedule})
+        return HttpResponseRedirect(reverse_lazy("schedule_list"))

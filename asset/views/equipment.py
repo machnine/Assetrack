@@ -1,4 +1,5 @@
 """CRUD operations for equipment"""
+
 import re
 
 from django.contrib.auth.mixins import LoginRequiredMixin

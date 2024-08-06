@@ -21,9 +21,8 @@ class HomeView(LoginRequiredMixin, TemplateView):
         context["verification_id"] = verification.id
         # data for the dashboard
         # schedules between today and 14 days from now
-        context["schedules"] = Schedule.objects.filter(
-            schedule_date__range=[timezone.now(), timezone.now() + timezone.timedelta(days=14)], status="Active"
-        )
+        in_two_weeks = timezone.now() + timezone.timedelta(weeks=2)
+        context["schedules"] = Schedule.objects.filter(schedule_date__range=[timezone.now(), in_two_weeks], status="P")
         context["under_repair"] = Equipment.objects.filter(status=repair)
         context["pending_verification"] = Equipment.objects.filter(status=verification)
         # replacement of equipment due in a year and not decommissioned

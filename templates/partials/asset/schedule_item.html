@@ -1,0 +1,27 @@
+<!-- templates/partials/asset/schedule_item.html -->
+<div class="row align-items-center border-top py-2 alternate-row"
+     id="schedule-{{ schedule.pk }}"
+     {% if schedule.schedule_date < today %}style="color:#cccccc;"{% endif %}>
+  <div class="col col-lg-1 highlighted">{{ schedule.schedule_date|date:'d/m/Y' }}</div>
+  <div class="col col-lg-1">{{ schedule.get_frequency_display }}</div>
+  <div class="col col-lg-2">
+    <span class="pe-lg-2 {% if schedule.status == 'P' %}text-success{% endif %}{% if schedule.status == 'C' %}text-secondary{% endif %}{% if schedule.status == 'X' %}text-danger{% endif %}">{{ schedule.get_status_display }}</span>
+    {% if schedule.status == 'P' %}
+      <a title="Action this schedule"
+         hx-post="{% url 'schedule_action' schedule.pk %}"
+         hx-target="#schedule-{{ schedule.pk }}"
+         hx-swap="outerHTML"
+         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+         hx-confirm="Action this?">
+        <i class="bi bi-box-arrow-in-left text-success"></i>
+      </a>
+    {% endif %}
+  </div>
+  <div class="col col-lg-6">{{ schedule.description|default:"" }}</div>
+  <div class="col-lg-2 d-none d-lg-block justify-content-between text-end">
+    <a href="{% url 'schedule_update' schedule.pk %}" title="Update this schedule"><i class="bi bi-pencil-square"></i></a>
+    {% if request.user.is_superuser %}
+      <a href="{% url 'schedule_delete' schedule.pk %}" title="Delete this schedule"><i class="bi bi-trash"></i></a>
+    {% endif %}
+  </div>
+</div>

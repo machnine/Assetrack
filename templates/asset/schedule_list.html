@@ -2,30 +2,46 @@
 {% block page_title %}
   Schedule Management
 {% endblock page_title %}
+{% block extra_css %}
+  <style>
+  .highlighted {
+      animation: highlight-fade 2s ease-out;
+  }
+  @keyframes highlight-fade {
+      0% {
+          background-color: #ffff99; /* Light yellow */
+      }
+      100% {
+          background-color: transparent;
+      }
+  }
+
+  .alt-row:nth-child(even) {
+    background-color: #f8f9fa; /* bg-light */
+}
+
+.alt-row:nth-child(odd) {
+    background-color: #ffffff; /* bg-white */
+}
+  </style>
+{% endblock extra_css %}
 {% block new_object_url %}
   {% url 'schedule_create' %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-calendar-week text-danger"></i> Schedules
+  <i class="bi bi-calendar-week text-danger"></i> Schedules <i class="ps-lg-3 d-none d-lg-inline small text-muted">&lt; 4 week old and upcoming schedules</i>
 {% endblock panel_heading_start %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col-lg-1 d-none d-lg-block">Schedule Date</div>
-    <div class="col-lg-1 d-none d-lg-block">Status</div>
-    <div class="col-lg-8 d-none d-lg-block">Activity Description</div>
+    <div class="col-lg-1">Frequency</div>
+    <div class="col-lg-2 d-none d-lg-block">
+      Status <i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/Hide none active schedules"></i>
+    </div>
+    <div class="col-lg-6 d-none d-lg-block">Activity Description</div>
     <div class="col-lg-2 d-none d-lg-block"></div>
   </div>
   {% for schedule in schedules %}
-    <div class="row align-items-center border-top py-2 {% if forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
-      <div class="col-2 col-lg-1 text-muted">{{ schedule.schedule_date|date:'d/m/Y' }}</div>
-      <div class="col-2 col-lg-1">{{ schedule.status }}</div>
-      <div class="col-10 col-lg-8">{{ schedule.description|default:"" }}</div>
-      <div class="col-lg-2 d-none d-lg-block justify-content-between text-end">
-        <a href="{% url 'schedule_update' schedule.id %}" title="Update '{{ schedule.schedule_date }}'"><i class="bi bi-pencil-square"></i></a>
-        {% if request.user.is_superuser %}
-          <a href="{% url 'schedule_delete' schedule.id %}" title="Delete '{{ schedule.schedule_date }}'"><i class="bi bi-trash"></i></a>
-        {% endif %}
-      </div>
-    </div>
+    {% include "partials/asset/schedule_item.html" with schedule=schedule %}
   {% endfor %}
 {% endblock panel_content %}

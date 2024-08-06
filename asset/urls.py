@@ -134,7 +134,8 @@ urlpatterns = [
     ),
     # Schedule
     path("schedule/", schedule.ScheduleListView.as_view(), name="schedule_list"),
-    path("schedule/create/", schedule.ScheduleCreateView.as_view(), name="schedule_create"),    
+    path("schedule/create/", schedule.ScheduleCreateView.as_view(), name="schedule_create"),
     path("schedule/<int:pk>/update/", schedule.ScheduleUpdateView.as_view(), name="schedule_update"),
     path("schedule/<int:pk>/delete/", schedule.ScheduleDeleteView.as_view(), name="schedule_delete"),
+    path("schedule/<int:pk>/action/", schedule.ScheduleActionView.as_view(), name="schedule_action"),
 ]

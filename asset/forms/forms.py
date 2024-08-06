@@ -80,7 +80,7 @@ class ScheduleForm(forms.ModelForm):
 
     class Meta:
         model = Schedule
-        fields = ["schedule_date", "status", "description"]
+        fields = ["schedule_date", "description", "status", "frequency"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,4 +90,5 @@ class ScheduleForm(forms.ModelForm):
             format="%Y-%m-%d",
         )
         self.fields["status"].widget.attrs.update({"class": "form-control"})
+        self.fields["frequency"].widget.attrs.update({"class": "form-control"})
         self.fields["description"].widget.attrs.update({"class": "form-control", "rows": 3})

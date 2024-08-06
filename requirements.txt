@@ -1,3 +1,4 @@
 django~=5.0.2
 django_htmx
 gunicorn
+python-dateutil

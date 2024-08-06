@@ -1,5 +1,6 @@
 """various associated models"""
 
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.db import models
 
@@ -86,21 +87,71 @@ class Company(models.Model):
 
 
 class Schedule(models.Model):
-    """schedule for asset related activities"""
+    """schedule for asset maintenance and related activities"""
+
+    FREQUENCY_CHOICES = [
+        ("O", "One-off"),
+        ("D", "Daily"),
+        ("W", "Weekly"),
+        ("M", "Monthly"),
+        ("Q", "Quarterly"),
+        ("H", "Half-yearly"),
+        ("Y", "Yearly"),
+    ]
+
+    STATUS_CHOICES = [
+        ("P", "Planned"),
+        ("C", "Completed"),
+        ("X", "Cancelled"),
+    ]
 
     schedule_date = models.DateField()
+    next_action_date = models.DateField(blank=True, null=True)  # for recurring schedules
     description = models.TextField()
-    status = models.CharField(
-        choices=[("Active", "Active"), ("Actioned", "Actioned"), ("Cancelled", "Cancelled")],
-        default="Active",
-        max_length=10,
-    )
-    created_by = models.ForeignKey(USER, on_delete=models.DO_NOTHING)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
+    frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES, default="O")
+    created_by = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="schedules")
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="updated_schedules", null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.schedule_date}: {self.description[:30]}..."
+        return f"Schedule: {self.schedule_date} {self.description}"
 
     class Meta:
         verbose_name_plural = "schedules"
-        ordering = ["schedule_date"]
+        ordering = ["schedule_date"]  # this may need some thought
+
+    def save(self, *args, **kwargs):
+        if self.frequency != "O" and not self.next_action_date:
+            self.next_action_date = self.get_next_action_date()
+        super().save(*args, **kwargs)
+
+    def get_next_action_date(self):
+        """calculate the next action date based on frequency"""
+        if self.frequency == "D":
+            return self.schedule_date + relativedelta(days=1)
+        elif self.frequency == "W":
+            return self.schedule_date + relativedelta(weeks=1)
+        elif self.frequency == "M":
+            return self.schedule_date + relativedelta(months=1)
+        elif self.frequency == "Q":
+            return self.schedule_date + relativedelta(months=3)
+        elif self.frequency == "H":
+            return self.schedule_date + relativedelta(months=6)
+        elif self.frequency == "Y":
+            return self.schedule_date + relativedelta(years=1)
+        return self.schedule_date
+
+    def update_scheduel_status(self):
+        """update the status of the schedule after an action"""
+        if self.status == "X":  # cancelled
+            return
+
+        if self.frequency == "O":
+            self.status = "C"
+        else:
+            self.schedule_date = self.next_action_date
+            self.next_action_date = self.get_next_action_date()
+            self.status = "P"
+        self.save()

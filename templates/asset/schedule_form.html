@@ -10,3 +10,29 @@
     New Schedule
   {% endif %}
 {% endblock heading_object_name %}
+{% block object_form %}
+  <div class="row">
+    <div class="mb-3 col-12 col-md-4">
+      <label class="form-label" for="{{ form.schedule_date.id_for_label }}">{{ form.schedule_date.label }}</label>
+      {{ form.schedule_date }}
+      {% if form.schedule_date.errors %}<div class="text-danger">{{ form.schedule_date.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-4">
+      <label class="form-label" for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+      {{ form.status }}
+      {% if form.status.errors %}<div class="text-danger">{{ form.status.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col-12 col-md-4">
+      <label class="form-label" for="{{ form.frequency.id_for_label }}">{{ form.frequency.label }}</label>
+      {{ form.frequency }}
+      {% if form.frequency.errors %}<div class="text-danger">{{ form.frequency.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-12">
+      <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+      {{ form.description }}
+      {% if form.description.errors %}<div class="text-danger">{{ form.description.errors }}</div>{% endif %}
+    </div>
+  </div>
+{% endblock object_form %}
