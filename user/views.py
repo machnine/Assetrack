@@ -28,7 +28,7 @@ class UserLoginView(LoginView):
         username = form.cleaned_data.get("username")
         user = get_user_model().objects.get(username=username)
         display_name = user.first_name or user.username
-        messages.success(self.request, format_html(f"Welcome back, <b>{display_name}</b>."))
+        messages.success(self.request, format_html(f"Welcome back, <b> {display_name} </b>."))
         return super().form_valid(form)
 
 
