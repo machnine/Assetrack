@@ -1,8 +1,8 @@
 <!-- templates/partials/asset/schedule_item.html -->
-<div class="row align-items-center border-top py-2 alternate-row"
+<div class="row align-items-center border-top py-2 alternate-row {{ highlighted }}"
      id="schedule-{{ schedule.pk }}"
      {% if schedule.schedule_date < today %}style="color:#cccccc;"{% endif %}>
-  <div class="col col-lg-1 highlighted">{{ schedule.schedule_date|date:'d/m/Y' }}</div>
+  <div class="col col-lg-1">{{ schedule.schedule_date|date:'d/m/Y' }}</div>
   <div class="col col-lg-1">{{ schedule.get_frequency_display }}</div>
   <div class="col col-lg-2">
     <span class="pe-lg-2 {% if schedule.status == 'P' %}text-success{% endif %}{% if schedule.status == 'C' %}text-secondary{% endif %}{% if schedule.status == 'X' %}text-danger{% endif %}">{{ schedule.get_status_display }}</span>

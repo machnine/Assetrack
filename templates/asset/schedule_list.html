@@ -4,25 +4,14 @@
 {% endblock page_title %}
 {% block extra_css %}
   <style>
-  .highlighted {
-      animation: highlight-fade 2s ease-out;
-  }
-  @keyframes highlight-fade {
-      0% {
-          background-color: #ffff99; /* Light yellow */
-      }
-      100% {
-          background-color: transparent;
-      }
-  }
-
-  .alt-row:nth-child(even) {
-    background-color: #f8f9fa; /* bg-light */
-}
-
-.alt-row:nth-child(odd) {
-    background-color: #ffffff; /* bg-white */
-}
+    .highlighted { 
+      animation: highlight-fade 3s ease-out; 
+      border-radius: .5rem;
+    }
+    @keyframes highlight-fade {
+        0%   { background-color: #fff999; }
+        100% { background-color: transparent;}
+    }
   </style>
 {% endblock extra_css %}
 {% block new_object_url %}

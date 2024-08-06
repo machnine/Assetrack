@@ -90,5 +90,7 @@ class ScheduleActionView(LoginRequiredMixin, View):
             if schedule.frequency == "O":  # One-off schedule
                 return HttpResponse("")
             else:
-                return render(request, "partials/asset/schedule_item.html", {"schedule": schedule})
+                return render(
+                    request, "partials/asset/schedule_item.html", {"schedule": schedule, "highlighted": "highlighted"}
+                )
         return HttpResponseRedirect(reverse_lazy("schedule_list"))
