@@ -4,16 +4,17 @@ from pathlib import Path
 
 from django import forms
 
-from .models import Attachment
+from .models import Attachment, AttachmentBase, Document
 
 ALLOWED_FILE_TYPES = (".jpg", ".jpeg", ".png", ".bmp", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv", ".txt", ".xml")
-MAX_FILE_SIZE = 2 ** 20 * 10  # 10MB in bytes (2 ** 10 = 1KB, 2 ** 20 = 1MB)
+MAX_FILE_SIZE = 2**20 * 10  # 10MB in bytes (2 ** 10 = 1KB, 2 ** 20 = 1MB)
 
-class AttachmentForm(forms.ModelForm):
+
+class AttachmentBaseForm(forms.ModelForm):
     """Form for uploading an attachment"""
 
     class Meta:
-        model = Attachment
+        model = AttachmentBase
         fields = ("file", "name", "description")
 
     def clean_file(self):
@@ -24,7 +25,7 @@ class AttachmentForm(forms.ModelForm):
         # Check the file type
         if file_type not in ALLOWED_FILE_TYPES:
             raise forms.ValidationError(f"Unsupported file extension {file_type}")
-        
+
         # Check the file size
         if file.size > MAX_FILE_SIZE:
             raise forms.ValidationError(f"File size exceeds the maximum of {MAX_FILE_SIZE / 2 ** 20} MB")
@@ -47,3 +48,17 @@ class AttachmentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["name"].widget.attrs.update({"class": "form-control"})
         self.fields["description"].widget.attrs.update({"class": "form-control", "rows": 2})
+
+
+class AttachmentForm(AttachmentBaseForm):
+    """Form for uploading an attachment"""
+
+    class Meta(AttachmentBaseForm.Meta):
+        model = Attachment
+
+
+class DocumentForm(AttachmentBaseForm):
+    """Form for uploading a document"""
+
+    class Meta(AttachmentBaseForm.Meta):
+        model = Document

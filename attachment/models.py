@@ -1,4 +1,5 @@
 """Attachment models"""
+
 from pathlib import Path
 
 from django.conf import settings
@@ -30,13 +31,8 @@ class UploadToPathAndRename:
         return str(self.sub_path / folder_name / str(object_id) / new_filename)
 
 
-class Attachment(models.Model):
-    """Attachment abstract model"""
-
-    # GenericForeignKey setup
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
+class AttachmentBase(models.Model):
+    """Attachment base model"""
 
     file = models.FileField("file", upload_to=UploadToPathAndRename("attachments"))
     uploaded_at = models.DateTimeField("uploaded at", auto_now_add=True)
@@ -70,3 +66,23 @@ class Attachment(models.Model):
     def __str__(self):
         """String representation"""
         return self.name or f"Attachment: {Path(self.file.name).name}"
+
+
+class Attachment(AttachmentBase):
+    """Attachment abstract model"""
+
+    # GenericForeignKey setup
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    class Meta(AttachmentBase.Meta):
+        """Meta options"""
+
+        abstract = True
+
+
+class Document(AttachmentBase):
+    """Generic attachment model with no relation to any object"""
+
+    pass
