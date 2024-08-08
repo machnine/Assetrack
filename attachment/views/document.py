@@ -5,6 +5,7 @@ from pathlib import Path
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -14,7 +15,7 @@ from attachment.forms import DocumentForm
 from attachment.models import Document
 
 
-class DocumentListView(ListView):
+class DocumentListView(LoginRequiredMixin, ListView):
     """View to list documents"""
 
     model = Document
@@ -46,16 +47,13 @@ class DocumentUploadView(View):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
-            if request.user.is_authenticated:
-                document.uploaded_by = request.user
             document.save()
             messages.success(request, f"Document {document.filename} uploaded successfully!")
-            return redirect(self.success_url)
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"Upload {field.capitalize()}: {error}")
-        return render(request, self.template_name, {"form": form})
+        return redirect(self.success_url)
 
 
 class DocumentUpdateView(View):
@@ -77,12 +75,11 @@ class DocumentUpdateView(View):
         if form.is_valid():
             document = form.save()
             messages.success(request, f"Document {document.filename} updated successfully!")
-            return redirect(self.success_url)
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"Update {field.capitalize()}: {error}")
-        return render(request, self.template_name, {"form": form, "document": document})
+        return redirect(self.success_url)
 
 
 class DocumentDeleteView(View):

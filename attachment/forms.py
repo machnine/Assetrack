@@ -6,7 +6,22 @@ from django import forms
 
 from .models import Attachment, AttachmentBase, Document
 
-ALLOWED_FILE_TYPES = (".jpg", ".jpeg", ".png", ".bmp", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv", ".txt", ".xml")
+ALLOWED_FILE_TYPES = (
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".bmp",
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".ppt",
+    ".pptx",
+    ".csv",
+    ".txt",
+    ".xml",
+)
 MAX_FILE_SIZE = 2**20 * 10  # 10MB in bytes (2 ** 10 = 1KB, 2 ** 20 = 1MB)
 
 
