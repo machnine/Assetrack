@@ -1,6 +1,6 @@
 {% extends "partials/object_list.html" %}
 {% block page_title %}
-  Schedule Management
+  Scheduled Task Management
 {% endblock page_title %}
 {% block extra_css %}
   <style>
@@ -18,7 +18,7 @@
   {% url 'schedule_create' %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-calendar-week text-danger"></i> Schedules <i class="ps-lg-3 d-none d-lg-inline small text-muted">&lt; 4 week old and upcoming schedules</i>
+  <i class="bi bi-calendar-week text-danger"></i> Scheduled Tasks<i class="ps-lg-3 d-none d-lg-inline small text-muted">&lt; 4 week old and upcoming tasks</i>
 {% endblock panel_heading_start %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
