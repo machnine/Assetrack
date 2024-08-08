@@ -1,7 +1,11 @@
+"""Views for the document object"""
+
+import re
 from pathlib import Path
 
 from django.conf import settings
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
@@ -13,9 +17,18 @@ from attachment.models import Document
 class DocumentListView(ListView):
     """View to list documents"""
 
-    template_name = "attachment/document_list.html"
     model = Document
+    template_name = "attachment/document_list.html"
     context_object_name = "documents"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        q = self.request.GET.get("q")
+        if q:
+            q = re.sub(r"[^A-Za-z0-9 ]+", "", q).strip()
+            query = Q(name__icontains=q) | Q(description__icontains=q)
+            queryset = queryset.filter(query)
+        return queryset
 
 
 class DocumentUploadView(View):
