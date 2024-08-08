@@ -1,0 +1,57 @@
+{% extends "partials/object_list.html" %}
+{% block page_title %}
+  Document List
+{% endblock page_title %}
+{% block panel_heading_end %}
+  <a hx-get="{% url 'document_upload' %}"
+     hx-trigger="click"
+     hx-target="#modal-box .modal-content"
+     hx-swap="innerHTML"
+     data-bs-toggle="modal"
+     data-bs-target="#modal-box"
+     href="javascript:"
+     title="Upload a new document"><i class="bi bi-file-earmark-arrow-up"></i></a>
+{% endblock panel_heading_end %}
+{% block panel_heading_start %}
+  <i class="bi bi-folder-fill text-warning"></i> List of Documents <i class="text-muted small d-none d-lg-inline">(unassociated documents)</i>
+{% endblock panel_heading_start %}
+{% block panel_content %}
+  {% if documents|length %}
+    {% for doc in documents %}
+      <div class="row">
+        <div class="col">{{ doc.name }}</div>
+        <div class="col">{{ doc.file.url }}</div>
+        <div class="col">{{ doc.filetype }}</div>
+        <div class="col">{{ doc.file.size|filesizeformat }}</div>
+        <div class="col">{{ doc.description }}</div>
+        <div class="col">
+          <a hx-get="{% url 'document_update' doc.id %}"
+             hx-trigger="click"
+             hx-target="#modal-box .modal-content"
+             hx-swap="innerHTML"
+             data-bs-toggle="modal"
+             data-bs-target="#modal-box"
+             href="javascript:"
+             title="Edit"><i class="bi bi-pencil-square"></i></a>
+          <a hx-get="{% url 'document_delete' doc.id %}"
+             hx-trigger="click"
+             hx-target="#modal-box .modal-content"
+             hx-swap="innerHTML"
+             data-bs-toggle="modal"
+             data-bs-target="#modal-box"
+             href="javascript:"
+             title="Delete"><i class="bi bi-trash"></i></a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endblock panel_content %}
+{% block modals %}
+  <div class="modal fade" id="modal-box" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HTMX rendered content -->
+      </div>
+    </div>
+  </div>
+{% endblock modals %}

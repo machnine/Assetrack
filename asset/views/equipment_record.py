@@ -80,7 +80,7 @@ class EquipmentRecordAttachmentUploadView(LoginRequiredMixin, AttachmentUploadVi
 
     owner_model = EquipmentRecord
     form_class = EquipmentRecordAttachmentUploadForm
-    template_name = "attachment/attachment_upload_form.html"
+    template_name = "attachment/upload_form.html"
     success_url_name = "equipmentrecord_detail"
 
 
@@ -90,7 +90,7 @@ class EquipmentRecordAttachmentUpdateView(LoginRequiredMixin, AttachmentUpdateVi
     owner_model = EquipmentRecord
     model = EquipmentRecordAttachment
     form_class = EquipmentRecordAttachmentUpdateForm
-    template_name = "attachment/attachment_update_form.html"
+    template_name = "attachment/update_form.html"
     success_url_name = "equipmentrecord_detail"
 
 
@@ -100,4 +100,4 @@ class EquipmentRecordAttachmentDeleteView(LoginRequiredMixin, AttachmentDeleteVi
     owner_model = EquipmentRecord
     model = EquipmentRecordAttachment
     success_url_name = "equipmentrecord_detail"
-    template_name = "attachment/attachment_delete_form.html"
+    template_name = "attachment/delete_form.html"

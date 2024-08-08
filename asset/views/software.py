@@ -129,7 +129,7 @@ class SoftwareAttachmentUploadView(LoginRequiredMixin, AttachmentUploadView):
 
     owner_model = Software
     form_class = SoftwareAttachmentUploadForm
-    template_name = "attachment/attachment_upload_form.html"
+    template_name = "attachment/upload_form.html"
     success_url_name = "software_detail"
 
 
@@ -139,7 +139,7 @@ class SoftwareAttachmentUpdateView(LoginRequiredMixin, AttachmentUpdateView):
     owner_model = Software
     model = SoftwareAttachment
     form_class = SoftwareAttachmentUpdateForm
-    template_name = "attachment/attachment_update_form.html"
+    template_name = "attachment/update_form.html"
     success_url_name = "software_detail"
 
 
@@ -148,5 +148,5 @@ class SoftwareAttachmentDeleteView(LoginRequiredMixin, AttachmentDeleteView):
 
     owner_model = Software
     model = SoftwareAttachment
-    template_name = "attachment/attachment_delete_form.html"
+    template_name = "attachment/delete_form.html"
     success_url_name = "software_detail"

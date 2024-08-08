@@ -19,16 +19,23 @@ class UploadToPathAndRename:
         self.sub_path = Path(path)
 
     def __call__(self, instance, filename):
-        # Define the folder name based on the instance's class to avoid collision
-        folder_name = instance._meta.model_name.replace("attachment", "")
-        # Using the ContentType framework to get the related object's ID
-        object_id = getattr(instance, "object_id", None)
-        if object_id is None:
-            raise AttributeError(f"The instance of '{type(instance).__name__}' does not have an associated object ID.")
         # Construct a safe file name
         new_filename = Path(filename).name
+
+        # Using the ContentType framework to get the related object's ID
+        object_id = getattr(instance, "object_id", None)
+
+        if object_id:
+            # Define the folder name based on the instance's class to avoid collision
+            folder_name = instance._meta.model_name.replace("attachment", "")
+            sub_folder = str(object_id)
+        else:
+            # Define the folder name for generic attachments
+            folder_name = "documents"
+            sub_folder = ""
+
         # Construct the new path and filename
-        return str(self.sub_path / folder_name / str(object_id) / new_filename)
+        return str(self.sub_path / folder_name / sub_folder / new_filename)
 
 
 class AttachmentBase(models.Model):

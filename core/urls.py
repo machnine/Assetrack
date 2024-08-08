@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from asset import urls as asset_urls
+from attachment import urls as attachment_urls
 from core.views import HomeView
 from user import urls as user_urls
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path("", include(user_urls)),
     path("", include(asset_urls)),
     path("", HomeView.as_view(), name="home"),
+    path("", include(attachment_urls)),
 ]
 
 

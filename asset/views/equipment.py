@@ -169,7 +169,7 @@ class EquipmentAttachmentUploadView(LoginRequiredMixin, AttachmentUploadView):
 
     owner_model = Equipment
     form_class = EquipmentAttachmentUploadForm
-    template_name = "attachment/attachment_upload_form.html"
+    template_name = "attachment/upload_form.html"
     success_url_name = "equipment_detail"
 
 
@@ -179,7 +179,7 @@ class EquipmentAttachmentUpdateView(LoginRequiredMixin, AttachmentUpdateView):
     owner_model = Equipment
     model = EquipmentAttachment
     form_class = EquipmentAttachmentUpdateForm
-    template_name = "attachment/attachment_update_form.html"
+    template_name = "attachment/update_form.html"
     success_url_name = "equipment_detail"
 
 
@@ -189,4 +189,4 @@ class EquipmentAttachmentDeleteView(LoginRequiredMixin, AttachmentDeleteView):
     owner_model = Equipment
     model = EquipmentAttachment
     success_url_name = "equipment_detail"
-    template_name = "attachment/attachment_delete_form.html"
+    template_name = "attachment/delete_form.html"
