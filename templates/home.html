@@ -64,7 +64,7 @@
   {% else %}
     <div class="py-5" style="height: 50vh;">
       <div class="text-center">
-        <b>Important:</b> You are not logged in. Please <a href="{% url 'login' %}">log in</a> to access more features.
+        You are not logged in. Please <a href="{% url 'login' %}" title="Log in" class="text-danger fw-bold"><i class="bi bi-box-arrow-in-right"></i> log in</a> to access more features.
       </div>
     </div>
   {% endif %}
