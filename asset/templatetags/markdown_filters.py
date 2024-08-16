@@ -12,7 +12,7 @@ MARKDOWN_LINK_REGEX = r"\[([^\]]+)\]\(((?:http[s]?://)?[^\)]+)\)"
 
 
 @register.filter(name="md_link")
-def md_link(text, css_class=""):
+def md_link(text, css_class="text-danger"):
     """Convert markdown links to HTML links"""
 
     def replace(match):

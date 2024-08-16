@@ -92,7 +92,7 @@
       <div class="row pb-2">
         <div class="col-12 mb-2">
           <span class="text-muted small d-block">Notes</span>
-          <span class="text-primary">{{ equipment.notes|default:"&nbsp;"|md_link:"text-danger" }}</span>
+          <span class="text-primary">{{ equipment.notes|default:"&nbsp;"|md_link }}</span>
         </div>
       </div>
       <div class="row pb-2">
@@ -176,7 +176,7 @@
           <div class="col-6 col-lg-2 text-muted fw-bold">{{ record.record_type }}</div>
           <div class="d-none d-lg-block col-lg-9 small">
             {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
-            <span class="text-primary">{{ record.description|truncatewords:25|md_link:"text-danger" }}</span>
+            <span class="text-primary">{{ record.description|truncatewords:25|md_link }}</span>
           </div>
         </div>
       {% endfor %}

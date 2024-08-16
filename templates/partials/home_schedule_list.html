@@ -8,6 +8,6 @@
   <div class="row px-3">
     <div class="col-lg-2">{{ schedule.schedule_date|date:"d/m/Y" }}</div>
     <div class="col-lg-2">{{ schedule.get_frequency_display }}</div>
-    <div class="col-lg-8">{{ schedule.description|default:""|md_link:"text-danger" }}</div>
+    <div class="col-lg-8">{{ schedule.description|default:""|md_link }}</div>
   </div>
 {% endfor %}

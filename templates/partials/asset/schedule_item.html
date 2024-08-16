@@ -18,7 +18,7 @@
       </a>
     {% endif %}
   </div>
-  <div class="col col-lg-6">{{ schedule.description|default:""|md_link:"text-danger" }}</div>
+  <div class="col col-lg-6">{{ schedule.description|default:""|md_link }}</div>
   <div class="col-lg-2 d-none d-lg-block justify-content-between text-end">
     <a href="{% url 'schedule_update' schedule.pk %}" title="Update this schedule"><i class="bi bi-pencil-square"></i></a>
     {% if request.user.is_superuser %}
