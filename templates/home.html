@@ -17,46 +17,54 @@
       <div class="panel-content">{% include "partials/home_schedule_list.html" %}</div>
     </div>
   {% endif %}
-  {% if under_repair|length %}
-    <div class="panel">
-      <div class="panel-heading d-flex justify-content-between">
-        <h6>
-          <i class="bi bi-hammer text-primary"></i> Under Repair
-        </h6>
-        <span class="pe-3">
-          <a href="{% url 'equipment_list' %}?s={{ repair_id }}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
-        </span>
+  {% if request.user.is_authenticated %}
+    {% if under_repair|length %}
+      <div class="panel">
+        <div class="panel-heading d-flex justify-content-between">
+          <h6>
+            <i class="bi bi-hammer text-primary"></i> Under Repair
+          </h6>
+          <span class="pe-3">
+            <a href="{% url 'equipment_list' %}?s={{ repair_id }}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
+          </span>
+        </div>
+        <div class="panel-content">{% include "partials/home_equipment_list.html" with equipment_objects=under_repair %}</div>
       </div>
-      <div class="panel-content">{% include "partials/home_equipment_list.html" with equipment_objects=under_repair %}</div>
-    </div>
-  {% endif %}
-  {% if pending_verification|length %}
-    <div class="panel">
-      <div class="panel-heading d-flex justify-content-between">
-        <h6>
-          <i class="bi bi-check2-all text-success"></i> Pending Verification/Validation
-        </h6>
-        <span class="pe-3">
-          <a href="{% url 'equipment_list' %}?s={{ verification_id }}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
-        </span>
+    {% endif %}
+    {% if pending_verification|length %}
+      <div class="panel">
+        <div class="panel-heading d-flex justify-content-between">
+          <h6>
+            <i class="bi bi-check2-all text-success"></i> Pending Verification/Validation
+          </h6>
+          <span class="pe-3">
+            <a href="{% url 'equipment_list' %}?s={{ verification_id }}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
+          </span>
+        </div>
+        <div class="panel-content">
+          {% include "partials/home_equipment_list.html" with equipment_objects=pending_verification %}
+        </div>
       </div>
-      <div class="panel-content">
-        {% include "partials/home_equipment_list.html" with equipment_objects=pending_verification %}
+    {% endif %}
+    {% if replacement_due|length %}
+      <div class="panel">
+        <div class="panel-heading d-flex justify-content-between">
+          <h6>
+            <i class="bi bi-cart4 text-warning"></i> Replacement due &lt; 1 year
+          </h6>
+          <span class="pe-3">
+            <a href="{% url 'equipment_list' %}?rp=true" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
+          </span>
+        </div>
+        <div class="panel-content">
+          {% include "partials/home_equipment_list_rep.html" with equipment_objects=replacement_due %}
+        </div>
       </div>
-    </div>
-  {% endif %}
-  {% if replacement_due|length %}
-    <div class="panel">
-      <div class="panel-heading d-flex justify-content-between">
-        <h6>
-          <i class="bi bi-cart4 text-warning"></i> Replacement due &lt; 1 year
-        </h6>
-        <span class="pe-3">
-          <a href="{% url 'equipment_list' %}?rp=true" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
-        </span>
-      </div>
-      <div class="panel-content">
-        {% include "partials/home_equipment_list_rep.html" with equipment_objects=replacement_due %}
+    {% endif %}
+  {% else %}
+    <div class="panel py-5" style="height: 50vh;">
+      <div class="panel-content text-center">
+        <b>Important:</b> You are not logged in. Please <a href="{% url 'login' %}">log in</a> to access more features.
       </div>
     </div>
   {% endif %}

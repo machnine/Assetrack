@@ -1,13 +1,12 @@
 """Views for the core app."""
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import TemplateView
 
 from asset.models import Equipment, Schedule, Status
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
+class HomeView(TemplateView):
     """Home view"""
 
     template_name = "home.html"
