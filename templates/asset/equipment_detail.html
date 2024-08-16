@@ -176,7 +176,7 @@
           <div class="col-6 col-lg-2 text-muted fw-bold">{{ record.record_type }}</div>
           <div class="d-none d-lg-block col-lg-9 small">
             {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
-            <span class="text-primary">{{ record.description|truncatewords:25 }}</span>
+            <span class="text-primary">{{ record.description|truncatewords:25|md_link:"text-danger" }}</span>
           </div>
         </div>
       {% endfor %}

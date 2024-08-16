@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markdown_filters %}
 {% block page_title %}
   Equipment record - {{ record.equipment }}
 {% endblock page_title %}
@@ -29,7 +30,7 @@
       </p>
       <p>
         <span class="h6 small pe-2">Detail description:</span>
-        {{ record.description }}
+        {{ record.description|md_link:"text-danger" }}
       </p>
       {% if attachments|length %}
         <span class="h6 small">Attachments:</span>
