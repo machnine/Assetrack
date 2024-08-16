@@ -65,6 +65,28 @@
                     <li class="nav-item">
                       <a href="{% url 'schedule_list' %}" class="nav-link ps-3"><i class="bi bi-calendar-week text-danger"></i> Tasks</a>
                     </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle"
+                         id="maintenanceDropdown"
+                         role="button"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false"
+                         href="javascript:"><i class="bi bi-wrench text-success"></i> Maintenance</a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="maintenanceDropdown">
+                        <li class="dropdown-header">Maintenance Records</li>
+                        <li>
+                          <a href="{% url 'maintenance_record_list' %}?equipment_type=lx analyser" class="dropdown-item"> <i class="bi bi-clipboard-check text-success"></i> Luminex</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'maintenance_record_list' %}?equipment_type=centrifuge" class="dropdown-item"> <i class="bi bi-clipboard-check text-success"></i> Centrifuges</a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-header">Task Management</li>
+                        <li>
+                          <a href="{% url 'maintenance_task_list' %}" class="dropdown-item"><i class="bi bi-wrench-adjustable-circle text-success"></i> List of tasks</a>
+                        </li>
+                      </ul>
+                    </li>
                   </ul>
                   <ul class="navbar-nav ms-auto">
                     <li class="nav-item">

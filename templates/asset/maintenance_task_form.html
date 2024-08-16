@@ -1,0 +1,12 @@
+{% extends "partials/object_form.html" %}
+{% block title_object_name %}
+  Maintenance Task
+{% endblock title_object_name %}
+{% block heading_object_name %}
+  <i class="bi bi-wrench-adjustable-circle text-success"></i>
+  {% if form.instance.pk %}
+    Update maintenance task: <i class="text-danger">{{ form.instance.name }}</i>
+  {% else %}
+    New maintenance task
+  {% endif %}
+{% endblock heading_object_name %}

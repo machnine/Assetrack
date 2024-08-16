@@ -1,0 +1,32 @@
+{% extends "partials/object_list.html" %}
+{% load markdown_filters %}
+{% block page_title %}
+  Maintenance Task Management
+{% endblock page_title %}
+{% block new_object_url %}
+  {% url 'maintenance_task_create' %}
+{% endblock new_object_url %}
+{% block panel_heading_start %}
+  <i class="bi bi-wrench-adjustable-circle text-success"></i> Maintenance Tasks
+{% endblock panel_heading_start %}
+{% block panel_content %}
+  <div class="row pb-2 text-muted small fw-bold align-items-center">
+    <div class="col">Name</div>
+    <div class="col">Group</div>
+    <div class="col">Description</div>
+    <div class="d-none col-lg-2 d-lg-block"></div>
+  </div>
+  {% for task in object_list %}
+    <div class="row align-items-center border-top py-2 alternate-row">
+      <div class="col text-muted fw-bold">{{ task.name }}</div>
+      <div class="col">{{ task.group.name }}</div>
+      <div class="col">{{ task.description|default:""|md_link }}</div>
+      <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
+        {% if request.user.is_superuser %}
+          <a href="{% url 'maintenance_task_update' task.id %}" title="Update '{{ task.name }}'"><i class="bi bi-pencil-square"></i></a>
+          <a href="{% url 'maintenance_task_delete' task.id %}" title="Delete '{{ task.name }}'"><i class="bi bi-trash"></i></a>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock panel_content %}

@@ -13,6 +13,7 @@ from asset.views import (
     software,
     software_record,
     status,
+    maintenance,
 )
 
 urlpatterns = [
@@ -138,4 +139,27 @@ urlpatterns = [
     path("schedule/<int:pk>/update/", schedule.ScheduleUpdateView.as_view(), name="schedule_update"),
     path("schedule/<int:pk>/delete/", schedule.ScheduleDeleteView.as_view(), name="schedule_delete"),
     path("schedule/<int:pk>/action/", schedule.ScheduleActionView.as_view(), name="schedule_action"),
+    # Maintenance
+    path("maintenance_task/", maintenance.MaintenanceTaskListView.as_view(), name="maintenance_task_list"),
+    path("maintenance_task/create/", maintenance.MaintenanceTaskCreateView.as_view(), name="maintenance_task_create"),
+    path(
+        "maintenance_task/<int:pk>/update/",
+        maintenance.MaintenanceTaskUpdateView.as_view(),
+        name="maintenance_task_update",
+    ),
+    path(
+        "maintenance_task/<int:pk>/delete/",
+        maintenance.MaintenanceTaskDeleteView.as_view(),
+        name="maintenance_task_delete",
+    ),
+    path(
+        "maintenance_record/",
+        maintenance.MaintenanceRecordListView.as_view(),
+        name="maintenance_record_list",
+    ),
+    path(
+        "maintenance_record/create/",
+        maintenance.MaintenanceRecordCreateView.as_view(),
+        name="maintenance_record_create",
+    ),
 ]

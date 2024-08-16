@@ -1,0 +1,14 @@
+{% extends "partials/object_list.html" %}
+{% load markdown_filters %}
+{% block page_title %}
+  Maintenance Records
+{% endblock page_title %}
+{% block new_object_url %}
+  {% url 'maintenance_record_create' %}
+{% endblock new_object_url %}
+{% block panel_heading_start %}
+  <i class="bi bi-wrench text-success"></i> Maintenance Records
+{% endblock panel_heading_start %}
+{% block panel_content %}
+  {% for record in object_list %}<p>{{ record }}</p>{% endfor %}
+{% endblock panel_content %}
