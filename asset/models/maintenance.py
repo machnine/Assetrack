@@ -3,21 +3,9 @@
 from django.conf import settings
 from django.db import models
 
-from .equipment import Equipment
+from asset.models import Equipment, EquipmentType
 
 USER = settings.AUTH_USER_MODEL
-
-
-class MaintenanceTaskGroup(models.Model):
-    """Maintenance types"""
-
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ["name"]
 
 
 class MaintenanceRecord(models.Model):
@@ -33,7 +21,7 @@ class MaintenanceRecord(models.Model):
 
     def __str__(self):
         return f"{self.date} - {self.equipment.name}"
-    
+
     class Meta:
         ordering = ["-date"]
 
@@ -42,21 +30,21 @@ class MaintenanceTask(models.Model):
     """maintenance tasks for Luminex machines"""
 
     name = models.CharField(max_length=50)
-    group = models.ForeignKey(MaintenanceTaskGroup, on_delete=models.CASCADE)
+    equipment_type = models.ForeignKey(EquipmentType, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} - {self.group.get_display_name()}"
-    
+        return f"{self.name} - {self.equipment_type.name}"
+
     class Meta:
-        ordering = ["group", "name"]
+        ordering = ["equipment_type", "name"]
 
 
 class MaintenanceRecordAssignment(models.Model):
     """maintenance record for Luminex machines"""
 
-    maintenance = models.ForeignKey(MaintenanceRecord, on_delete=models.CASCADE)
-    task = models.ForeignKey(MaintenanceTask, on_delete=models.CASCADE)
+    maintenance = models.ForeignKey(MaintenanceRecord, on_delete=models.CASCADE, related_name="maintenance")
+    task = models.ForeignKey(MaintenanceTask, on_delete=models.CASCADE, related_name="task")
 
     def __str__(self):
         return f"{self.maintenance} - {self.task}"

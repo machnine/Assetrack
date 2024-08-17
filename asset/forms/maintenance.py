@@ -10,7 +10,7 @@ class MaintenanceTaskForm(forms.ModelForm):
 
     class Meta:
         model = MaintenanceTask
-        fields = ["name", "group", "description"]
+        fields = ["name", "equipment_type", "description"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

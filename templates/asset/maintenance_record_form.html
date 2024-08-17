@@ -3,10 +3,11 @@
   Maintenance Record
 {% endblock title_object_name %}
 {% block heading_object_name %}
-  <i class="bi bi-wrench text-success"></i>
+  <i class="bi bi-gear-wide-connected text-success"></i>
   {% if form.instance.pk %}
     Update maintenance record: <i class="text-danger">{{ form.instance.name }}</i>
   {% else %}
     New maintenance record
   {% endif %}
 {% endblock heading_object_name %}
+

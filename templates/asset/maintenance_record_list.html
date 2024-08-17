@@ -4,11 +4,35 @@
   Maintenance Records
 {% endblock page_title %}
 {% block new_object_url %}
-  {% url 'maintenance_record_create' %}
+  {% url 'maintenance_record_create' %}?t={{ request.GET.t }}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-wrench text-success"></i> Maintenance Records
+  <i class="bi bi-gear-wide-connected text-success"></i> Maintenance Records
 {% endblock panel_heading_start %}
 {% block panel_content %}
-  {% for record in object_list %}<p>{{ record }}</p>{% endfor %}
+  <div class="row pb-2 text-muted small fw-bold align-items-center">
+    <div class="col-lg-1">Date</div>
+    <div class="col-lg-2">Equipment</div>
+    <div class="col-lg-4">Maintenance</div>
+    <div class="col-lg-1">User</div>
+    <div class="col-lg-3">Comments</div>
+    <div class="col-lg-1"></div>
+  </div>
+  {% for record in object_list %}
+    <div class="row align-items-center border-top py-2 alternate-row">
+      <div class="col-lg-1">{{ record.date|date:"d/m/Y" }}</div>
+      <div class="col-lg-2">
+        <a href="{% url 'equipment_detail' record.equipment.pk %}">{{ record.equipment.name }}</a>
+      </div>
+      <div class="col-lg-4">
+        {% for task in record.maintenance.all %}<i class="mx-1 small badge bg-secondary">{{ task.task.name }}</i>{% endfor %}
+      </div>
+      <div class="col-lg-1" title="{{ record.created_at }}">{{ record.created_by }}</div>
+      <div class="col-lg-3">{{ record.comments }}</div>
+      <div class="d-none col-lg-1 d-lg-block justify-content-between text-end">
+        <a href="{% url 'maintenance_record_update' record.pk %}" title="Update '{{ record }}'"><i class="bi bi-pencil-square"></i></a>
+        <a href="{% url 'maintenance_record_delete' record.pk %}" title="Delete '{{ record }}'"><i class="bi bi-trash"></i></a>
+      </div>
+    </div>
+  {% endfor %}
 {% endblock panel_content %}

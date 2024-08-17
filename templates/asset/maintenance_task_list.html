@@ -12,14 +12,16 @@
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col">Name</div>
-    <div class="col">Group</div>
+    <div class="col">Equipment Type</div>
     <div class="col">Description</div>
     <div class="d-none col-lg-2 d-lg-block"></div>
   </div>
   {% for task in object_list %}
     <div class="row align-items-center border-top py-2 alternate-row">
       <div class="col text-muted fw-bold">{{ task.name }}</div>
-      <div class="col">{{ task.group.name }}</div>
+      <div class="col">
+        <a href="{% url 'equipment_list' %}?t={{ task.equipment_type.id }}">{{ task.equipment_type.name }}</a>
+      </div>
       <div class="col">{{ task.description|default:""|md_link }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
