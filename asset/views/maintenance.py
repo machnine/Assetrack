@@ -49,7 +49,7 @@ class MaintenanceRecordMixin:
 
         if equipment_type_slug:
             form.fields["equipment"].queryset = Equipment.objects.filter(
-                equipment_type__slug=equipment_type_slug, is_active=True
+                equipment_type__slug=equipment_type_slug, status__name="Active"
             )
             form.fields["tasks"].queryset = MaintenanceTask.objects.filter(equipment_type__slug=equipment_type_slug)
 
