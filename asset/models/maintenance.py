@@ -34,7 +34,7 @@ class MaintenanceTask(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} - {self.equipment_type.name}"
+        return f"{self.name}"
 
     class Meta:
         ordering = ["equipment_type", "name"]

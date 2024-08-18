@@ -10,4 +10,34 @@
     New maintenance record
   {% endif %}
 {% endblock heading_object_name %}
-
+{% block object_form %}
+  <div class="row">
+    <div class="mb-3 col">
+      <label class="form-label" for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+      {{ form.date }}
+      {% if form.date.errors %}<div class="text-danger">{{ form.date.errors }}</div>{% endif %}
+    </div>
+    <div class="mb-3 col">
+      <label class="form-label" for="{{ form.equipment.id_for_label }}">{{ form.equipment.label }}</label>
+      {{ form.equipment }}
+      {% if form.equipment.errors %}<div class="text-danger">{{ form.equipment.errors }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col">
+      <label class="form-label" for="{{ form.tasks.id_for_label }}">{{ form.tasks.label }}</label>
+      <div class="card border">
+        <div class="row p-3" >
+        {% for checkbox in form.tasks %}<div class="col-3 small">{{ checkbox.tag }} {{ checkbox.choice_label }}</div>{% endfor %}
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col">
+      <label class="form-label" for="{{ form.comments.id_for_label }}">{{ form.comments.label }}</label>
+      {{ form.comments }}
+      {% if form.comments.errors %}<div class="text-danger">{{ form.comments.errors }}</div>{% endif %}
+    </div>
+  </div>
+{% endblock object_form %}

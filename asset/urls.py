@@ -153,23 +153,24 @@ urlpatterns = [
         name="maintenance_task_delete",
     ),
     path(
-        "maintenance_record/",
+        "maintenance_record/<slug:slug>/",
         maintenance.MaintenanceRecordListView.as_view(),
         name="maintenance_record_list",
     ),
     path(
-        "maintenance_record/create/",
+        "maintenance_record/<slug:slug>/create/",
         maintenance.MaintenanceRecordCreateView.as_view(),
         name="maintenance_record_create",
     ),
     path(
-        "maintenance_record/<int:pk>/update/",
+        "maintenance_record/<slug:slug>/<int:pk>/update/",
         maintenance.MaintenanceRecordUpdateView.as_view(),
         name="maintenance_record_update",
     ),
     path(
-        "maintenance_record/<int:pk>/delete/",
+        "maintenance_record/<slug:slug>/<int:pk>/delete/",
         maintenance.MaintenanceRecordDeleteView.as_view(),
         name="maintenance_record_delete",
     ),
+
 ]

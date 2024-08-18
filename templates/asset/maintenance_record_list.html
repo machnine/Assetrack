@@ -4,10 +4,10 @@
   Maintenance Records
 {% endblock page_title %}
 {% block new_object_url %}
-  {% url 'maintenance_record_create' %}?t={{ request.GET.t }}
+  {% url 'maintenance_record_create' equipment_type.slug %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-gear-wide-connected text-success"></i> Maintenance Records
+  <i class="bi bi-gear-wide-connected text-success"></i> Maintenance Records - <i class="text-danger fw-bold">{{ equipment_type }}</i>
 {% endblock panel_heading_start %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
@@ -30,8 +30,8 @@
       <div class="col-lg-1" title="{{ record.created_at }}">{{ record.created_by }}</div>
       <div class="col-lg-3">{{ record.comments }}</div>
       <div class="d-none col-lg-1 d-lg-block justify-content-between text-end">
-        <a href="{% url 'maintenance_record_update' record.pk %}" title="Update '{{ record }}'"><i class="bi bi-pencil-square"></i></a>
-        <a href="{% url 'maintenance_record_delete' record.pk %}" title="Delete '{{ record }}'"><i class="bi bi-trash"></i></a>
+        <a href="{% url 'maintenance_record_update' pk=record.pk slug=record.equipment.equipment_type.slug %}" title="Update '{{ record }}'"><i class="bi bi-pencil-square"></i></a>
+        <a href="{% url 'maintenance_record_delete' pk=record.pk slug=record.equipment.equipment_type.slug %}" title="Delete '{{ record }}'"><i class="bi bi-trash"></i></a>
       </div>
     </div>
   {% endfor %}
