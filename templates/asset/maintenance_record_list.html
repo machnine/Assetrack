@@ -15,7 +15,7 @@
     <div class="col-lg-2">Equipment</div>
     <div class="col-lg-4">Maintenance</div>
     <div class="col-lg-3">Comments</div>
-    <div class="col-lg-1">User</div>
+    <div class="col-lg-1">Initials</div>
     <div class="col-lg-1"></div>
   </div>
   {% for record in object_list %}
@@ -34,7 +34,7 @@
         {% endfor %}
       </div>
       <div class="col-lg-3">{{ record.comments }}</div>
-      <div class="col-lg-1" title="{{ record.created_at }}">{{ record.created_by }}</div>
+      <div class="col-lg-1" title="{{ record.created_at }}">{{ record.created_by.initials|default:"" }}</div>
       <div class="d-none col-lg-1 d-lg-block justify-content-between text-end">
         <a href="{% url 'maintenance_record_update' pk=record.pk slug=record.equipment.equipment_type.slug %}"
            title="Update '{{ record }}'"><i class="bi bi-pencil-square"></i></a>

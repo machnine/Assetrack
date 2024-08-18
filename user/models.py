@@ -1,10 +1,13 @@
-""" Custom user model for the application. """
+"""Custom user model for the application."""
+
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 
 class CustomUser(AbstractUser):
     """Custom user model for the application."""
+
+    initials = models.CharField(max_length=5, blank=True, null=True)
 
     groups = models.ManyToManyField(
         Group,
