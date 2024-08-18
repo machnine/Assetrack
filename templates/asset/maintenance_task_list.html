@@ -12,6 +12,7 @@
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col">Name</div>
+    <div class="col">Colour</div>
     <div class="col">Equipment Type</div>
     <div class="col">Description</div>
     <div class="d-none col-lg-2 d-lg-block"></div>
@@ -19,6 +20,9 @@
   {% for task in object_list %}
     <div class="row align-items-center border-top py-2 alternate-row">
       <div class="col text-muted fw-bold">{{ task.name }}</div>
+      <div class="col">
+        <div class="d-inline-block me-2" style="width: 1em; height: 1em; background-color: {{ task.color }}; border-radius:.2em;"></div>
+      </div>
       <div class="col">
         <a href="{% url 'equipment_list' %}?t={{ task.equipment_type.id }}">{{ task.equipment_type.name }}</a>
       </div>

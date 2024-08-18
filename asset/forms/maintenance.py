@@ -5,25 +5,19 @@ from django import forms
 from asset.models import MaintenanceRecord, MaintenanceTask
 
 
-# class CustomCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
-#     def get_context(self, name, value, attrs):
-#         context = super().get_context(name, value, attrs)
-#         for choice in context["widget"]["optgroups"]:
-#             for subwidget in choice[1]:
-#                 subwidget["attrs"]["class"] = "form-check-input"
-#         return context
-
-
 class MaintenanceTaskForm(forms.ModelForm):
     """Maintenance task form"""
 
     class Meta:
         model = MaintenanceTask
-        fields = ["name", "equipment_type", "description"]
+        fields = ["name", "equipment_type", "color", "description"]
+        widgets = {
+            "color": forms.TextInput(attrs={"type": "color", "class": "form-control form-control-color"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
+        for field in ["name", "equipment_type", "description"]:
             self.fields[field].widget.attrs.update({"class": "form-control"})
         self.fields["description"].widget.attrs.update({"rows": 3})
 
@@ -45,11 +39,3 @@ class MaintenanceRecordForm(forms.ModelForm):
         self.fields["date"].widget = forms.DateInput(attrs={"type": "date", "class": "form-control"}, format="%Y-%m-%d")
         self.fields["equipment"].widget.attrs.update({"class": "form-control"})
         self.fields["comments"].widget.attrs.update({"class": "form-control", "rows": 3})
-
-        # # Dynamically set the queryset for the tasks field based on the equipment type
-        # if self.instance.pk and self.instance.equipment:
-        #     equipment_type = self.instance.equipment.equipment_type
-        #     self.fields["tasks"].queryset = MaintenanceTask.objects.filter(equipment_type=equipment_type)
-        #     self.fields["tasks"].initial = self.instance.maintenance.values_list("task", flat=True)
-        # else:
-        #     self.fields["tasks"].queryset = MaintenanceTask.objects.all()

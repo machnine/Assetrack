@@ -24,6 +24,7 @@ class MaintenanceRecord(models.Model):
 
     class Meta:
         ordering = ["-date"]
+        unique_together = ["date", "equipment"]
 
 
 class MaintenanceTask(models.Model):
@@ -32,12 +33,29 @@ class MaintenanceTask(models.Model):
     name = models.CharField(max_length=50)
     equipment_type = models.ForeignKey(EquipmentType, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
+    color = models.CharField(max_length=7, default="#FFFFFF")
 
     def __str__(self):
         return f"{self.name}"
 
     class Meta:
         ordering = ["equipment_type", "name"]
+        unique_together = ["name", "equipment_type"]
+
+    @property
+    def get_font_color(self):
+        """Returns 'black' or 'white' depending on the brightness of the background color."""
+        # Strip the '#' character
+        hex_color = self.color.lstrip("#")
+
+        # Convert hex to RGB
+        r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+
+        # Calculate brightness (using the luminance formula)
+        brightness = (r * 299 + g * 587 + b * 114) / 1000
+
+        # Return white or black font color based on brightness
+        return "#000000" if brightness > 128 else "#ffffff"
 
 
 class MaintenanceRecordAssignment(models.Model):
@@ -48,3 +66,6 @@ class MaintenanceRecordAssignment(models.Model):
 
     def __str__(self):
         return f"{self.maintenance} - {self.task}"
+
+    class Meta:
+        unique_together = ["maintenance", "task"]
