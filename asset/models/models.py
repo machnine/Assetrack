@@ -3,6 +3,7 @@
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 
 USER = settings.AUTH_USER_MODEL
 
@@ -32,13 +33,18 @@ class EquipmentType(models.Model):
 
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
-
-    def __str__(self):
-        return self.name
+    slug = models.SlugField(max_length=30, unique=True, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "equipment types"
         ordering = ["name"]
+
+    def save(self, *args, **kwargs):        
+        self.slug = slugify(self.slug) if self.slug else slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 
 class Category(models.Model):
@@ -112,7 +118,9 @@ class Schedule(models.Model):
     frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES, default="O")
     created_by = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="schedules")
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="updated_schedules", null=True, blank=True)
+    updated_by = models.ForeignKey(
+        USER, on_delete=models.CASCADE, related_name="updated_schedules", null=True, blank=True
+    )
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

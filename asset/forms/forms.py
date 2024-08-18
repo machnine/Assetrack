@@ -66,7 +66,7 @@ class EquipmentTypeForm(forms.ModelForm):
 
     class Meta:
         model = EquipmentType
-        fields = ["name", "description"]
+        fields = ["name", "slug", "description"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
