@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 from asset.models import Equipment, EquipmentType
 
@@ -70,3 +71,23 @@ class MaintenanceRecordAssignment(models.Model):
     class Meta:
         unique_together = ["maintenance", "task"]
         ordering = ["task", "maintenance"]
+
+
+class MaintenanceRecordMenu(models.Model):
+    """Maintenance records menu items"""
+
+    equipment_type = models.ForeignKey(EquipmentType, on_delete=models.CASCADE)
+    link_icon = models.CharField(max_length=50)
+    link_text = models.CharField(max_length=50)
+
+    @property
+    def link_url(self):
+        """Return the URL for the maintenance record list for a specific equipment type."""
+        return reverse("maintenance_record_list", kwargs={"slug": self.equipment_type.slug})
+
+    def __str__(self):
+        return f"Maintenance Record menu for {self.link_text}"
+
+    class Meta:
+        ordering = ["equipment_type"]
+        unique_together = ["equipment_type", "link_text"]

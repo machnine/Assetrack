@@ -5,9 +5,9 @@
 {% block heading_object_name %}
   <i class="bi bi-gear-wide-connected text-success"></i>
   {% if form.instance.pk %}
-    Update maintenance record: <i class="text-danger">{{ form.instance.name }}</i>
+    Update <i class="text-danger fw-bold">{{ equipment_type }}</i> maintenance record: <i class="text-danger">{{ form.instance.name }}</i>
   {% else %}
-    New maintenance record
+    New <i class="text-danger fw-bold">{{ equipment_type }}</i> maintenance record
   {% endif %}
 {% endblock heading_object_name %}
 {% block object_form %}
@@ -27,9 +27,11 @@
     <div class="mb-3 col">
       <label class="form-label" for="{{ form.tasks.id_for_label }}">{{ form.tasks.label }}</label>
       <div class="card border">
-        <div class="row p-3" >
-        {% for checkbox in form.tasks %}<div class="col-3 small">{{ checkbox.tag }} {{ checkbox.choice_label }}</div>{% endfor %}
-      </div>
+        <div class="row p-3">
+          {% for checkbox in form.tasks %}
+            <div class="col-3 small pb-2">{{ checkbox.tag }} {{ checkbox.choice_label }}</div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>

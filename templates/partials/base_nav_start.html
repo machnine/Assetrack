@@ -11,12 +11,11 @@
        href="javascript:"><i class="bi bi-gear-wide-connected text-success"></i> Maintenance</a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="maintenanceDropdown">
       <li class="dropdown-header">Maintenance Records</li>
-      <li>
-        <a href="{% url 'maintenance_record_list' slug='luminex-machine' %}" class="dropdown-item"> <i class="bi bi-pc-display-horizontal text-success"></i> Luminex Machines</a>
-      </li>
-      <li>
-        <a href="{% url 'maintenance_record_list' slug='centrifuge' %}" class="dropdown-item"> <i class="bi bi-clipboard2-check text-success"></i> Centrifuges</a>
-      </li>
+      {% for menu_item in maintenance_menu_items %}
+        <li>
+          <a href="{{ menu_item.link_url }}" class="dropdown-item"> <i class="{{ menu_item.link_icon }} text-success"></i> {{ menu_item.link_text }}</a>
+        </li>
+      {% endfor %}
       <li class="dropdown-divider"></li>
       <li class="dropdown-header">Task Management</li>
       <li>

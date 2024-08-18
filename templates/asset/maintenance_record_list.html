@@ -7,7 +7,7 @@
   {% url 'maintenance_record_create' equipment_type.slug %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-gear-wide-connected text-success"></i> Maintenance Records - <i class="text-danger fw-bold">{{ equipment_type }}</i>
+  <i class="bi bi-gear-wide-connected text-success"></i> <i class="text-danger fw-bold">{{ equipment_type }}</i> Maintenance Records
 {% endblock panel_heading_start %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
@@ -29,7 +29,8 @@
           <i class="px-2 small"
              style="color: {{ task.task.get_font_color }};
                     background-color: {{ task.task.color }};
-                    border-radius:.3rem">{{ task.task.name }}</i>
+                    border-radius:.3rem"
+              title="{{ task.task.description }}">{{ task.task.name }}</i>
         {% endfor %}
       </div>
       <div class="col-lg-3">{{ record.comments }}</div>

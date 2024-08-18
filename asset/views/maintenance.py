@@ -10,7 +10,7 @@ from asset.models import Equipment, EquipmentType, MaintenanceRecord, Maintenanc
 
 
 ## Maintenance Record views
-class MaintenanceRecordListView(ListView):
+class MaintenanceRecordListView(LoginRequiredMixin, ListView):
     model = MaintenanceRecord
     template_name = "asset/maintenance_record_list.html"
     context_object_name = "records"
@@ -18,7 +18,7 @@ class MaintenanceRecordListView(ListView):
 
     def get_queryset(self):
         queryset = MaintenanceRecord.objects.select_related("equipment").prefetch_related("maintenance__task")
-        equipment_type_slug = self.kwargs.get("slug", None)
+        equipment_type_slug = self.kwargs.get("slug")
 
         if equipment_type_slug:
             queryset = queryset.filter(equipment__equipment_type__slug=equipment_type_slug)
@@ -27,13 +27,13 @@ class MaintenanceRecordListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        slug = self.kwargs.get("slug", None)
+        slug = self.kwargs.get("slug")
         context["equipment_type"] = EquipmentType.objects.get(slug=slug)
         return context
 
 
-class MaintenanceRecordMixin:
-    """Mixin for the maintenance record Create and Update views"""
+class MaintenanceRecordMixin(LoginRequiredMixin):
+    """Mixin for the maintenance record Create, Update and Delete views"""
 
     model = MaintenanceRecord
     form_class = MaintenanceRecordForm
@@ -41,8 +41,7 @@ class MaintenanceRecordMixin:
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-
-        equipment_type_slug = self.kwargs.get("slug", None)
+        equipment_type_slug = self.kwargs.get("slug")
 
         if form.instance.pk and form.instance.equipment:
             equipment_type_slug = form.instance.equipment.equipment_type.slug
@@ -59,14 +58,19 @@ class MaintenanceRecordMixin:
 
         return form
 
+    def _save_tasks(self, tasks):
+        for task in tasks:
+            MaintenanceRecordAssignment.objects.create(maintenance=self.object, task=task)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["equipment_type_slug"] = self.kwargs.get("slug", None)
+        slug = self.kwargs.get("slug")
+        context["equipment_type_slug"] = slug
+        context["equipment_type"] = EquipmentType.objects.get(slug=slug)
         return context
 
     def get_success_url(self):
-        slug = self.kwargs.get("slug", None)
-        return reverse("maintenance_record_list", kwargs={"slug": slug})
+        return reverse("maintenance_record_list", kwargs={"slug": self.kwargs.get("slug")})
 
 
 class MaintenanceRecordCreateView(MaintenanceRecordMixin, CreateView):
@@ -74,10 +78,7 @@ class MaintenanceRecordCreateView(MaintenanceRecordMixin, CreateView):
         form.instance.created_by = self.request.user
         self.object = form.save()
 
-        # Handle the many-to-many relationship for tasks
-        tasks = form.cleaned_data.get("tasks")
-        for task in tasks:
-            MaintenanceRecordAssignment.objects.create(maintenance=self.object, task=task)
+        self._save_tasks(form.cleaned_data.get("tasks"))
         return redirect(self.get_success_url())
 
 
@@ -88,24 +89,18 @@ class MaintenanceRecordUpdateView(MaintenanceRecordMixin, UpdateView):
 
         # Clear existing tasks and reassign selected ones
         MaintenanceRecordAssignment.objects.filter(maintenance=self.object).delete()
-        tasks = form.cleaned_data.get("tasks")
-        for task in tasks:
-            MaintenanceRecordAssignment.objects.create(maintenance=self.object, task=task)
+
+        self._save_tasks(form.cleaned_data.get("tasks"))
         return redirect(self.get_success_url())
 
 
-class MaintenanceRecordDeleteView(DeleteView):
-    model = MaintenanceRecord
+class MaintenanceRecordDeleteView(MaintenanceRecordMixin, DeleteView):
     template_name = "partials/object_delete.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = self.get_success_url()
         return context
-
-    def get_success_url(self):
-        slug = self.kwargs.get("slug", None)
-        return reverse("maintenance_record_list", kwargs={"slug": slug})
 
 
 ## Maintenance Task views
