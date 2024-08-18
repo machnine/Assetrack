@@ -69,3 +69,4 @@ class MaintenanceRecordAssignment(models.Model):
 
     class Meta:
         unique_together = ["maintenance", "task"]
+        ordering = ["task", "maintenance"]

@@ -48,7 +48,9 @@ class MaintenanceRecordMixin:
             equipment_type_slug = form.instance.equipment.equipment_type.slug
 
         if equipment_type_slug:
-            form.fields["equipment"].queryset = Equipment.objects.filter(equipment_type__slug=equipment_type_slug)
+            form.fields["equipment"].queryset = Equipment.objects.filter(
+                equipment_type__slug=equipment_type_slug, is_active=True
+            )
             form.fields["tasks"].queryset = MaintenanceTask.objects.filter(equipment_type__slug=equipment_type_slug)
 
         # Pre-select tasks already associated with the record
