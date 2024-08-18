@@ -24,8 +24,7 @@ class MaintenanceRecord(models.Model):
         return f"{self.date} - {self.equipment.name}"
 
     class Meta:
-        ordering = ["-date"]
-        unique_together = ["date", "equipment"]
+        ordering = ["-date"]        
 
 
 class MaintenanceTask(models.Model):
