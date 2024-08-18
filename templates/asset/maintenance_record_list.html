@@ -13,9 +13,10 @@
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col-lg-1">Date</div>
     <div class="col-lg-2">Equipment</div>
-    <div class="col-lg-4">Maintenance</div>
+    <div class="col-lg-3">Maintenance</div>
     <div class="col-lg-4">Comments</div>
-    <div class="d-none col-lg-1 d-lg-block text-center pe-4">Initials</div>    
+    <div class="col-lg-1 text-center">Initials</div>
+    <div class="d-none col-lg-1 d-lg-block"></div>
   </div>
   {% for record in object_list %}
     <div class="row align-items-center border-top py-2 alternate-row">
@@ -23,18 +24,21 @@
       <div class="col-lg-2">
         <a href="{% url 'equipment_detail' record.equipment.pk %}">{{ record.equipment.name }}</a>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         {% for task in record.maintenance.all %}
           <i class="px-2 small"
              style="color: {{ task.task.get_font_color }};
                     background-color: {{ task.task.color }};
                     border-radius:.3rem"
-              title="{{ task.task.description }}">{{ task.task.name }}</i>
+             title="{{ task.task.description }}">{{ task.task.name }}</i>
         {% endfor %}
       </div>
-      <div class="col-lg-4 small">{{ record.comments }}</div>      
+      <div class="col-lg-4 small">{{ record.comments }}</div>
+      <div class="col-lg-1 text-center"
+           title="{{ record.created_at }} by {{ record.created_by.get_full_name }}">
+        {{ record.created_by.initials|default:"" }}
+      </div>
       <div class="d-none col-lg-1 d-lg-block justify-content-between text-end">
-        <span class="pe-4">{{ record.created_by.initials|default:"" }}</span>
         <a href="{% url 'maintenance_record_update' pk=record.pk slug=record.equipment.equipment_type.slug %}"
            title="Update '{{ record }}'"><i class="bi bi-pencil-square"></i></a>
         <a href="{% url 'maintenance_record_delete' pk=record.pk slug=record.equipment.equipment_type.slug %}"
