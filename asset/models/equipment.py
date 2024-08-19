@@ -56,6 +56,11 @@ class Equipment(models.Model):
 
     class Meta:
         ordering = ["name"]
+        indexes = [
+            models.Index(fields=["equipment_type", "status"]),
+            models.Index(fields=["equipment_type"]),
+            models.Index(fields=["status"]),
+        ]
 
 
 class EquipmentAttachment(Attachment):

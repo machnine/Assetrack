@@ -24,7 +24,12 @@ class MaintenanceRecord(models.Model):
         return f"{self.date} - {self.equipment.name}"
 
     class Meta:
-        ordering = ["-date"]        
+        ordering = ["-date"]
+        indexes = [
+            models.Index(fields=["equipment", "date"]),
+            models.Index(fields=["equipment"]),
+            models.Index(fields=["date"]),
+        ]
 
 
 class MaintenanceTask(models.Model):
@@ -89,4 +94,5 @@ class MaintenanceRecordMenu(models.Model):
 
     class Meta:
         ordering = ["equipment_type"]
-        unique_together = ["equipment_type", "link_text"]
+        constraints = [models.UniqueConstraint(fields=["equipment_type", "link_text"], name="unique_link_text")]
+        indexes = [models.Index(fields=["equipment_type", "link_text", "link_icon"])]
