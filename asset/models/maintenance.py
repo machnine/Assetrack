@@ -33,7 +33,7 @@ class MaintenanceTask(models.Model):
     name = models.CharField(max_length=50)
     equipment_type = models.ForeignKey(EquipmentType, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
-    color = models.CharField(max_length=7, default="#FFFFFF")
+    color = models.CharField(max_length=7, default="#EEEEEE")
 
     def __str__(self):
         return f"{self.name}"

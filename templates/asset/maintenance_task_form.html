@@ -22,9 +22,9 @@
       {{ form.equipment_type }}
       {% if form.equipment_type.errors %}<div class="text-danger">{{ form.equipment_type.errors }}</div>{% endif %}
     </div>
-    <div class="mb-3 col-2">
+    <div class="mb-3 col-2 text-center">
       <label class="form-label" for="{{ form.color.id_for_label }}">{{ form.color.label }}</label>
-      {{ form.color }}
+      <div class="d-flex justify-content-center">{{ form.color }}</div>
       {% if form.color.errors %}<div class="text-danger">{{ form.color.errors }}</div>{% endif %}
     </div>
   </div>
