@@ -94,13 +94,17 @@ class MaintenanceRecordUpdateView(MaintenanceRecordMixin, UpdateView):
         return redirect(self.get_success_url())
 
 
-class MaintenanceRecordDeleteView(MaintenanceRecordMixin, DeleteView):
+class MaintenanceRecordDeleteView(LoginRequiredMixin, DeleteView):
+    model = MaintenanceRecord
     template_name = "partials/object_delete.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = self.get_success_url()
         return context
+
+    def get_success_url(self) -> str:
+        return reverse("maintenance_record_list", kwargs={"slug": self.kwargs.get("slug")})
 
 
 ## Maintenance Task views
