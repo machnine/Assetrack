@@ -1,6 +1,7 @@
 """CRUD views for Asset Schedule"""
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import HttpResponse, HttpResponseRedirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -30,17 +31,30 @@ class ScheduleListView(LoginRequiredMixin, ListView):
     model = Schedule
     template_name = "asset/schedule_list.html"
     context_object_name = "schedules"
+    paginate_by = 16
 
     def get_queryset(self):
         """
-        Return the schedules for the last 2 weeks and upcoming
+        Return the schedules for the last 4 weeks and upcoming.
         """
+        query_set = super().get_queryset()
         show_all = self.request.GET.get("all")
+        q = self.request.GET.get("q")
         two_weeks_ago = timezone.now() - timezone.timedelta(weeks=4)
-        query_set = Schedule.objects.filter(schedule_date__gte=two_weeks_ago).order_by("schedule_date")
-        if show_all == "true":
-            return query_set
-        return query_set.filter(status="A")
+
+        # Build Q objects for filters
+        filters = Q(schedule_date__gte=two_weeks_ago)
+
+        if q:
+            filters &= Q(description__icontains=q)
+
+        if show_all != "true":
+            filters &= Q(status="A")
+
+        # Apply the filters to the queryset
+        query_set = query_set.filter(filters).order_by("schedule_date")
+
+        return query_set
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

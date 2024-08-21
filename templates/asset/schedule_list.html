@@ -20,6 +20,18 @@
 {% block panel_heading_start %}
   <i class="bi bi-calendar-week text-danger"></i> Scheduled Tasks<i class="ps-lg-3 d-none d-lg-inline small text-muted">&lt; 4 week old and upcoming tasks</i>
 {% endblock panel_heading_start %}
+{% block panel_heading_center %}
+  <form method="get" action="{% url 'schedule_list' %}">
+    <input type="text"
+           name="q"
+           size="40"
+           class="form-control form-control-sm"
+           placeholder="Search tasks..."
+           onfocus="this.select();"
+           value="{{ request.GET.q }}">
+    <button type="submit" class="d-none">Search</button>
+  </form>
+{% endblock panel_heading_center %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col-lg-1 d-none d-lg-block">Schedule Date</div>
@@ -33,4 +45,5 @@
   {% for schedule in schedules %}
     {% include "partials/asset/schedule_item.html" with schedule=schedule %}
   {% endfor %}
+  {% include "partials/pagination.html" %}
 {% endblock panel_content %}
