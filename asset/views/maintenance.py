@@ -122,6 +122,19 @@ class MaintenanceTaskListView(LoginRequiredMixin, ListView):
 
     model = MaintenanceTask
     template_name = "asset/maintenance_task_list.html"
+    paginate_by = 16
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if equipment_type := self.request.GET.get("t"):
+            queryset = queryset.filter(equipment_type__pk=equipment_type)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if equipment_type := self.request.GET.get("t"):
+            context["query"] = EquipmentType.objects.get(pk=equipment_type)
+        return context
 
 
 class MaintenanceTaskUpdateView(LoginRequiredMixin, UpdateView):

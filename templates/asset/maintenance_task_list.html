@@ -8,25 +8,30 @@
 {% endblock new_object_url %}
 {% block panel_heading_start %}
   <i class="bi bi-wrench-adjustable-circle text-success"></i> Maintenance Tasks
+  {% if query %}
+    <span>
+      <a href="{% url 'maintenance_task_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
+    </span>
+  {% endif %}
 {% endblock panel_heading_start %}
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
-    <div class="col-1">Name</div>
+    <div class="col-2">Name</div>
     <div class="col-1">Colour</div>
     <div class="col-2">Equipment Type</div>
-    <div class="col-6">Description</div>
+    <div class="col-5">Description</div>
     <div class="d-none col-lg-2 d-lg-block"></div>
   </div>
   {% for task in object_list %}
     <div class="row align-items-center border-top py-2 alternate-row">
-      <div class="col-1 text-muted fw-bold">{{ task.name }}</div>
+      <div class="col-2 text-muted fw-bold">{{ task.name }}</div>
       <div class="col-1">
         <div class="d-inline-block mx-2 " style="width: 1em; height: 1em; background-color: {{ task.color }}; border-radius:.2em;"></div>
       </div>
       <div class="col-2">
-        <a href="{% url 'equipment_list' %}?t={{ task.equipment_type.id }}">{{ task.equipment_type.name }}</a>
+        <a href="{% url 'maintenance_task_list' %}?t={{ task.equipment_type.id }}">{{ task.equipment_type.name }}</a>
       </div>
-      <div class="col-6">{{ task.description|default:""|md_link }}</div>
+      <div class="col-5">{{ task.description|default:""|md_link }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'maintenance_task_update' task.id %}" title="Update '{{ task.name }}'"><i class="bi bi-pencil-square"></i></a>
@@ -35,4 +40,5 @@
       </div>
     </div>
   {% endfor %}
+  {% include "partials/pagination.html" %}
 {% endblock panel_content %}

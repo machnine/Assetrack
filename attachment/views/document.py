@@ -21,6 +21,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
     model = Document
     template_name = "attachment/document_list.html"
     context_object_name = "documents"
+    paginate_by = 16
 
     def get_queryset(self):
         queryset = super().get_queryset()
