@@ -8,7 +8,7 @@
     <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
       <span class="h6"><i class="bi bi-calendar3"></i> Equipment record - <a href="{% url 'equipment_detail' record.equipment.id %}">{{ record.equipment }}</a></span>
       <span>
-        <a href="{% url 'equipmentrecord_update' record.id %}" title="Edit"><i class="bi bi-pencil-square"></i></a>
+        <a href="{% url 'equipmentrecord_update' record.id %}?next={{ request.path }}" title="Edit"><i class="bi bi-pencil-square"></i></a>
         <a href="{% url 'equipmentrecord_delete' record.id %}" title="Delete"><i class="bi bi-trash"></i></a>
         <a hx-get="{% url 'equipmentrecord_attachment_upload' record.id %}"
            hx-trigger="click"
@@ -21,48 +21,68 @@
       </span>
     </div>
     <div class="panel-content">
-      <p>
-        <span class="h6 small pe-2">Date:</span>
-        <span>{{ record.date|date:"d/m/Y" }}</span>
-      </p>
-      <p>
-        <span class="h6 small pe-2">Record type:</span><span>{{ record.record_type }}</span>
-      </p>
-      <p>
-        <span class="h6 small pe-2">Detail description:</span>
-        {{ record.description|md_link }}
-      </p>
-      {% if attachments|length %}
-        <span class="h6 small">Attachments:</span>
-        <div class="row pb-3">
-          {% for file in attachments %}
-            <div class="col-12 d-flex justify-content-between align-items-center px-3">
-              <span>
-                {% if file.filetype %}
-                  <i class="bi bi-filetype-{{ file.filetype }} text-info"></i>
-                {% else %}
-                  <i class="bi bi-file-earmark text-info"></i>
-                {% endif %}
-                <a href="{{ file.file.url }}" title="{{ file.description }}"><i class="small pe-5">{{ file.name }} - {{ file.file.size|filesizeformat }}</i></a>
-              </span>
-              <span>
-                <a hx-get="{% url 'equipmentrecord_attachment_update' file.id %}"
-                   hx-trigger="click"
-                   hx-target="#modal-box .modal-content"
-                   hx-swap="innerHTML"
-                   data-bs-toggle="modal"
-                   data-bs-target="#modal-box"
-                   href="javascript:"><i class="bi bi-pencil-square small"></i></a>
-                <a hx-get="{% url 'equipmentrecord_attachment_delete' file.id %}"
-                   hx-trigger="click"
-                   hx-target="#modal-box .modal-content"
-                   hx-swap="innerHTML"
-                   data-bs-toggle="modal"
-                   data-bs-target="#modal-box"
-                   href="javascript:"><i class="bi bi-trash small"></i></a>
-              </span>
+      <div class="row pb-3">
+        <div class="col">
+          <span class="h6 small pe-2">Date:</span>
+          <span>{{ record.date|date:"d/m/Y" }}</span>
+        </div>
+        <div class="col">
+          <span class="h6 small pe-2">Record type:</span><span>{{ record.record_type }}</span>
+        </div>
+      </div>
+      <div class="row pb-3">
+        <div class="col">
+          <span class="h6 small pe-2">Created:</span>
+          <span>{{ record.created_at|date:"d/m/Y H:i:s" }}</span>
+          <i class="text-muted">{{ record.created_by.initials|default:"" }}</i>
+        </div>
+        <div class="col">
+          <span class="h6 small pe-2">Updated:</span>
+          <span>{{ record.last_updated|date:"d/m/Y H:i:s" }}</span>
+          <i class="text-muted">{{ record.last_updated_by.initials|default:"" }}</i>
+        </div>
+      </div>
+      <div class="row pb-3">
+        <div class="col">
+          <span class="h6 small pe-2">Detail description:</span>
+          {{ record.description|md_link }}
+        </div>
+      </div>
+      <div class="row pb-3">
+        <div class="col">
+          {% if attachments|length %}
+            <span class="h6 small">Attachments:</span>
+            <div class="row pb-3">
+              {% for file in attachments %}
+                <div class="col-12 d-flex justify-content-between align-items-center p-3">
+                  <span>
+                    {% if file.filetype %}
+                      <i class="bi bi-filetype-{{ file.filetype }} text-info"></i>
+                    {% else %}
+                      <i class="bi bi-file-earmark text-info"></i>
+                    {% endif %}
+                    <a href="{{ file.file.url }}" title="{{ file.description }}"><i class="small pe-5">{{ file.name }} - {{ file.file.size|filesizeformat }}</i></a>
+                  </span>
+                  <span>
+                    <a hx-get="{% url 'equipmentrecord_attachment_update' file.id %}"
+                       hx-trigger="click"
+                       hx-target="#modal-box .modal-content"
+                       hx-swap="innerHTML"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modal-box"
+                       href="javascript:"><i class="bi bi-pencil-square small"></i></a>
+                    <a hx-get="{% url 'equipmentrecord_attachment_delete' file.id %}"
+                       hx-trigger="click"
+                       hx-target="#modal-box .modal-content"
+                       hx-swap="innerHTML"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modal-box"
+                       href="javascript:"><i class="bi bi-trash small"></i></a>
+                  </span>
+                </div>
+              {% endfor %}
             </div>
-          {% endfor %}
+          </div>
         </div>
       {% endif %}
     </div>

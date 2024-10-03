@@ -40,6 +40,9 @@ class AttachmentUploadView(AttachmentActionUrlNameMixin, View):
     def post(self, request, pk):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
+            # log uploaded_by user
+            form.instance.uploaded_by = request.user
+            
             attachment = form.save(commit=False)
             attachment.content_object = get_object_or_404(self.owner_model, pk=pk)
             attachment.save()

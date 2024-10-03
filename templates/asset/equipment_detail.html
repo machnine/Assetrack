@@ -98,9 +98,9 @@
       <div class="row pb-2">
         <div class="col-12 text-end small text-muted">
           {% if equipment.last_updated_at %}
-            <i class="small">last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }}</i>
+            <i class="small">Last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }} {{ equipment.last_updated_by.initials|default:""}}</i>
           {% else %}
-            <i class="small">created: {{ equipment.created_at|date:"d/m/Y H:i" }}</i>
+            <i class="small">Created: {{ equipment.created_at|date:"d/m/Y H:i" }}</i>
           {% endif %}
         </div>
       </div>
@@ -175,9 +175,10 @@
           </div>
           <div class="col-6 col-lg-2 text-muted fw-bold">{{ record.record_type }}</div>
           <div class="d-none d-lg-block col-lg-9 small">
+            <i class="text-muted fw-bold">{{ record.created_by.initials|default:"" }}: </i>
             {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
             <span class="text-primary">{{ record.description|truncatewords:25|md_link }}</span>
-          </div>
+          </div>          
         </div>
       {% endfor %}
     </div>
