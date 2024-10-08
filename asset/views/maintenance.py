@@ -3,7 +3,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
 
 from asset.forms import MaintenanceRecordForm, MaintenanceTaskForm
 from asset.models import Equipment, EquipmentType, MaintenanceRecord, MaintenanceRecordAssignment, MaintenanceTask
@@ -156,4 +156,22 @@ class MaintenanceTaskDeleteView(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("maintenance_task_list")
+        return context
+
+
+# Maintenance How-Tos views
+class LxMaintenanceHowToView(TemplateView):
+    """
+    How-to guide for LX maintenance
+    """
+
+    def get_template_names(self):
+        task = self.kwargs.get("task")
+        if task in ["daily", "fortnightly", "long-term"]:
+            return f"asset/maintenance_howto_lx_{task}.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["task"] = self.kwargs.get("task")
+        context["equipment"] = "Luminex"
         return context

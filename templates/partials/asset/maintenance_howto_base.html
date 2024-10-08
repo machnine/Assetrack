@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Maintenance Howtos" />
+    <meta name="keywords" content="maintenance, howtos" />
+    <title>Maintenance: {{ equipment }} [{{ task }}]</title>
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'icons/bootstrap-icons-1.11.1.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row py-4">
+        <div class="col text-center">
+          <span class="h3">{{ equipment }} {{ task|title }} Maintenance</span>
+        </div>
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col px-5">
+        {% block content %}
+        {% endblock content %}
+      </div>
+    </div>
+    <div class="row pt-3">
+      <div class="col text-center">
+        <a href="https://www.youtube.com/playlist?list=PLpAAoW3Iy0poBRCn0cZXFzwYhC5OMNNbJ" target="_blank"><i class="bi bi-play-circle-fill text-danger"></i>
+          FLEXMAP 3D System and Maintenance Playlist ...
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

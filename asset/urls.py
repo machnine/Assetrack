@@ -172,5 +172,9 @@ urlpatterns = [
         maintenance.MaintenanceRecordDeleteView.as_view(),
         name="maintenance_record_delete",
     ),
-
+    path(
+        "maintenance_guide/luminex/<str:task>/",
+        maintenance.LxMaintenanceHowToView.as_view(),
+        name="lx_maintenance_guide",
+    ),
 ]
