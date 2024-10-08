@@ -19,6 +19,13 @@
           <span class="h3">{{ equipment }} {{ task|title }} Maintenance</span>
         </div>
       </div>
+      <div class="row pb-4">
+        <div class="col text-center small">
+          <span class="px-1"><a href="{% url 'lx_maintenance_guide' task='daily' %}"><i class="bi bi-sun-fill" style="color:{% if task == 'daily' %}#808080{% else %}#F06624{% endif %}"></i> Daily</a></span>
+          <span class="px-1"><a href="{% url 'lx_maintenance_guide' task='fortnightly' %}"><i class="bi bi-calendar-week" style="color:{% if task == 'fortnightly' %}#808080{% else %}#1CB14F{% endif %}"></i> Fortnightly</a></span>
+          <span class="px-1"><a href="{% url 'lx_maintenance_guide' task='long-term' %}"><i class="bi bi-calendar3" style="color:{% if task == 'long-term' %}#808080{% else %}#800000{% endif %}"></i> Long term</a></span>
+        </div>
+      </div>
     </div>
     <div class="row p-2">
       <div class="col px-5">
@@ -28,10 +35,10 @@
     </div>
     <div class="row pt-3">
       <div class="col text-center">
-        <a href="https://www.youtube.com/playlist?list=PLpAAoW3Iy0poBRCn0cZXFzwYhC5OMNNbJ" target="_blank"><i class="bi bi-play-circle-fill text-danger"></i>
-          FLEXMAP 3D System and Maintenance Playlist ...
-        </a>
-      </div>
-    </div>
-  </body>
+      <a href="https://www.youtube.com/playlist?list=PLpAAoW3Iy0poBRCn0cZXFzwYhC5OMNNbJ" target="_blank"><i class="bi bi-play-circle-fill text-danger"></i>
+      FLEXMAP 3D System and Maintenance Playlist ...
+    </a>
+  </div>
+</div>
+</body>
 </html>
