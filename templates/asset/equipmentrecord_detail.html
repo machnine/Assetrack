@@ -27,7 +27,7 @@
           <span>{{ record.date|date:"d/m/Y" }}</span>
         </div>
         <div class="col">
-          <span class="h6 small pe-2">Record type:</span><span style="color: #{{ record.record_type.color }};">{{ record.record_type }}</span>
+          <span class="h6 small pe-2">Record type:</span><span style="color: {{ record.record_type.color }};">{{ record.record_type }}</span>
         </div>
       </div>
       <div class="row pb-3">

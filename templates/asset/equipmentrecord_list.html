@@ -46,7 +46,7 @@
       <div class="col-lg-1 text-center">{{ record.date|date:"d/m/Y" }}</div>
       <div class="col-lg-1">
         <a href="{% url 'equipmentrecord_list' %}?type={{ record.record_type.id }}">
-          <span class="fw-semibold" style="color: #{{ record.record_type.color }};">{{ record.record_type }}</span>
+          <span class="fw-semibold" style="color: {{ record.record_type.color }};">{{ record.record_type }}</span>
         </a>
       </div>
       <div class="col-lg-2">

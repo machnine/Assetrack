@@ -178,7 +178,7 @@
           <div class="col-3 col-lg-1 ps-2">
             <a href="{% url 'equipmentrecord_detail' record.id %}" title="View record details..."> {{ record.date|date:'d/m/Y' }}</a>
           </div>
-          <div class="col-6 col-lg-2 fw-semibold" style="color: #{{ record.record_type.color }};">{{ record.record_type }}</div>
+          <div class="col-6 col-lg-2 fw-semibold" style="color: {{ record.record_type.color }};">{{ record.record_type }}</div>
           <div class="d-none d-lg-block col-lg-8 small">
             <i class="text-muted fw-bold">{{ record.created_by.initials|default:"" }}: </i>
             {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
