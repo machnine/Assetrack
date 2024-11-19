@@ -98,7 +98,7 @@
       <div class="row pb-2">
         <div class="col-12 text-end small text-muted">
           {% if equipment.last_updated_at %}
-            <i class="small">Last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }} {{ equipment.last_updated_by.initials|default:""}}</i>
+            <i class="small">Last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }} {{ equipment.last_updated_by.initials|default:"" }}</i>
           {% else %}
             <i class="small">Created: {{ equipment.created_at|date:"d/m/Y H:i" }}</i>
           {% endif %}
@@ -164,21 +164,26 @@
   {# equipment records #}
   <div class="panel">
     <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
-      <span class="text-primary"><i class="bi bi-calendar3"></i> Equipment records</span>
+      <span class="text-primary"><i class="bi bi-card-checklist"></i> Equipment records</span>
       <a href="{% url 'equipmentrecord_create' equipment.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
     </div>
     <div class="panel-content pb-5">
       {% for record in equipment.equipmentrecord_set.all %}
         <div class="row align-items-center py-2 g-0 border-bottom {% if not forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
-          <div class="col-6 col-lg-1 ps-2">
-            <a href="{% url 'equipmentrecord_detail' record.id %}"><i class="bi bi-caret-right-fill"></i> {{ record.date|date:'d/m/Y' }}</a>
+          <div class="col-3 col-lg-1 ps-2">
+            <a href="{% url 'equipmentrecord_detail' record.id %}" title="Equipment record ID: {{ record.id }}">
+              <span class="text-warning pe-3 fw-semibold">{{ record.id }}</span>
+            </a>
           </div>
-          <div class="col-6 col-lg-2 text-muted fw-bold">{{ record.record_type }}</div>
-          <div class="d-none d-lg-block col-lg-9 small">
+          <div class="col-3 col-lg-1 ps-2">
+            <a href="{% url 'equipmentrecord_detail' record.id %}" title="View record details..."> {{ record.date|date:'d/m/Y' }}</a>
+          </div>
+          <div class="col-6 col-lg-2 fw-semibold" style="color: #{{ record.record_type.color }};">{{ record.record_type }}</div>
+          <div class="d-none d-lg-block col-lg-8 small">
             <i class="text-muted fw-bold">{{ record.created_by.initials|default:"" }}: </i>
             {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
             <span class="text-primary">{{ record.description|truncatewords:25|md_link }}</span>
-          </div>          
+          </div>
         </div>
       {% endfor %}
     </div>

@@ -35,7 +35,7 @@ class EquipmentRecord(AbstractRecord):
     class Meta:
         verbose_name = "Equipment Record"
         verbose_name_plural = "Equipment Records"
-        ordering = ["-date"]
+        ordering = ["-date", "-pk"]
 
     def has_attachment(self):
         """Check if the record has an attachment"""
@@ -56,6 +56,9 @@ class RecordType(models.Model):
     """Model for record type"""
 
     name = models.CharField(max_length=100)
+    color = models.CharField(max_length=7, default="#EEEEEE")
+    front_page = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.name

@@ -17,6 +17,19 @@
       <div class="panel-content">{% include "partials/home_schedule_list.html" %}</div>
     </div>
   {% endif %}
+  {% if equipment_records|length %}
+  <div class="panel">
+    <div class="panel-heading d-flex justify-content-between">
+      <h6 title="Lastest euqipment records">
+        <i class="bi bi-card-checklist text-primary"></i> Latest Equipement Records
+      </h6>
+      <span class="pe-3">
+        <a href="{% url 'equipmentrecord_list' %}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
+      </span>
+    </div>
+    <div class="panel-content">{% include "partials/home_equipment_record.html" %}</div>
+  </div>
+{% endif %}
   {% if request.user.is_authenticated %}
     {% if under_repair|length %}
       <div class="panel">

@@ -1,13 +1,44 @@
 """CRUD view for equipment record"""
 
+import re
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
 
 from asset.forms import EquipmentRecordAttachmentUpdateForm, EquipmentRecordAttachmentUploadForm, EquipmentRecordForm
 from asset.models import EquipmentRecord
 from asset.models.record import EquipmentRecordAttachment
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
+
+class EquipmentRecordListView(LoginRequiredMixin, ListView):
+    """List view for equipment record"""
+
+    model = EquipmentRecord
+    template_name = "asset/equipmentrecord_list.html"
+    context_object_name = "records"
+    paginate_by = 10
+    ordering = ["-date"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        filters = {"q": self.request.GET.get("q"), "record_type": self.request.GET.get("type")}
+
+        # normalise the query string
+        if filters["q"]:
+            filters["q"] = re.sub(r"[^A-Za-z0-9 ]+", "", filters["q"]).strip()
+
+        queries = {
+            "q": Q(equipment__name__icontains=filters["q"])| Q(description__icontains=filters["q"]),            
+            "record_type": Q(record_type=filters["record_type"])}
+        
+        # Remove queries with None values
+        filtered_queries = {key: query for key, query in queries.items() if filters[key]}
+
+        for query in filtered_queries.values():
+            queryset = queryset.filter(query)
+        
+        return queryset
 
 
 class EquipmentRecordCreateView(LoginRequiredMixin, CreateView):

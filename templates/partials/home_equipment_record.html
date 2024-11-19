@@ -1,0 +1,28 @@
+<div class="row px-3 text-muted small">
+  <div class="col-lg-1 text-center">Record Number</div>
+  <div class="col-lg-1 text-center">Record Date</div>
+  <div class="col-lg-1">Record Type</div>
+  <div class="col-lg-2">Equipment</div>
+  <div class="col-lg-6">Description</div>
+  <div class="col-lg-1 text-center">Added By</div>
+</div>
+{% for record in equipment_records %}
+  <div class="row px-3">
+    <div class="col-lg-1 text-center">
+      <a href="{% url 'equipmentrecord_detail' record.id %}">
+        <span class="text-warning pe-3 fw-semibold">{{ record.id }}</span>
+      </a>
+    </div>
+    <div class="col-lg-1 text-center">{{ record.date|date:"d/m/Y" }}</div>
+    <div class="col-lg-1">
+        <span class="fw-semibold" style="color: #{{ record.record_type.color }};">{{ record.record_type }}</span>
+    </div>
+    <div class="col-lg-2">
+      <a href="{% url 'equipment_detail' record.equipment.id %}">{{ record.equipment.name|truncatechars:25 }}</a>
+    </div>
+    <div class="col-lg-6">
+      <a href="{% url 'equipment_detail' record.equipment.id %}">{{ record.description|truncatechars:80 }}</a>
+    </div>
+    <div class="col-lg-1 text-center" title="{{ record.created_at }}">{{ record.created_by.initials|default:"" }}</div>
+  </div>
+{% endfor %}
