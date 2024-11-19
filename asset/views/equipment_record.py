@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
 
 from asset.forms import EquipmentRecordAttachmentUpdateForm, EquipmentRecordAttachmentUploadForm, EquipmentRecordForm
-from asset.models import EquipmentRecord, SiteConfiguration
+from asset.models import EquipmentRecord, SiteConfiguration, RecordType
 from asset.models.record import EquipmentRecordAttachment
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
@@ -39,6 +39,27 @@ class EquipmentRecordListView(LoginRequiredMixin, ListView):
         
         return queryset
 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["query"] = self.get_filter_description()
+        return context
+
+    def get_filter_description(self):
+        descriptions = {
+            "q": ("Search Filter", self.request.GET.get("q")),
+            "type": ("Record Type", self.get_object_description(RecordType, self.request.GET.get("type"))),
+        }
+        descriptions = [f"{label}: {value}" for key, (label, value) in descriptions.items() if value]
+        return ", ".join(descriptions)
+
+    def get_object_description(self, model, object_id):
+        if object_id:
+            try:
+                return model.objects.get(id=object_id)
+            except model.DoesNotExist:
+                return None
+        return None
 
 class EquipmentRecordCreateView(LoginRequiredMixin, CreateView):
     """Create view for equipment record"""
