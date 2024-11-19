@@ -5,9 +5,13 @@ from django.contrib import admin
 from asset.models import Calibration, EquipmentType, License, MaintenanceRecordMenu, RecordType, SoftwareType, SiteConfiguration
 
 admin.site.register(Calibration)
-admin.site.register(RecordType)
 admin.site.register(License)
 admin.site.register(SoftwareType)
+
+admin.register(RecordType)
+class RecordTypeAdmin(admin.ModelAdmin):
+    list_display = ("name", "color")
+
 
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(admin.ModelAdmin):
