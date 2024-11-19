@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from asset.forms import ScheduleForm
-from asset.models import Schedule
+from asset.models import Schedule, SiteConfiguration
 
 
 class ScheduleCreateView(LoginRequiredMixin, CreateView):
@@ -31,7 +31,7 @@ class ScheduleListView(LoginRequiredMixin, ListView):
     model = Schedule
     template_name = "asset/schedule_list.html"
     context_object_name = "schedules"
-    paginate_by = 16
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_SCHEDULE_LIST") or 16)
 
     def get_queryset(self):
         """

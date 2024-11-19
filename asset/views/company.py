@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from asset.forms import CompanyForm
-from asset.models import Company
+from asset.models import Company, SiteConfiguration
 
 
 class CompanyListView(LoginRequiredMixin, ListView):
@@ -15,7 +15,7 @@ class CompanyListView(LoginRequiredMixin, ListView):
     model = Company
     template_name = "asset/company_list.html"
     context_object_name = "companies"
-    paginate_by = 16
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_COMPANY_LIST") or 16)
 
     def get_queryset(self):
         queryset = super().get_queryset()

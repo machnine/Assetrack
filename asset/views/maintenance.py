@@ -6,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
 
 from asset.forms import MaintenanceRecordForm, MaintenanceTaskForm
-from asset.models import Equipment, EquipmentType, MaintenanceRecord, MaintenanceRecordAssignment, MaintenanceTask
+from asset.models import Equipment, EquipmentType, MaintenanceRecord, MaintenanceRecordAssignment, MaintenanceTask, SiteConfiguration
 
 
 ## Maintenance Record views
@@ -14,7 +14,7 @@ class MaintenanceRecordListView(LoginRequiredMixin, ListView):
     model = MaintenanceRecord
     template_name = "asset/maintenance_record_list.html"
     context_object_name = "records"
-    paginate_by = 16
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_MAINTENANCE_RECORD_LIST") or 16)
 
     def get_queryset(self):
         queryset = MaintenanceRecord.objects.select_related("equipment").prefetch_related("maintenance__task")
@@ -122,7 +122,7 @@ class MaintenanceTaskListView(LoginRequiredMixin, ListView):
 
     model = MaintenanceTask
     template_name = "asset/maintenance_task_list.html"
-    paginate_by = 16
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_MAINTENANCE_TASK_LIST") or 16)
 
     def get_queryset(self):
         queryset = super().get_queryset()

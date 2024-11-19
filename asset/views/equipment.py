@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import EquipmentAttachmentUpdateForm, EquipmentAttachmentUploadForm, EquipmentForm
-from asset.models import Calibration, Category, Company, Equipment, EquipmentAttachment, EquipmentType, Location, Status
+from asset.models import Calibration, Category, Company, Equipment, EquipmentAttachment, EquipmentType, Location, Status, SiteConfiguration
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
@@ -19,7 +19,7 @@ class EquipmentListView(LoginRequiredMixin, ListView):
     model = Equipment
     template_name = "asset/equipment_list.html"
     context_object_name = "equipments"
-    paginate_by = 16
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_EQUIPMENT_LIST") or 16)
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -3,7 +3,7 @@
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from asset.models import Equipment, EquipmentRecord, Schedule, Status
+from asset.models import Equipment, EquipmentRecord, Schedule, Status, SiteConfiguration
 
 
 class HomeView(TemplateView):
@@ -30,5 +30,6 @@ class HomeView(TemplateView):
         context["replacement_due"] = Equipment.objects.exclude(status=decomissioned).filter(
             replacement_date__lte=one_year
         )
-        context["equipment_records"] = EquipmentRecord.objects.filter(record_type__front_page=True).order_by("-pk")[:10]
+        equipment_record_display_limit = int(SiteConfiguration.get_value("LIMIT_HOME_EQUIPMENT_RECORD") or 5)
+        context["equipment_records"] = EquipmentRecord.objects.filter(record_type__front_page=True).order_by("-pk")[:equipment_record_display_limit]
         return context

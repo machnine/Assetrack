@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
 
 from asset.forms import EquipmentRecordAttachmentUpdateForm, EquipmentRecordAttachmentUploadForm, EquipmentRecordForm
-from asset.models import EquipmentRecord
+from asset.models import EquipmentRecord, SiteConfiguration
 from asset.models.record import EquipmentRecordAttachment
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
@@ -17,8 +17,7 @@ class EquipmentRecordListView(LoginRequiredMixin, ListView):
     model = EquipmentRecord
     template_name = "asset/equipmentrecord_list.html"
     context_object_name = "records"
-    paginate_by = 10
-    ordering = ["-date"]
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_EQUIPMENT_RECORD") or 16)    
 
     def get_queryset(self):
         queryset = super().get_queryset()

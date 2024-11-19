@@ -163,3 +163,27 @@ class Schedule(models.Model):
             self.next_action_date = self.get_next_action_date()
             self.status = "A"
         self.save()
+
+
+
+#  model to store user modifiable site configuration
+class SiteConfiguration(models.Model):
+    """ model to store user modifiable site configuration """
+
+    name = models.CharField(max_length=50, unique=True)
+    value = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+    
+    # static method to get the value of a configuration
+    @staticmethod
+    def get_value(name):
+        try:
+            return SiteConfiguration.objects.get(name=name).value
+        except SiteConfiguration.DoesNotExist:
+            return None
+        
+    class Meta:
+        verbose_name_plural = "site configurations"
+        ordering = ["name"]

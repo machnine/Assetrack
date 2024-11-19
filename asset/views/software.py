@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import SoftwareAttachmentUpdateForm, SoftwareAttachmentUploadForm, SoftwareForm
-from asset.models import License, Software, SoftwareAttachment, SoftwareType
+from asset.models import License, Software, SoftwareAttachment, SoftwareType, SiteConfiguration
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
@@ -16,7 +16,7 @@ class SoftwareListView(LoginRequiredMixin, ListView):
     model = Software
     template_name = "asset/software_list.html"
     context_object_name = "software_list"
-    paginate_by = 16
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_SOFTWARE_LIST") or 16)
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -13,6 +13,7 @@ from django.views.generic import ListView, View
 
 from attachment.forms import DocumentForm
 from attachment.models import Document
+from asset.models import SiteConfiguration
 
 
 class DocumentListView(LoginRequiredMixin, ListView):
@@ -21,7 +22,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
     model = Document
     template_name = "attachment/document_list.html"
     context_object_name = "documents"
-    paginate_by = 16
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_DOCUMENT_LIST") or 16)
 
     def get_queryset(self):
         queryset = super().get_queryset()

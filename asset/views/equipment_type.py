@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from asset.forms import EquipmentTypeForm
-from asset.models import EquipmentType
+from asset.models import EquipmentType, SiteConfiguration
 
 
 class EquipmentTypeListView(LoginRequiredMixin, ListView):
@@ -15,7 +15,7 @@ class EquipmentTypeListView(LoginRequiredMixin, ListView):
     model = EquipmentType
     template_name = "asset/equipmenttype_list.html"
     context_object_name = "eqipment_types"
-    paginate_by = 15
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_EQUIPMENT_TYPE") or 16)
 
     def get_queryset(self):
         queryset = super().get_queryset()
