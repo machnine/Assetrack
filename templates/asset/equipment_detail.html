@@ -109,13 +109,14 @@
   {# equipment documents #}
   <div class="panel">
     <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
-      <span class="text-primary"><i class="bi bi-folder"></i> Equipment documents <span class="text-muted small">(documents related to equipment records shoud be attached to the corresponding records)</span></span>
+      <span class="text-primary"><i class="bi bi-folder"></i> Equipment documents <span class="text-danger small">(documents related to <b>equipment records</b> must be attached to the corresponding <span class="text-primary"><i class="bi bi-card-checklist"></i> Equipment records</span> section below)</span></span>
       <a hx-get="{% url 'equipment_attachment_upload' equipment.id %}"
          hx-trigger="click"
          hx-target="#modal-box .modal-content"
          hx-swap="innerHTML"
          data-bs-toggle="modal"
          data-bs-target="#modal-box"
+         hx-confirm="Are you uploading a document related to this << equipment >>?   This is not an attachment for a specific << equipment record >> in the << equipment records >> section?"
          href="javascript:"><i class="bi bi-file-earmark-arrow-up"></i></a>
     </div>
     <div class="panel-content">
