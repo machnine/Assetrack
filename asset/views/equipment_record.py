@@ -1,13 +1,14 @@
 """CRUD view for equipment record"""
 
 import re
-from django.db.models import Q
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import EquipmentRecordAttachmentUpdateForm, EquipmentRecordAttachmentUploadForm, EquipmentRecordForm
-from asset.models import EquipmentRecord, SiteConfiguration, RecordType
+from asset.models import EquipmentRecord, RecordType, SiteConfiguration
 from asset.models.record import EquipmentRecordAttachment
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 

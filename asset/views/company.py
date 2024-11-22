@@ -1,7 +1,7 @@
 """company views"""
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -22,6 +22,8 @@ class CompanyListView(LoginRequiredMixin, ListView):
         query = self.request.GET.get("q")
         if query:
             queryset = queryset.filter(Q(name__icontains=query) | Q(notes__icontains=query))
+        queryset = queryset.annotate(manufactured=Count("manufacturer", distinct=True))
+        queryset = queryset.annotate(serviced=Count("service_provider", distinct=True))
         return queryset.order_by("name")
 
     def get_context_data(self, **kwargs):

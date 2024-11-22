@@ -28,6 +28,7 @@
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col">Name</div>
+    <div class="col">Equipment Count</div>
     <div class="col">
       URL slug<a href="https://en.wikipedia.org/wiki/Clean_URL#Slug" target="_blank" title="What is this?"><sup><i class="bi bi-question text-danger"></i></sup></a>
     </div>
@@ -39,6 +40,7 @@
       <div class="col text-muted fw-bold">
         <a href="{% url 'equipment_list' %}?t={{ et.id }}" title="List all '{{ et.name }}' equipment">{{ et.name }}</a>
       </div>
+      <div class="col">{{ et.equipment_count }}</div>
       <div class="col">
         <i class="text-muted">{{ et.slug|default:"" }}</i>
       </div>

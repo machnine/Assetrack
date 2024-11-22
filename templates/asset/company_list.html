@@ -28,9 +28,10 @@
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col col-lg-4">Name</div>
-    <div class="col col-lg-2">Phone</div>
+    <div class="col col-lg-1">Equipment Count</div>
+    <div class="col col-lg-1">Phone</div>
     <div class="col col-lg-2">Email</div>
-    <div class="col col-lg-3">Notes</div>
+    <div class="col col-lg-4">Notes</div>
   </div>
   {% for company in companies %}
     <div class="row align-items-center border-top py-2 alternate-row">
@@ -45,7 +46,12 @@
           </a>
         {% endif %}
       </div>
-      <div class="col col-lg-2">{{ company.phone |default:"" }}</div>
+      <div class="col col-lg-1">
+        <span class="text-muted small" title="Manufacturer">M:</span> {{ company.manufactured }}
+        <span class="px-2"></span>
+        <span class="text-muted small" title="Serivce Provider">S:</span>  {{ company.serviced }}
+      </div>
+      <div class="col col-lg-1">{{ company.phone |default:"" }}</div>
       <div class="col col-lg-2 small">{{ company.email |default:"" }}</div>
       <div class="d-none d-lg-block col-lg-3 small">{{ company.notes|truncatewords:10 }}</div>
       <div class="d-none d-lg-block col-lg-1 justify-content-between align-items-center text-end">

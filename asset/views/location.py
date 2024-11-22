@@ -1,6 +1,7 @@
 """views associated with the Location model"""
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -14,6 +15,11 @@ class LocationListView(LoginRequiredMixin, ListView):
     model = Location
     template_name = "asset/location_list.html"
     context_object_name = "locations"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(equipment_count=Count("equipment")).order_by("-equipment_count")
+        return queryset
 
 
 class LocationCreateView(LoginRequiredMixin, CreateView):

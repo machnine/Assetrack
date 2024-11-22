@@ -1,6 +1,7 @@
 """category views"""
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -15,6 +16,10 @@ class CategoryListView(LoginRequiredMixin, ListView):
     template_name = "asset/category_list.html"
     context_object_name = "categories"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(equipment_count=Count("equipment")).order_by("-equipment_count")
+        return queryset
 
 class CategoryCreateView(LoginRequiredMixin, CreateView):
     """Create view for the category model"""
@@ -45,4 +50,3 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("category_list")
         return context
-

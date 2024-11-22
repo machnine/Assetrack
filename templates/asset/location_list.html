@@ -11,6 +11,7 @@
 {% block panel_content %}
   <div class="row pb-2 text-muted small fw-bold align-items-center">
     <div class="col">Name</div>
+    <div class="col">Equipment Count</div>
     <div class="col">Description</div>
     <div class="d-none col-lg-2 d-lg-block"></div>
   </div>
@@ -20,6 +21,7 @@
         <a href="{% url 'equipment_list' %}?l={{ location.id }}"
            title="List all '{{ location.name }}' equipment">{{ location.name }}</a>
       </div>
+      <div class="col">{{ location.equipment_count }}</div>
       <div class="col">{{ location.description|default:"" }}</div>
       <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
         {% if request.user.is_superuser %}

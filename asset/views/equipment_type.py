@@ -1,7 +1,7 @@
 """EquipmentType views"""
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -22,7 +22,8 @@ class EquipmentTypeListView(LoginRequiredMixin, ListView):
         query = self.request.GET.get("q")
         if query:
             queryset = queryset.filter(Q(name__icontains=query) | Q(description__icontains=query))
-        return queryset.order_by("name")
+        queryset = queryset.annotate(equipment_count=Count("equipment")).order_by("-equipment_count")
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -32,6 +33,7 @@ class EquipmentTypeListView(LoginRequiredMixin, ListView):
             context["query"] = f"Filter: {query}"
 
         return context
+
 
 class EquipmentTypeCreateView(LoginRequiredMixin, CreateView):
     """Create view for the EquipmentType model"""
@@ -62,4 +64,3 @@ class EquipmentTypeDeleteView(LoginRequiredMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy("equipmenttype_list")
         return context
-
