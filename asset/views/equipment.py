@@ -2,8 +2,8 @@
 
 import re
 
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -18,8 +18,8 @@ from asset.models import (
     EquipmentAttachment,
     EquipmentType,
     Location,
-    Status,
     SiteConfiguration,
+    Status,
 )
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
@@ -84,6 +84,7 @@ class EquipmentListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["query"] = self.get_filter_description()
+        context["total"] = self.get_queryset().exclude(status__name="Decommissioned").count()
         return context
 
     def get_filter_description(self):
