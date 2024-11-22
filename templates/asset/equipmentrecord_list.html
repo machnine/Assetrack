@@ -2,9 +2,6 @@
 {% block page_title %}
   Equipment Record List
 {% endblock page_title %}
-{% block new_object_url %}
-  {% url 'equipment_create' %}
-{% endblock new_object_url %}
 {% block panel_heading_start %}
   <i class="bi bi-card-checklist text-primary"></i> Equipment Record List
   {% if query %}
@@ -55,8 +52,10 @@
       <div class="col-lg-6">
         <a href="{% url 'equipment_detail' record.equipment.id %}">{{ record.description|truncatechars:80 }}</a>
       </div>
-      <div class="col-lg-1" title="{{ record.created_at }}"><span class="ps-2">{{ record.created_by.initials|default:"" }}</a></div>
+      <div class="col-lg-1" title="{{ record.created_at }}">
+      <span class="ps-2">{{ record.created_by.initials|default:"" }}</a>
     </div>
-  {% endfor %}
-  {% include "partials/pagination.html" %}
+  </div>
+{% endfor %}
+{% include "partials/pagination.html" %}
 {% endblock panel_content %}

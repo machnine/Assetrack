@@ -75,6 +75,7 @@ urlpatterns = [
         equipment.EquipmentAttachmentDeleteView.as_view(),
         name="equipment_attachment_delete",
     ),
+    path("equipment/attachments/", equipment.EquipmentAttachmentListView.as_view(), name="equipment_attachment_list"),
     path(
         "equipment/record/attachment/<int:pk>/upload/",
         equipment_record.EquipmentRecordAttachmentUploadView.as_view(),

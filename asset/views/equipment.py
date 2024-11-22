@@ -2,6 +2,7 @@
 
 import re
 
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -9,7 +10,17 @@ from django.utils import timezone
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import EquipmentAttachmentUpdateForm, EquipmentAttachmentUploadForm, EquipmentForm
-from asset.models import Calibration, Category, Company, Equipment, EquipmentAttachment, EquipmentType, Location, Status, SiteConfiguration
+from asset.models import (
+    Calibration,
+    Category,
+    Company,
+    Equipment,
+    EquipmentAttachment,
+    EquipmentType,
+    Location,
+    Status,
+    SiteConfiguration,
+)
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
 
@@ -190,3 +201,34 @@ class EquipmentAttachmentDeleteView(LoginRequiredMixin, AttachmentDeleteView):
     model = EquipmentAttachment
     success_url_name = "equipment_detail"
     template_name = "attachment/delete_form.html"
+
+
+class EquipmentAttachmentListView(LoginRequiredMixin, ListView):
+    """List all euqipment attachments"""
+
+    model = EquipmentAttachment
+    template_name = "asset/equipment_attachment_list.html"
+    context_object_name = "attachments"
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_ATTACHMENT_LIST") or 16)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # search the attachment's equipment name or attachment name
+        q = self.request.GET.get("q")
+        if q:
+            queryset = queryset.filter(
+                Q(name__icontains=q)
+                | Q(description__icontains=q)
+                | Q(
+                    content_type=ContentType.objects.get_for_model(Equipment),
+                    object_id__in=Equipment.objects.filter(name__icontains=q).values_list("id", flat=True),
+                ),
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.GET.get("q"):
+            context["query"] = "Search Filter: " + self.request.GET.get("q")
+        return context

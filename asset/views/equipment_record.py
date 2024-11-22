@@ -11,13 +11,14 @@ from asset.models import EquipmentRecord, SiteConfiguration, RecordType
 from asset.models.record import EquipmentRecordAttachment
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
+
 class EquipmentRecordListView(LoginRequiredMixin, ListView):
     """List view for equipment record"""
 
     model = EquipmentRecord
     template_name = "asset/equipmentrecord_list.html"
     context_object_name = "records"
-    paginate_by = int(SiteConfiguration.get_value("PAGINATION_EQUIPMENT_RECORD") or 16)    
+    paginate_by = int(SiteConfiguration.get_value("PAGINATION_EQUIPMENT_RECORD") or 16)
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -28,17 +29,17 @@ class EquipmentRecordListView(LoginRequiredMixin, ListView):
             filters["q"] = re.sub(r"[^A-Za-z0-9 ]+", "", filters["q"]).strip()
 
         queries = {
-            "q": Q(equipment__name__icontains=filters["q"])| Q(description__icontains=filters["q"]),            
-            "record_type": Q(record_type=filters["record_type"])}
-        
+            "q": Q(equipment__name__icontains=filters["q"]) | Q(description__icontains=filters["q"]),
+            "record_type": Q(record_type=filters["record_type"]),
+        }
+
         # Remove queries with None values
         filtered_queries = {key: query for key, query in queries.items() if filters[key]}
 
         for query in filtered_queries.values():
             queryset = queryset.filter(query)
-        
-        return queryset
 
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,6 +61,7 @@ class EquipmentRecordListView(LoginRequiredMixin, ListView):
             except model.DoesNotExist:
                 return None
         return None
+
 
 class EquipmentRecordCreateView(LoginRequiredMixin, CreateView):
     """Create view for equipment record"""

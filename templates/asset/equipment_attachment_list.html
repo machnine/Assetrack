@@ -1,0 +1,61 @@
+{% extends "partials/object_list.html" %}
+{% block page_title %}
+  Equipment Attachment List
+{% endblock page_title %}
+{% block panel_heading_start %}
+  <i class="bi bi-plugin text-primary"></i> Equipment Attachment List
+  {% if query %}
+    <span>
+      <a href="{% url 'equipment_attachment_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
+    </span>
+  {% endif %}
+{% endblock panel_heading_start %}
+{% block panel_heading_center %}
+  <form method="get" action="{% url 'equipment_attachment_list' %}">
+    <input type="text"
+           name="q"
+           size="40"
+           class="form-control form-control-sm"
+           placeholder="Search equipment name, attachment name/description..."
+           onfocus="this.select();"
+           value="{{ request.GET.q }}">
+    <button type="submit" class="d-none">Search</button>
+  </form>
+{% endblock panel_heading_center %}
+{% block panel_heading_end %}
+{% endblock panel_heading_end %}
+{% block panel_content %}
+  <div class="row pb-2 text-muted small fw-bold align-items-center">
+    <div class="col-lg-1">Attachment Date</div>
+    <div class="col-lg-3">Equipment</div>
+    <div class="col-lg-1">File Type/Size</div>
+    <div class="col-lg-2">Attachment Name</div>
+    <div class="col-lg-4">Attachment Description</div>
+    <div class="col-lg-1">Added By</div>
+  </div>
+  {% for obj in object_list %}
+    <div class="row align-items-center border-top py-2 alternate-row">
+      <div class="col-lg-1">{{ obj.uploaded_at|date:'d/m/Y' }}</div>
+      <div class="col-lg-3">
+        <a href="{% url 'equipment_detail' obj.content_object.id %}"
+           title="View equipment details: {{ obj.content_object.name }} ...">{{ obj.content_object.name|truncatechars:25 }}</a>
+      </div>
+      <div class="col-lg-1" title="{{ obj.filetype }} file - {{ obj.file.size|filesizeformat }}">
+        {% if obj.filetype %}
+          <i class="bi bi-filetype-{{ obj.filetype }} text-danger"></i>
+        {% else %}
+          <i class="bi bi-file-earmark text-danger"></i>
+        {% endif %}
+        {{ obj.file.size|filesizeformat }}
+      </div>
+      <div class="col-lg-2" title="Open file: {{ obj.name }} ...">
+        <a href="{{ obj.file.url }}">{{ obj.name|truncatechars:30 }}</a>
+      </div>
+      <div class="col-lg-4">{{ obj.description|truncatechars:50 }}</div>
+      <div class="col-lg-1" title="{{ obj.uploaded_by }}">
+        <span class="ps-2">{{ obj.uploaded_by.initials|default:"" }}</span>
+      </div>
+    </div>
+  {% endfor %}
+  {% include "partials/pagination.html" %}
+{% endblock panel_content %}

@@ -7,11 +7,17 @@
        aria-expanded="false"
        href="javascript:"><i class="bi bi-plugin text-primary"></i> Equipment</a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="equipmentDropdown">
+      <li class="dropdown-header">Equipment</li>
       <li>
-        <a href="{% url 'equipment_list' %}" class="dropdown-item"><i class="bi bi-plugin text-primary"></i> Equipment List</a>
+        <a href="{% url 'equipment_list' %}" class="dropdown-item"><i class="bi bi-plugin text-primary"></i> List of Equipment</a>
       </li>
+      <li class="dropdown-divider"></li>
+      <li class="dropdown-header">Record Management</li>
       <li>
         <a href="{% url 'equipmentrecord_list' %}" class="dropdown-item"><i class="bi bi-card-checklist text-primary"></i> Equipment Records</a>
+      </li>
+      <li>
+        <a href="{% url 'equipment_attachment_list' %}" class="dropdown-item"><i class="bi bi-paperclip text-primary"></i> List of Attachments</a>
       </li>
     </ul>
   </li>
