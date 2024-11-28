@@ -1,4 +1,4 @@
-<div class="row pt-3">
+<div class="row pt-2">
   <div class="col d-flex justify-content-end">
     <nav>
       <ul class="pagination pagination-sm">
@@ -6,21 +6,20 @@
         {% if page_obj.has_previous %}
           <li class="page-item">
             <a class="page-link"
-               href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page={{ page_obj.previous_page_number }}">
-              <i class="bi bi-caret-left"></i>
+               href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+              <i class="fal fa-caret-left"></i>
             </a>
           </li>
         {% else %}
           <li class="page-item disabled">
-            <span class="page-link"><i class="bi bi-caret-left"></i></span>
+            <span class="page-link"><i class="fal fa-caret-left"></i></span>
           </li>
         {% endif %}
-
         {# FIRST PAGE #}
         {% if page_obj.number > 3 %}
           <li class="page-item">
             <a class="page-link"
-               href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page=1">1</a>
+               href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1">1</a>
           </li>
           {% if page_obj.number > 4 %}
             <li class="page-item disabled">
@@ -28,7 +27,6 @@
             </li>
           {% endif %}
         {% endif %}
-
         {# PAGE NUMBERS AROUND CURRENT PAGE #}
         {% for i in page_obj.paginator.page_range %}
           {% if i >= page_obj.number|add:-2 and i <= page_obj.number|add:2 %}
@@ -39,12 +37,11 @@
             {% else %}
               <li class="page-item">
                 <a class="page-link"
-                   href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page={{ i }}">{{ i }}</a>
+                   href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ i }}">{{ i }}</a>
               </li>
             {% endif %}
           {% endif %}
         {% endfor %}
-
         {# LAST PAGE #}
         {% if page_obj.number < page_obj.paginator.num_pages|add:-2 %}
           {% if page_obj.number < page_obj.paginator.num_pages|add:-3 %}
@@ -54,21 +51,20 @@
           {% endif %}
           <li class="page-item">
             <a class="page-link"
-               href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+               href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
           </li>
         {% endif %}
-
         {# NEXT #}
         {% if page_obj.has_next %}
           <li class="page-item">
             <a class="page-link"
-               href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}page={{ page_obj.next_page_number }}">
-              <i class="bi bi-caret-right"></i>
+               href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+              <i class="fal fa-caret-right"></i>
             </a>
           </li>
         {% else %}
           <li class="page-item disabled">
-            <span class="page-link"><i class="bi bi-caret-right"></i></span>
+            <span class="page-link"><i class="fal fa-caret-right"></i></span>
           </li>
         {% endif %}
       </ul>
