@@ -7,12 +7,12 @@
           <li class="page-item">
             <a class="page-link"
                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
-              <i class="fal fa-caret-left"></i>
+              <i class="bi bi-caret-left"></i>
             </a>
           </li>
         {% else %}
           <li class="page-item disabled">
-            <span class="page-link"><i class="fal fa-caret-left"></i></span>
+            <span class="page-link"><i class="bi bi-caret-left"></i></span>
           </li>
         {% endif %}
         {# FIRST PAGE #}
@@ -59,12 +59,12 @@
           <li class="page-item">
             <a class="page-link"
                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
-              <i class="fal fa-caret-right"></i>
+              <i class="bi bi-right"></i>
             </a>
           </li>
         {% else %}
           <li class="page-item disabled">
-            <span class="page-link"><i class="fal fa-caret-right"></i></span>
+            <span class="page-link"><i class="bi bi-right"></i></span>
           </li>
         {% endif %}
       </ul>
