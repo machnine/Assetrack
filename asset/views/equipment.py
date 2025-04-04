@@ -1,12 +1,13 @@
-"""CRUD operations for equipment"""
-
+import csv
 import re
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from asset.forms import EquipmentAttachmentUpdateForm, EquipmentAttachmentUploadForm, EquipmentForm
@@ -233,3 +234,61 @@ class EquipmentAttachmentListView(LoginRequiredMixin, ListView):
         if self.request.GET.get("q"):
             context["query"] = "Search Filter: " + self.request.GET.get("q")
         return context
+
+
+### data export views
+class EquipmentCSVExportView(EquipmentListView):
+    """
+    View to export equipment data to a CSV file.
+    Inherits filtering logic from EquipmentListView
+    """
+
+    def get(self, request, *args, **kwargs):
+        """
+        Export filtered equipment data to CSV
+        """
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+        queryset = self.get_queryset()
+
+        # Create the HttpResponse object with CSV header
+        filename = f"assetrack_equipment_{timezone.now().strftime('%Y-%m-%d-%H-%M-%S')}.csv"
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+        # Define the CSV fields and their corresponding data
+        csv_fields = {
+            "Name": lambda e: e.name,
+            "Manufacturer": lambda e: e.manufacturer.name,
+            "Model Number": lambda e: e.model_number,
+            "Serial Number": lambda e: e.serial_number,
+            "Inventory Number": lambda e: e.inventory_number,
+            "Received Date": lambda e: e.received_date,
+            "Commission Date": lambda e: e.commission_date,
+            "Warranty End": lambda e: e.warranty_end,
+            "Replacement Date": lambda e: e.replacement_date,
+            "Value": lambda e: e.value,
+            "Notes": lambda e: e.notes,
+            "Category": lambda e: e.category.name,
+            "Equipment Type": lambda e: e.equipment_type.name,
+            "Location": lambda e: e.location.name,
+            "Status": lambda e: e.status.name,
+            "Calibration": lambda e: e.calibration.name or "",
+            "Service Provider": lambda e: e.service_provider.name or "",
+            "Created At": lambda e: e.created_at,
+            "Created By": lambda e: e.created_by.username or "",
+            "Last Updated At": lambda e: e.last_updated_at,
+            "Last Updated By": lambda e: e.last_updated_by.username or "",
+        }
+
+        writer = csv.writer(response)
+
+        # Write headers
+        writer.writerow(csv_fields.keys())
+
+        # Write data rows
+        for equipment in queryset:
+            writer.writerow([field(equipment) for field in csv_fields.values()])
+
+        return response

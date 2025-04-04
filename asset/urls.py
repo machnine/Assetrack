@@ -99,6 +99,7 @@ urlpatterns = [
     path(
         "equipmenttype/<int:pk>/delete/", equipment_type.EquipmentTypeDeleteView.as_view(), name="equipmenttype_delete"
     ),
+    path("equipment/export/csv/", equipment.EquipmentCSVExportView.as_view(), name="equipment_csv_export"),
     # Software
     path("software/", software.SoftwareListView.as_view(), name="software_list"),
     path("software/create/", software.SoftwareCreateView.as_view(), name="software_create"),

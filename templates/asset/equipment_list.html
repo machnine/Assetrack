@@ -12,6 +12,12 @@
       <a href="{% url 'equipment_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
     </span>
   {% endif %}
+  <a href="{% url 'equipment_csv_export' %}?{{ request.GET.urlencode }}"
+     class="ps-2"
+     title="Export to CSV"
+     onclick="return confirm('Are you sure you want to export the equipment list to CSV?');">
+    <i class="bi bi-filetype-csv text-success"></i>
+  </a>
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
   <form method="get" action="{% url 'equipment_list' %}">
@@ -37,7 +43,7 @@
     <div class="col-lg-1">Category</div>
     <div class="col-lg-1">Type</div>
     <div class="col-lg-1">Location</div>
-    <div class="col-lg-2">Notes</div>    
+    <div class="col-lg-2">Notes</div>
   </div>
   {% for equipment in equipments %}
     <div class="row align-items-center border-top py-2 alternate-row">
