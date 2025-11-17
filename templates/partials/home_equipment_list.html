@@ -9,7 +9,7 @@
 </div>
 {% for equipment in equipment_objects %}
   <div class="row px-3">
-    <div class="col-lg-2">
+    <div class="col-lg-4">
       <a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a>
     </div>
     <div class="col-lg-2">{{ equipment.model_number|default:"" }}</div>
