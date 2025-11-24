@@ -21,36 +21,63 @@ Assetrack is a Django 5 application for tracking the full lifecycle of laborator
 
 ## Requirements
 - Python 3.12+
-- pip + virtualenv/venv
+- [uv](https://docs.astral.sh/uv/) - Fast Python package installer and resolver
 - SQLite (bundled in `data/assetrack.sqlite3` for local development)
 - Optional: Docker + Docker Compose for containerized runs
 
 ## Local Development
-### 1. Create a virtual environment and install dependencies
+
+> **Migration Note:** This project has migrated from `requirements.txt` to `pyproject.toml` with `uv` for dependency management. The old `requirements.txt` and `requirements.dev.txt` files are kept for backward compatibility but are no longer the primary source of dependencies.
+
+### 1. Install uv (if not already installed)
 ```pwsh
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.dev.txt
+# Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### 2. Configure environment variables
+### 2. Create a virtual environment and install dependencies
+```pwsh
+# Install production dependencies only
+uv sync
+
+# Install with development dependencies (recommended for local development)
+uv sync --extra dev
+```
+
+**Note:** The virtual environment will be automatically created at `.venv/` and dependencies are managed via `pyproject.toml` and locked in `uv.lock`.
+
+### 3. Configure environment variables
 Create a `.env` file (or export variables in your shell) with at least:
 ```dotenv
 DJANGO_SETTINGS_MODULE=core.settings.development
 ```
 The development settings already include a non-production `SECRET_KEY` and point to `data/assetrack.sqlite3`.
 
-### 3. Apply migrations and seed data
+### 4. Apply migrations and seed data
 ```pwsh
-python manage.py migrate
-python manage.py loaddata fixtures/assset_status.json fixtures/assset_calibration.json
-python manage.py createsuperuser
+# Activate the virtual environment first
+# Windows
+.venv\Scripts\Activate.ps1
+# Linux/macOS
+source .venv/bin/activate
+
+# Or use uv run to run commands without activating
+uv run python manage.py migrate
+uv run python manage.py loaddata fixtures/assset_status.json fixtures/assset_calibration.json
+uv run python manage.py createsuperuser
 ```
 Add or remove fixtures as needed; they provide reference data for dropdowns.
 
-### 4. Run the development server
+### 5. Run the development server
 ```pwsh
+# Using activated virtual environment
 python manage.py runserver
+
+# Or using uv run
+uv run python manage.py runserver
 ```
 Visit `http://127.0.0.1:8000/` and log in with the superuser you created to access dashboards and CRUD screens.
 

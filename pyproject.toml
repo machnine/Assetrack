@@ -1,3 +1,24 @@
+[project]
+name = "assetrack"
+version = "1.0.0"
+description = "Django 5 application for tracking laboratory and field assets lifecycle"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+dependencies = [
+    "django~=5.0.2",
+    "django-htmx",
+    "gunicorn",
+    "python-dateutil",
+]
+
+[project.optional-dependencies]
+dev = [
+    "djlint",
+    "django-extensions",
+    "django-debug-toolbar",
+]
+
 [tool.ruff]
 line-length = 120
 extend-select = ["I"]
