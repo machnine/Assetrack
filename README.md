@@ -94,11 +94,72 @@ Make sure your `.env` file also contains production-only settings such as `SECRE
 - Lint templates: `djlint templates --check`
 - Collect static files before packaging: `python manage.py collectstatic --noinput`
 
-## Deployment Notes
-- Set `DJANGO_SETTINGS_MODULE=core.settings.production`.
-- Provide `SECRET_KEY`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, and database credentials via environment variables.
-- Point `MEDIA_ROOT` and `STATIC_ROOT` to persistent storage and run `collectstatic`.
-- `docker-compose.yml` mounts volumes for `staticfiles`, `media`, and `data`—map them to durable storage in production.
+## Windows Deployment
+
+For deploying on Windows Server (e.g., as a Windows service):
+
+### 1. Install uv and setup the application
+```pwsh
+# Install uv
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Clone repository
+git clone <your-repo-url>
+cd Assetrack
+
+# Install dependencies (waitress will be installed on Windows)
+uv sync
+```
+
+### 2. Configure environment variables
+Create environment variables or a `.env` file:
+```pwsh
+$env:DJANGO_SETTINGS_MODULE="core.settings.production"
+$env:SECRET_KEY="your-secret-key-here"
+$env:ALLOWED_HOSTS="yourdomain.com,www.yourdomain.com"
+$env:CSRF_TRUSTED_ORIGINS="https://yourdomain.com,https://www.yourdomain.com"
+```
+
+### 3. Prepare the database and static files
+```pwsh
+uv run python manage.py migrate
+uv run python manage.py collectstatic --noinput
+uv run python manage.py createsuperuser
+```
+
+### 4. Run the server
+```pwsh
+# Using the Windows server script (recommended for production)
+uv run python serve_windows.py
+
+# Or directly with waitress-serve
+uv run waitress-serve --host=0.0.0.0 --port=8000 --threads=4 core.wsgi:application
+```
+
+### 5. Windows Service with WinSW
+To run as a Windows service, use [WinSW](https://github.com/winsw/winsw). Example configuration coming soon.
+
+## Docker Deployment (Linux)
+
+Use the provided images (Gunicorn + Nginx TLS termination) for containerized deployment:
+```pwsh
+docker compose up --build
+```
+
+**Important Notes:**
+- Uses Gunicorn (Linux-only WSGI server) with Nginx for TLS termination
+- Mounts volumes for `staticfiles`, `media`, and `data`—map them to durable storage in production
+- Set `DJANGO_SETTINGS_MODULE=core.settings.production`
+- Provide `SECRET_KEY`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` via environment variables
+
+## General Deployment Notes
+- Always set `DJANGO_SETTINGS_MODULE=core.settings.production` in production
+- Generate a secure `SECRET_KEY` and never commit it to version control
+- Configure `ALLOWED_HOSTS` with your domain names
+- Configure `CSRF_TRUSTED_ORIGINS` with your full URLs (including https://)
+- Point `MEDIA_ROOT` and `STATIC_ROOT` to persistent storage
+- Run `collectstatic` to gather all static files before serving
+- Ensure database backups are configured
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
