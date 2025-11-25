@@ -18,7 +18,10 @@ urlpatterns = [
     path("", include(attachment_urls)),
 ]
 
+# Serve media files in all environments
+# In Docker, Nginx serves these before they reach Django
+# In Windows, Django serves them directly
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
