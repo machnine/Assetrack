@@ -3,7 +3,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.static import serve
 
 from asset import urls as asset_urls
 from attachment import urls as attachment_urls
@@ -18,10 +19,16 @@ urlpatterns = [
     path("", include(attachment_urls)),
 ]
 
-# Serve media files in all environments
-# In Docker, Nginx serves these before they reach Django
-# In Windows, Django serves them directly
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media files in production
+# Django's static() helper only works with DEBUG=True, so we add the pattern manually
+# In Docker: Nginx intercepts /media/* before it reaches Django (efficient)
+# In Windows: Django serves media files directly (simple, works out of the box)
+if settings.MEDIA_URL and settings.MEDIA_ROOT:
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]
 
 if settings.DEBUG:
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
