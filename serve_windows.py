@@ -12,11 +12,11 @@ try:
     dotenv_path = Path(__file__).resolve().parent / '.env'
     if dotenv_path.exists():
         load_dotenv(dotenv_path)
-        print(f"✅ Loaded .env from: {dotenv_path}")
+        print(f"[OK] Loaded .env from: {dotenv_path}")
     else:
-        print(f"⚠️  .env file not found at: {dotenv_path}")
+        print(f"[WARN] .env file not found at: {dotenv_path}")
 except ImportError:
-    print("⚠️  python-dotenv not installed, using system environment variables")
+    print("[WARN] python-dotenv not installed, using system environment variables")
 
 # Add project to path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -29,9 +29,9 @@ if __name__ == '__main__':
     port = int(os.environ.get('WSGI_PORT', '7111'))
     threads = int(os.environ.get('WSGI_THREADS', '4'))
 
-    print(f"🚀 Starting Assetrack on {host}:{port} with {threads} threads")
-    print(f"📝 Django settings: {os.environ.get('DJANGO_SETTINGS_MODULE', 'core.settings.production')}")
-    print(f"🌐 Static files served by WhiteNoise")
+    print(f"[INFO] Starting Assetrack on {host}:{port} with {threads} threads")
+    print(f"[INFO] Django settings: {os.environ.get('DJANGO_SETTINGS_MODULE', 'core.settings.production')}")
+    print(f"[INFO] Static files served by WhiteNoise")
 
     serve(
         application,
