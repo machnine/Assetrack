@@ -1,0 +1,45 @@
+<service>
+  <id>assetrack</id>
+  <name>Assetrack</name>
+  <description>Django-based asset tracking application for laboratory equipment</description>
+
+  <!-- Path to uv executable -->
+  <executable>uv</executable>
+
+  <!-- Working directory -->
+  <workingdirectory>%BASE%</workingdirectory>
+
+  <!-- Arguments to pass to uv -->
+  <arguments>run python serve_windows.py</arguments>
+
+  <!-- Service will restart automatically on failure -->
+  <onfailure action="restart" delay="10 sec"/>
+  <onfailure action="restart" delay="20 sec"/>
+  <onfailure action="restart" delay="30 sec"/>
+
+  <!-- Reset failure count after 1 hour -->
+  <resetfailure>1 hour</resetfailure>
+
+  <!-- Logging configuration -->
+  <log mode="roll-by-size">
+    <sizeThreshold>10240</sizeThreshold>
+    <keepFiles>8</keepFiles>
+  </log>
+
+  <!-- Environment variables (loaded from .env by serve_windows.py) -->
+  <env name="DJANGO_SETTINGS_MODULE" value="core.settings.production"/>
+
+  <!-- Service account (change if needed) -->
+  <serviceaccount>
+    <domain></domain>
+    <user>LocalSystem</user>
+    <password></password>
+    <allowservicelogon>true</allowservicelogon>
+  </serviceaccount>
+
+  <!-- Priority -->
+  <priority>Normal</priority>
+
+  <!-- Stop timeout -->
+  <stoptimeout>15 sec</stoptimeout>
+</service>
