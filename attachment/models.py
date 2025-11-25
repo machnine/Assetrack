@@ -92,4 +92,7 @@ class Attachment(AttachmentBase):
 class Document(AttachmentBase):
     """Generic attachment model with no relation to any object"""
 
-    pass
+    class Meta(AttachmentBase.Meta):
+        """Meta options"""
+
+        ordering = ["-uploaded_at"]  # Newest first
