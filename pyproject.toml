@@ -8,8 +8,11 @@ license = {text = "MIT"}
 dependencies = [
     "django~=5.0.2",
     "django-htmx",
-    "gunicorn",
+    "gunicorn; sys_platform != 'win32'",  # Unix/Linux WSGI server (Docker)
+    "waitress; sys_platform == 'win32'",  # Windows WSGI server
+    "whitenoise",  # Serve static files efficiently
     "python-dateutil",
+    "python-dotenv",  # Load .env files
 ]
 
 [project.optional-dependencies]

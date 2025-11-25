@@ -2,6 +2,16 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from pathlib import Path
+
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    dotenv_path = Path(__file__).resolve().parent / '.env'
+    if dotenv_path.exists():
+        load_dotenv(dotenv_path)
+except ImportError:
+    pass  # python-dotenv not installed
 
 
 def main():
