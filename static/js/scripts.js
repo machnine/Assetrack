@@ -49,9 +49,11 @@ function toggleAllQueryset() {
  * It updates the class of the button icon on page load
  */
 function updateButtonClassOnLoad() {
+  const icon = document.getElementById("showall");
+  if (!icon) return;
+
   const url = new URL(window.location.href);
   const allParam = url.searchParams.get("all");
-  const icon = document.getElementById("showall");
 
   if (allParam === "true") {
     icon.classList.add("bi-toggle2-on");
@@ -66,4 +68,7 @@ function updateButtonClassOnLoad() {
  * Add event listeners to the page so the above 2 functions can work
  */
 window.addEventListener("load", updateButtonClassOnLoad);
-document.getElementById("showall").addEventListener("click", toggleAllQueryset);
+const showallBtn = document.getElementById("showall");
+if (showallBtn) {
+  showallBtn.addEventListener("click", toggleAllQueryset);
+}
