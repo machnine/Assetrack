@@ -9,9 +9,7 @@
 {% block panel_heading_start %}
   <i class="bi bi-floppy-fill text-success"></i> Software List
   {% if query %}
-    <span>
-      <a href="{% url 'software_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
-    </span>
+    <a href="{% url 'software_list' %}" title="Clear filter"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
   {% endif %}
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
@@ -27,25 +25,25 @@
   </form>
 {% endblock panel_heading_center %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col-lg-2">Name</div>
     <div class="col-lg-1">License</div>
     <div class="col-lg-1">Version</div>
     <div class="col-lg-1">Software type</div>
-    <div class="col-lg-1">Active<i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/hide inactive software"></i></div>
+    <div class="col-lg-1">Active <i class="bi bi-toggle2-off" id="showall" title="Show/hide inactive software"></i></div>
     <div class="col-lg-5">Description</div>
     <div class="col-lg-1"></div>
   </div>
   {% for software in object_list %}
-    <div class="row align-items-center border-top py-2 alternate-row">
-      <div class="col-lg-2 fw-bold">
+    <div class="row data-row alternate-row align-items-center">
+      <div class="col-lg-2 fw-semibold">
         <a href="{% url 'software_detail' software.id %}">{{ software.name }}</a>
       </div>
-      <div class="col-lg-1 small">
+      <div class="col-lg-1">
         <a href="{% url 'software_list' %}?l={{ software.license_type.id }}">{{ software.license_type.name }}</a>
       </div>
       <div class="col-lg-1">{{ software.version }}</div>
-      <div class="col-lg-1 small">
+      <div class="col-lg-1">
         <a href="{% url 'software_list' %}?t={{ software.software_type.id }}">{{ software.software_type.name }}</a>
       </div>
       <div class="col-lg-1">
@@ -57,7 +55,7 @@
           {% endif %}
         </a>
       </div>
-      <div class="col-lg-5 small">{{ software.description|default:""|md_link }}</div>
+      <div class="col-lg-5">{{ software.description|default:""|md_link }}</div>
       <div class="col-lg-1 text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'software_update' software.id %}?next={{ request.get_full_path|urlencode }}" title="Update '{{ software.name }}'"><i class="bi bi-pencil-square"></i></a>

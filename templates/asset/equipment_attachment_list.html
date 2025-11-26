@@ -25,7 +25,7 @@
 {% block panel_heading_end %}
 {% endblock panel_heading_end %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col-lg-1">Attachment Date</div>
     <div class="col-lg-3">Equipment</div>
     <div class="col-lg-1">File Type/Size</div>
@@ -34,22 +34,22 @@
     <div class="col-lg-1">Added By</div>
   </div>
   {% for obj in object_list %}
-    <div class="row align-items-center border-top py-2 alternate-row">
+    <div class="row data-row alternate-row align-items-center">
       <div class="col-lg-1">{{ obj.uploaded_at|date:'d/m/Y' }}</div>
       <div class="col-lg-3">
         <a href="{% url 'equipment_detail' obj.content_object.id %}"
            title="View equipment details: {{ obj.content_object.name }} ...">{{ obj.content_object.name|truncatechars:25 }}</a>
       </div>
-      <div class="col-lg-1" title="{{ obj.filetype }} file - {{ obj.file.size|filesizeformat }}">
+      <div class="col-lg-1" title="{{ obj.filetype }} file">
         {% if obj.filetype %}
           <i class="bi bi-filetype-{{ obj.filetype }} text-danger"></i>
         {% else %}
           <i class="bi bi-file-earmark text-danger"></i>
         {% endif %}
-        {{ obj.file.size|filesizeformat }}
+        {% if obj.file_size %}{{ obj.file_size|filesizeformat }}{% else %}<span class="text-muted">-</span>{% endif %}
       </div>
       <div class="col-lg-2" title="Open file: {{ obj.name }} ...">
-        <a href="{{ obj.file.url }}">{{ obj.name|truncatechars:30 }}</a>
+        {% if obj.file_exists %}<a href="{{ obj.file.url }}">{{ obj.name|truncatechars:30 }}</a>{% else %}<span class="text-muted">{{ obj.name|truncatechars:30 }}</span>{% endif %}
       </div>
       <div class="col-lg-4">{{ obj.description|truncatechars:50 }}</div>
       <div class="col-lg-1" title="{{ obj.uploaded_by }}">

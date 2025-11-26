@@ -8,9 +8,7 @@
 {% block panel_heading_start %}
   <i class="bi bi-buildings text-muted"></i> Companies
   {% if query %}
-    <span>
-      <a href="{% url 'company_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
-    </span>
+    <a href="{% url 'company_list' %}" title="Clear filter"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
   {% endif %}
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
@@ -26,20 +24,20 @@
   </form>
 {% endblock panel_heading_center %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col col-lg-4">Name</div>
-    <div class="col col-lg-1">Equipment Count</div>
+    <div class="col col-lg-1">Equipment</div>
     <div class="col col-lg-1">Phone</div>
     <div class="col col-lg-2">Email</div>
     <div class="col col-lg-4">Notes</div>
   </div>
   {% for company in companies %}
-    <div class="row align-items-center border-top py-2 alternate-row">
-      <div class="col col-lg-4 fw-bold">
+    <div class="row data-row alternate-row align-items-center">
+      <div class="col col-lg-4 fw-semibold">
         {{ company.name }}
         {% if company.website %}
           <a href="{{ company.website }}"
-             class="ps-2"
+             class="ps-1"
              target="_blank"
              title="Visit '{{ company.name }}' website">
             <i class="bi bi-link-45deg"></i>
@@ -47,14 +45,13 @@
         {% endif %}
       </div>
       <div class="col col-lg-1">
-        <span class="text-muted small" title="Manufacturer">M:</span> {{ company.manufactured }}
-        <span class="px-2"></span>
-        <span class="text-muted small" title="Serivce Provider">S:</span>  {{ company.serviced }}
+        <span class="text-muted" title="Manufacturer">M:</span> {{ company.manufactured }}
+        <span class="text-muted ps-1" title="Service Provider">S:</span> {{ company.serviced }}
       </div>
-      <div class="col col-lg-1">{{ company.phone |default:"" }}</div>
-      <div class="col col-lg-2 small">{{ company.email |default:"" }}</div>
-      <div class="d-none d-lg-block col-lg-3 small">{{ company.notes|truncatewords:10 }}</div>
-      <div class="d-none d-lg-block col-lg-1 justify-content-between align-items-center text-end">
+      <div class="col col-lg-1">{{ company.phone|default:"" }}</div>
+      <div class="col col-lg-2">{{ company.email|default:"" }}</div>
+      <div class="d-none d-lg-block col-lg-3">{{ company.notes|truncatewords:10 }}</div>
+      <div class="d-none d-lg-block col-lg-1 text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'company_update' company.id %}" title="Update '{{ company.name }}'"><i class="bi bi-pencil-square"></i></a>
           <a href="{% url 'company_delete' company.id %}" title="Delete '{{ company.name }}'"><i class="bi bi-trash"></i></a>

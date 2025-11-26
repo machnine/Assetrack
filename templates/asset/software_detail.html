@@ -4,31 +4,31 @@
   Software detail - {{ software.name }}
 {% endblock page_title %}
 {% block content %}
-  <div class="panel">
-    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
-      <h5 class="panel-title">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>
         <i class="bi bi-floppy-fill text-success"></i> {{ software.name }}
-      </h5>
-      <div class="panel-actions">
+      </span>
+      <span>
         <a href="{% url 'software_update' software.id %}?next={{ request.path }}"><i class="bi bi-pencil-square"></i></a>
         {% if request.user.is_superuser %}
           <a href="{% url 'software_delete' software.id %}"><i class="bi bi-trash"></i></a>
         {% endif %}
-      </div>
+      </span>
     </div>
-    <div class="panel-content">
-      <div class="row pb-2">
-        <div class="col-12 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Name</span>
-          <span class="text-primary">{{ software.name }}</span>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-lg-2 mb-1">
+          <span class="field-label d-block">Name</span>
+          <span class="field-value">{{ software.name }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Version</span>
-          <span class="text-primary">{{ software.version }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Version</span>
+          <span class="field-value">{{ software.version }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Status</span>
-          <span class="text-primary">
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Status</span>
+          <span class="field-value">
             <a href="{% url 'software_list' %}?a={{ software.active }}">
               {% if software.active %}
                 <i class="bi bi-check2-circle text-success"></i>
@@ -39,50 +39,50 @@
           </span>
         </div>
       </div>
-      <div class="row pb-2">
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">License</span>
-          <span class="text-primary">{{ software.license_type.name }}</span>
+      <div class="row">
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">License</span>
+          <span class="field-value">{{ software.license_type.name }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Software Type</span>
-          <span class="text-primary">{{ software.software_type.name }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Software Type</span>
+          <span class="field-value">{{ software.software_type.name }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Implemented Date</span>
-          <span class="text-primary">{{ software.implemented_date|date:"d/m/Y" }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Implemented Date</span>
+          <span class="field-value">{{ software.implemented_date|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Decommission Date</span>
-          <span class="text-primary">{{ software.decommission|date:"d/m/Y" }}</span>
-        </div>
-      </div>
-      <div class="row pb-2">
-        <div class="col-12 col-md-6 mb-3">
-          <span class="text-muted small d-block">Website</span>
-          <span class="text-primary"><a href="{{ software.website }}" target="_blank" title="visit the website">{{ software.website|default:"&nbsp;" }}</a></span>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-          <span class="text-muted small d-block">Source Code</span>
-          <span class="text-primary">{{ software.source_code|default:"&nbsp;" }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Decommission Date</span>
+          <span class="field-value">{{ software.decommission|date:"d/m/Y" }}</span>
         </div>
       </div>
-      <div class="row pb-2">
-        <div class="col-12 mb-3">
-          <span class="text-muted small d-block">Description</span>
-          <span class="text-primary">{{ software.description|default:"&nbsp;"|md_link }}</span>
+      <div class="row pt-1">
+        <div class="col-12 col-md-6 mb-1">
+          <span class="field-label d-block">Website</span>
+          <span class="field-value"><a href="{{ software.website }}" target="_blank" title="visit the website">{{ software.website|default:"&nbsp;" }}</a></span>
+        </div>
+        <div class="col-12 col-md-6 mb-1">
+          <span class="field-label d-block">Source Code</span>
+          <span class="field-value">{{ software.source_code|default:"&nbsp;" }}</span>
         </div>
       </div>
-      <div class="row pb-2">
-        <div class="col-12 text-end small text-muted">
-          <i class="small">Last updated: {{ software.last_updated_at|date:"d/m/Y H:i" }} {{ equipment.last_updated_by.initials|default:"" }}</i>
+      <div class="row pt-1">
+        <div class="col-12 mb-1">
+          <span class="field-label d-block">Description</span>
+          <span class="field-value">{{ software.description|default:"&nbsp;"|md_link }}</span>
+        </div>
+      </div>
+      <div class="row pt-1">
+        <div class="col-12 text-end text-muted">
+          Last updated: {{ software.last_updated_at|date:"d/m/Y H:i" }} {{ equipment.last_updated_by.initials|default:"" }}
         </div>
       </div>
     </div>
   </div>
   {# software attachment #}
-  <div class="panel">
-    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
       <span class="text-primary"><i class="bi bi-folder"></i> Software documents</span>
       <a hx-get="{% url 'software_attachment_upload' software.id %}"
          hx-trigger="click"
@@ -92,12 +92,12 @@
          data-bs-target="#modal-box"
          href="javascript:"><i class="bi bi-file-earmark-arrow-up"></i></a>
     </div>
-    <div class="panel-content">
+    <div class="card-body">
       {% if attachments|length %}
         {% for file in attachments %}
-          <div class="row pb-2">
+          <div class="row data-row align-items-center">
             <div class="d-none d-lg-block col-lg-1">
-              <span class="text-muted small">{{ file.uploaded_at|date:"d/m/Y" }}</span>
+              <span class="text-muted">{{ file.uploaded_at|date:"d/m/Y" }}</span>
             </div>
             <div class="d-none d-lg-block col-lg-1">
               {% if file.filetype %}
@@ -105,7 +105,7 @@
               {% else %}
                 <i class="bi bi-file-earmark text-danger"></i>
               {% endif %}
-              <i class="text-muted small">{{ file.file.size|filesizeformat }}</i>
+              <span class="text-muted">{{ file.file.size|filesizeformat }}</span>
             </div>
             <div class="col-6 col-lg-9">
               <span class="pe-3"><a href="{{ file.file.url }}">{{ file.name }}</a></span>
@@ -133,14 +133,14 @@
     </div>
   </div>
   {# software records #}
-  <div class="panel">
-    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
       <span class="text-primary"><i class="bi bi-calendar3"></i> Software records</span>
       <a href="{% url 'softwarerecord_create' software.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
     </div>
-    <div class="panel-content pb-5">
+    <div class="card-body">
       {% for record in software.softwarerecord_set.all %}
-        <div class="row align-items-center py-2 g-0 border-bottom {% if not forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+        <div class="row data-row alternate-row align-items-center">
           <div class="col-2 ps-2">
             <i class="bi bi-journal-text"></i> {{ record.date|date:'d/m/Y' }}
           </div>

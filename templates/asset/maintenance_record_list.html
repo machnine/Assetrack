@@ -7,10 +7,10 @@
   {% url 'maintenance_record_create' equipment_type.slug %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-gear-wide-connected text-success"></i> <i class="text-danger fw-bold">{{ equipment_type }}</i> Maintenance Records
+  <i class="bi bi-gear-wide-connected text-success"></i> <span class="text-danger fw-bold">{{ equipment_type }}</span> Maintenance Records
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
-  <div class="pt-1 small d-flex fw-bold">   
+  <div class="d-flex fw-semibold">
     <div style="background-color: rgba(235, 235, 225, 0.8); border-radius: .5rem;">
       <span class="px-2"><a href="{% url 'lx_maintenance_guide' task='daily' %}" target='_blank' class="popup-link"><i class="bi bi-sun-fill pe-1" style="color:#F06624"></i> Daily</a></span>
       <i class="bi bi-dot"></i>
@@ -21,7 +21,7 @@
   </div>
 {% endblock panel_heading_center %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col-lg-1">Date</div>
     <div class="col-lg-2">Equipment</div>
     <div class="col-lg-3">Maintenance</div>
@@ -30,26 +30,27 @@
     <div class="d-none col-lg-1 d-lg-block"></div>
   </div>
   {% for record in object_list %}
-    <div class="row align-items-center border-top py-2 alternate-row">
+    <div class="row data-row alternate-row align-items-center">
       <div class="col-lg-1">{{ record.date|date:"d/m/Y" }}</div>
       <div class="col-lg-2">
         <a href="{% url 'equipment_detail' record.equipment.pk %}">{{ record.equipment.name }}</a>
       </div>
       <div class="col-lg-3">
         {% for task in record.maintenance.all %}
-          <i class="px-2 small"
+          <span class="px-1"
              style="color: {{ task.task.get_font_color }};
                     background-color: {{ task.task.color }};
-                    border-radius:.3rem"
-             title="{{ task.task.description }}">{{ task.task.name }}</i>
+                    border-radius:.2rem;
+                    font-size: var(--font-size-xs);"
+             title="{{ task.task.description }}">{{ task.task.name }}</span>
         {% endfor %}
       </div>
-      <div class="col-lg-4 small">{{ record.comments }}</div>
+      <div class="col-lg-4">{{ record.comments }}</div>
       <div class="col-lg-1 text-center"
            title="{{ record.created_at }} by {{ record.created_by.get_full_name }}">
         {{ record.created_by.initials|default:"" }}
       </div>
-      <div class="d-none col-lg-1 d-lg-block justify-content-between text-end">
+      <div class="d-none col-lg-1 d-lg-block text-end">
         <a href="{% url 'maintenance_record_update' pk=record.pk slug=record.equipment.equipment_type.slug %}"
            title="Update '{{ record }}'"><i class="bi bi-pencil-square"></i></a>
         <a href="{% url 'maintenance_record_delete' pk=record.pk slug=record.equipment.equipment_type.slug %}"

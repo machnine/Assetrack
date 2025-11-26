@@ -8,9 +8,7 @@
 {% block panel_heading_start %}
   <i class="bi bi-plugin text-primary"></i> Equipment List ({{ total }})
   {% if query %}
-    <span>
-      <a href="{% url 'equipment_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
-    </span>
+    <a href="{% url 'equipment_list' %}" title="Clear filter"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
   {% endif %}
   <a href="{% url 'equipment_csv_export' %}?{{ request.GET.urlencode }}"
      class="ps-2"
@@ -32,45 +30,43 @@
   </form>
 {% endblock panel_heading_center %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
-    <div class="col-lg-2">Name</div>
+  <div class="row list-header">
+    <div class="col-lg-3">Name</div>
     <div class="col-lg-2">Model Number</div>
     <div class="col-lg-1">Serial Number</div>
     <div class="col-lg-1">Calibration</div>
     <div class="col-lg-1">
-      Status <i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/Hide decommissioned equipment"></i>
+      Status <i class="bi bi-toggle2-off" id="showall" title="Show/Hide decommissioned equipment"></i>
     </div>
     <div class="col-lg-1">Category</div>
     <div class="col-lg-1">Type</div>
     <div class="col-lg-1">Location</div>
-    <div class="col-lg-2">Notes</div>
+    <div class="col-lg-1"></div>
   </div>
   {% for equipment in equipments %}
-    <div class="row align-items-center border-top py-2 alternate-row">
-      <div class="col-lg-2 text-primary fw-bold">
+    <div class="row data-row alternate-row align-items-center">
+      <div class="col-lg-3 fw-semibold">
         <a href="{% url 'equipment_detail' equipment.id %}">{{ equipment.name }}</a>
+        {% if equipment.notes|length %}<i class="bi bi-chat-dots text-warning ps-1" title="{{ equipment.notes }}"></i>{% endif %}
       </div>
-      <div class="col-lg-2 small">
+      <div class="col-lg-2">
         <a href="{% url 'equipment_list' %}?n={{ equipment.model_number }}">{{ equipment.model_number|default:"" }}</a>
       </div>
-      <div class="col-lg-1 small">{{ equipment.serial_number|default:"" }}</div>
-      <div class="col-lg-1 small">
+      <div class="col-lg-1">{{ equipment.serial_number|default:"" }}</div>
+      <div class="col-lg-1">
         <a href="{% url 'equipment_list' %}?cal={{ equipment.calibration.id }}">{{ equipment.calibration.name }}</a>
       </div>
-      <div class="col-lg-1 small">
+      <div class="col-lg-1">
         <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}{% if equipment.status.name == 'Decommissioned' %}&all=true" class="text-danger{% endif %}">{{ equipment.status }}</a>
       </div>
-      <div class="col-lg-1 small">
+      <div class="col-lg-1">
         <a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a>
       </div>
-      <div class="col-lg-1 small">
+      <div class="col-lg-1">
         <a href="{% url 'equipment_list' %}?t={{ equipment.equipment_type.id }}">{{ equipment.equipment_type }}</a>
       </div>
-      <div class="col-lg-1 small">
-        <a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a>
-      </div>
       <div class="col-lg-1">
-        {% if equipment.notes|length %}<i class="bi bi-chat-dots text-warning" title="{{ equipment.notes }}"></i>{% endif %}
+        <a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a>
       </div>
       <div class="col-lg-1 text-end">
         {% if request.user.is_superuser %}

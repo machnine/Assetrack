@@ -5,9 +5,7 @@
 {% block panel_heading_start %}
   <i class="bi bi-card-checklist text-primary"></i> Equipment Record List
   {% if query %}
-    <span>
-      <a href="{% url 'equipmentrecord_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
-    </span>
+    <a href="{% url 'equipmentrecord_list' %}" title="Clear filter"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
   {% endif %}
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
@@ -25,7 +23,7 @@
 {% block panel_heading_end %}
 {% endblock panel_heading_end %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col-lg-1">Record Number</div>
     <div class="col-lg-1 text-center">Record Date</div>
     <div class="col-lg-1">Record Type</div>
@@ -34,10 +32,10 @@
     <div class="col-lg-1">Added By</div>
   </div>
   {% for record in records %}
-    <div class="row align-items-center border-top py-2 alternate-row">
+    <div class="row data-row alternate-row align-items-center">
       <div class="col-lg-1 text-center">
         <a href="{% url 'equipmentrecord_detail' record.id %}">
-          <span class="text-warning pe-3 fw-semibold">{{ record.id }}</span>
+          <span class="text-warning fw-semibold">{{ record.id }}</span>
         </a>
       </div>
       <div class="col-lg-1 text-center">{{ record.date|date:"d/m/Y" }}</div>
@@ -53,9 +51,9 @@
         <a href="{% url 'equipment_detail' record.equipment.id %}">{{ record.description|truncatechars:80 }}</a>
       </div>
       <div class="col-lg-1" title="{{ record.created_at }}">
-      <span class="ps-2">{{ record.created_by.initials|default:"" }}</a>
+        {{ record.created_by.initials|default:"" }}
+      </div>
     </div>
-  </div>
-{% endfor %}
-{% include "partials/pagination.html" %}
+  {% endfor %}
+  {% include "partials/pagination.html" %}
 {% endblock panel_content %}

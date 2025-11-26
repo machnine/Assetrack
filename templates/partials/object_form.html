@@ -9,29 +9,27 @@
   {% endblock title_object_name %}
 {% endblock page_title %}
 {% block content %}
-  <div class="panel">
-    <div class="panel-heading">
-      <h5>
-        {% block heading_object_name %}
-        {% endblock heading_object_name %}
-      </h5>
+  <div class="card">
+    <div class="card-header">
+      {% block heading_object_name %}
+      {% endblock heading_object_name %}
     </div>
-    <div class="panel-content justify-content-center d-flex py-5">
+    <div class="card-body justify-content-center d-flex">
       <div class="col col-sm-10 col-md-8 col-lg-6 col-xl-5">
         <form method="post">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ request.GET.next }}">
           {% block object_form %}
             {% for field in form %}
-              <div class="mb-3">
-                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              <div class="mb-2">
+                <label class="form-label field-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
                 {% if field.errors %}<div class="text-danger">{{ field.errors }}</div>{% endif %}
               </div>
             {% endfor %}
           {% endblock object_form %}
-          <div class="text-end">
-            <button type="submit" class="btn btn-outline-success" onclick="return confirm('Do you want to save the changes?');">Save</button>
+          <div class="text-end pt-2">
+            <button type="submit" class="btn btn-outline-success btn-sm" onclick="return confirm('Do you want to save the changes?');">Save</button>
           </div>
         </form>
       </div>

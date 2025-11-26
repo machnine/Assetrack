@@ -5,71 +5,61 @@
 {% endblock page_title %}
 {% block content %}
   {% if schedules|length %}
-    <div class="panel">
-      <div class="panel-heading d-flex justify-content-between">
-        <h6 title="Scheduled tasks in the next 2 weeks and are Active.">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span title="Scheduled tasks in the next 2 weeks and are Active.">
           <i class="bi bi-calendar-week text-danger"></i> Scheduled tasks (&lt; 14 days, Active)
-        </h6>
-        <span class="pe-3">
-          <a href="{% url 'schedule_list' %}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
         </span>
+        <a href="{% url 'schedule_list' %}" title="More..."><i class="bi bi-box-arrow-up-right"></i> more...</a>
       </div>
-      <div class="panel-content">{% include "partials/home_schedule_list.html" %}</div>
+      <div class="card-body">{% include "partials/home_schedule_list.html" %}</div>
     </div>
   {% endif %}
   {% if equipment_records|length %}
-  <div class="panel">
-    <div class="panel-heading d-flex justify-content-between">
-      <h6 title="Lastest euqipment records">
-        <i class="bi bi-card-checklist text-primary"></i> Latest Equipement Records
-      </h6>
-      <span class="pe-3">
-        <a href="{% url 'equipmentrecord_list' %}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
-      </span>
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span title="Latest equipment records">
+          <i class="bi bi-card-checklist text-primary"></i> Latest Equipment Records
+        </span>
+        <a href="{% url 'equipmentrecord_list' %}" title="More..."><i class="bi bi-box-arrow-up-right"></i> more...</a>
+      </div>
+      <div class="card-body">{% include "partials/home_equipment_record.html" %}</div>
     </div>
-    <div class="panel-content">{% include "partials/home_equipment_record.html" %}</div>
-  </div>
-{% endif %}
+  {% endif %}
   {% if request.user.is_authenticated %}
     {% if under_repair|length %}
-      <div class="panel">
-        <div class="panel-heading d-flex justify-content-between">
-          <h6>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>
             <i class="bi bi-hammer text-primary"></i> Under Repair
-          </h6>
-          <span class="pe-3">
-            <a href="{% url 'equipment_list' %}?s={{ repair_id }}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
           </span>
+          <a href="{% url 'equipment_list' %}?s={{ repair_id }}" title="More..."><i class="bi bi-box-arrow-up-right"></i> more...</a>
         </div>
-        <div class="panel-content">{% include "partials/home_equipment_list.html" with equipment_objects=under_repair %}</div>
+        <div class="card-body">{% include "partials/home_equipment_list.html" with equipment_objects=under_repair %}</div>
       </div>
     {% endif %}
     {% if pending_verification|length %}
-      <div class="panel">
-        <div class="panel-heading d-flex justify-content-between">
-          <h6>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>
             <i class="bi bi-check2-all text-success"></i> Pending Verification/Validation
-          </h6>
-          <span class="pe-3">
-            <a href="{% url 'equipment_list' %}?s={{ verification_id }}" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
           </span>
+          <a href="{% url 'equipment_list' %}?s={{ verification_id }}" title="More..."><i class="bi bi-box-arrow-up-right"></i> more...</a>
         </div>
-        <div class="panel-content">
+        <div class="card-body">
           {% include "partials/home_equipment_list.html" with equipment_objects=pending_verification %}
         </div>
       </div>
     {% endif %}
     {% if replacement_due|length %}
-      <div class="panel">
-        <div class="panel-heading d-flex justify-content-between">
-          <h6>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>
             <i class="bi bi-cart4 text-warning"></i> Replacement due &lt; 1 year
-          </h6>
-          <span class="pe-3">
-            <a href="{% url 'equipment_list' %}?rp=true" title="More..."><i class="bi bi-box-arrow-up-right small"></i> more... </a>
           </span>
+          <a href="{% url 'equipment_list' %}?rp=true" title="More..."><i class="bi bi-box-arrow-up-right"></i> more...</a>
         </div>
-        <div class="panel-content">
+        <div class="card-body">
           {% include "partials/home_equipment_list_rep.html" with equipment_objects=replacement_due %}
         </div>
       </div>

@@ -8,9 +8,7 @@
 {% block panel_heading_start %}
   <i class="bi bi-plug-fill text-muted"></i> Equipment Types
   {% if query %}
-    <span>
-      <a href="{% url 'equipmenttype_list' %}" title="Clear filter" class="small"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
-    </span>
+    <a href="{% url 'equipmenttype_list' %}" title="Clear filter"><i class="ps-2 text-danger">{{ query }}</i><i class="bi bi-x"></i></a>
   {% endif %}
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
@@ -26,26 +24,24 @@
   </form>
 {% endblock panel_heading_center %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col">Name</div>
     <div class="col">Equipment Count</div>
     <div class="col">
-      URL slug<a href="https://en.wikipedia.org/wiki/Clean_URL#Slug" target="_blank" title="What is this?"><sup><i class="bi bi-question text-danger"></i></sup></a>
+      URL slug <a href="https://en.wikipedia.org/wiki/Clean_URL#Slug" target="_blank" title="What is this?"><sup><i class="bi bi-question text-danger"></i></sup></a>
     </div>
     <div class="col">Description</div>
     <div class="d-none col-lg-2 d-lg-block"></div>
   </div>
   {% for et in eqipment_types %}
-    <div class="row align-items-center border-top py-2 alternate-row">
-      <div class="col text-muted fw-bold">
+    <div class="row data-row alternate-row align-items-center">
+      <div class="col fw-semibold">
         <a href="{% url 'equipment_list' %}?t={{ et.id }}" title="List all '{{ et.name }}' equipment">{{ et.name }}</a>
       </div>
       <div class="col">{{ et.equipment_count }}</div>
-      <div class="col">
-        <i class="text-muted">{{ et.slug|default:"" }}</i>
-      </div>
+      <div class="col text-muted">{{ et.slug|default:"" }}</div>
       <div class="col">{{ et.description|default:"" }}</div>
-      <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
+      <div class="d-none col-lg-2 d-lg-block text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'equipmenttype_update' et.id %}" title="Update '{{ et.name }}'"><i class="bi bi-pencil-square"></i></a>
           <a href="{% url 'equipmenttype_delete' et.id %}" title="Delete '{{ et.name }}'"><i class="bi bi-trash"></i></a>

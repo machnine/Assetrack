@@ -9,20 +9,20 @@
   <i class="bi bi-diamond-half text-muted"></i> Status List
 {% endblock panel_heading_start %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col-3">Name</div>
-    <div class="col-3">Euqipment Count</div>
+    <div class="col-3">Equipment Count</div>
     <div class="col-6">Description</div>
     <div class="d-none col-lg-2 d-lg-block"></div>
   </div>
   {% for status in statuses %}
-    <div class="row align-items-center border-top py-2 alternate-row">
-      <div class="col-3 text-muted fw-bold">
+    <div class="row data-row alternate-row align-items-center">
+      <div class="col-3 fw-semibold">
         <a href="{% url 'equipment_list' %}?s={{ status.id }}{% if status.name == 'Decommissioned' %}&all=true{% endif %}" title="List all '{{ status.name }}' equipment">{{ status.name }}</a>
       </div>
       <div class="col-3">{{ status.equipment_count }}</div>
       <div class="col-6">{{ status.description|default:"" }}</div>
-      <div class="d-none col-lg-2 d-lg-block justify-content-between text-end">
+      <div class="d-none col-lg-2 d-lg-block text-end">
         {% if request.user.is_superuser %}
           <a href="{% url 'status_update' status.id %}" title="Update '{{ status.name }}'"><i class="bi bi-pencil-square"></i></a>
           <a href="{% url 'status_delete' status.id %}" title="Delete '{{ status.name }}'"><i class="bi bi-trash"></i></a>

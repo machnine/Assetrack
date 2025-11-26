@@ -1,4 +1,4 @@
-<div class="row px-3 text-muted small">
+<div class="row list-header">
   <div class="col-lg-1 text-center">Record Number</div>
   <div class="col-lg-1 text-center">Record Date</div>
   <div class="col-lg-2">Record Type</div>
@@ -6,10 +6,10 @@
   <div class="col-lg-6">Description</div>
 </div>
 {% for record in equipment_records %}
-  <div class="row px-3">
+  <div class="row data-row alternate-row">
     <div class="col-lg-1 text-center">
       <a href="{% url 'equipmentrecord_detail' record.id %}">
-        <span class="text-warning pe-3 fw-semibold">{{ record.id }}</span>
+        <span class="text-warning fw-semibold">{{ record.id }}</span>
       </a>
     </div>
     <div class="col-lg-1 text-center">{{ record.date|date:"d/m/Y" }}</div>

@@ -5,111 +5,111 @@
 {% endblock page_title %}
 {% block content %}
   {# equipment details #}
-  <div class="panel">
-    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
-      <h5 class="panel-title">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>
         <i class="bi bi-plugin text-primary"></i> {{ equipment.name }}
-      </h5>
-      <span class="fw-bold small text-info">
+      </span>
+      <span class="fw-bold text-info">
         <a href="{% url 'equipment_list' %}?s={{ equipment.status.id }}">{{ equipment.status }}</a>
       </span>
-      <div class="panel-actions">
+      <span>
         <a href="{% url 'equipment_update' equipment.id %}?next={{ request.path }}"><i class="bi bi-pencil-square"></i></a>
         {% if request.user.is_superuser %}
           <a href="{% url 'equipment_delete' equipment.id %}"><i class="bi bi-trash"></i></a>
         {% endif %}
-      </div>
+      </span>
     </div>
-    <div class="panel-content">
+    <div class="card-body">
       <div class="row">
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Manufacturer</span>
-          <span class="text-primary"><a href="{% url 'equipment_list' %}?m={{ equipment.manufacturer.id }}">{{ equipment.manufacturer }}</a></span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Manufacturer</span>
+          <span class="field-value"><a href="{% url 'equipment_list' %}?m={{ equipment.manufacturer.id }}">{{ equipment.manufacturer }}</a></span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Model number</span>
-          <span class="text-primary">{{ equipment.model_number }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Model number</span>
+          <span class="field-value">{{ equipment.model_number }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Serial number</span>
-          <span class="text-primary">{{ equipment.serial_number }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Serial number</span>
+          <span class="field-value">{{ equipment.serial_number }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block" title="Medical Inventory Number">Inventory number</span>
-          <span class="text-primary">{{ equipment.inventory_number|default:"" }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block" title="Medical Inventory Number">Inventory number</span>
+          <span class="field-value">{{ equipment.inventory_number|default:"" }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Value (£)</span>
-          <span class="text-primary">{{ equipment.value|default:"" }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Value</span>
+          <span class="field-value">{{ equipment.value|default:"" }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Calibration</span>
-          <span class="text-primary {% if equipment.calibration.name == 'UKAS' %}text-danger fw-bold{% endif %}">{{ equipment.calibration.name }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Calibration</span>
+          <span class="field-value {% if equipment.calibration.name == 'UKAS' %}text-danger fw-bold{% endif %}">{{ equipment.calibration.name }}</span>
         </div>
       </div>
       <div class="row">
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Category</span>
-          <span class="text-primary"><a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a></span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Category</span>
+          <span class="field-value"><a href="{% url 'equipment_list' %}?c={{ equipment.category.id }}">{{ equipment.category }}</a></span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Equipment type</span>
-          <span class="text-primary"><a href="{% url 'equipment_list' %}?t={{ equipment.equipment_type.id }}">{{ equipment.equipment_type }}</a></span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Equipment type</span>
+          <span class="field-value"><a href="{% url 'equipment_list' %}?t={{ equipment.equipment_type.id }}">{{ equipment.equipment_type }}</a></span>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Location</span>
-          <span class="text-primary"><a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a></span>
-        </div>
-      </div>
-      <div class="row pb-2">
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Received date</span>
-          <span class="text-primary">{{ equipment.received_date|date:"d/m/Y" }}</span>
-        </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block" title="Medical Inventory Number">Commission date</span>
-          <span class="text-primary">{{ equipment.commission_date|date:"d/m/Y" }}</span>
-        </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <span class="text-muted small d-block">Replacement date</span>
-          <span class="text-primary">{{ equipment.replacement_date|date:"d/m/Y" }}</span>
-        </div>
-        <div class="col-6 col-lg-2 mb-2">
-          <span class="text-muted small d-block">Warranty end</span>
-          <span class="text-primary">{{ equipment.warranty_end|date:"d/m/Y"|default:"&nbsp;" }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Location</span>
+          <span class="field-value"><a href="{% url 'equipment_list' %}?l={{ equipment.location.id }}">{{ equipment.location }}</a></span>
         </div>
       </div>
-      <div class="row pb-2">
-        <div class="col-6 col-lg-2 mb-2">
-          <span class="text-muted small d-block">Serviced by</span>
-          <span class="text-primary"><a href="{% url 'equipment_list' %}?sp={{ equipment.service_provider.id }}">{{ equipment.service_provider|default:"" }}</a></span>
+      <div class="row pt-1">
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Received date</span>
+          <span class="field-value">{{ equipment.received_date|date:"d/m/Y" }}</span>
         </div>
-        <div class="col-6 col-lg-2 mb-2">
-          <span class="text-muted small d-block">Last serviced</span>
-          <span class="text-primary">{{ equipment.last_serviced|date:"d/m/Y"|default:"&nbsp;" }}</span>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block" title="Medical Inventory Number">Commission date</span>
+          <span class="field-value">{{ equipment.commission_date|date:"d/m/Y" }}</span>
+        </div>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Replacement date</span>
+          <span class="field-value">{{ equipment.replacement_date|date:"d/m/Y" }}</span>
+        </div>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Warranty end</span>
+          <span class="field-value">{{ equipment.warranty_end|date:"d/m/Y"|default:"&nbsp;" }}</span>
         </div>
       </div>
-      <div class="row pb-2">
-        <div class="col-12 mb-2">
-          <span class="text-muted small d-block">Notes</span>
-          <span class="text-primary">{{ equipment.notes|default:"&nbsp;"|md_link }}</span>
+      <div class="row pt-1">
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Serviced by</span>
+          <span class="field-value"><a href="{% url 'equipment_list' %}?sp={{ equipment.service_provider.id }}">{{ equipment.service_provider|default:"" }}</a></span>
+        </div>
+        <div class="col-6 col-lg-2 mb-1">
+          <span class="field-label d-block">Last serviced</span>
+          <span class="field-value">{{ equipment.last_serviced|date:"d/m/Y"|default:"&nbsp;" }}</span>
         </div>
       </div>
-      <div class="row pb-2">
+      <div class="row pt-1">
+        <div class="col-12 mb-1">
+          <span class="field-label d-block">Notes</span>
+          <span class="field-value">{{ equipment.notes|default:"&nbsp;"|md_link }}</span>
+        </div>
+      </div>
+      <div class="row pt-1">
         <div class="col-12 text-end small text-muted">
           {% if equipment.last_updated_at %}
-            <i class="small">Last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }} {{ equipment.last_updated_by.initials|default:"" }}</i>
+            Last updated: {{ equipment.last_updated_at|date:"d/m/Y H:i" }} {{ equipment.last_updated_by.initials|default:"" }}
           {% else %}
-            <i class="small">Created: {{ equipment.created_at|date:"d/m/Y H:i" }}</i>
+            Created: {{ equipment.created_at|date:"d/m/Y H:i" }}
           {% endif %}
         </div>
       </div>
     </div>
   </div>
   {# equipment documents #}
-  <div class="panel">
-    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
-      <span class="text-primary"><i class="bi bi-folder"></i> Equipment documents <span class="text-danger small">(documents related to <b>equipment records</b> must be attached to the corresponding <span class="text-primary"><i class="bi bi-card-checklist"></i> Equipment records</span> section below)</span></span>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span class="text-primary"><i class="bi bi-folder"></i> Equipment documents <span class="text-danger">(documents related to <b>equipment records</b> must be attached to the corresponding <span class="text-primary"><i class="bi bi-card-checklist"></i> Equipment records</span> section below)</span></span>
       <a hx-get="{% url 'equipment_attachment_upload' equipment.id %}"
          hx-trigger="click"
          hx-target="#modal-box .modal-content"
@@ -119,12 +119,12 @@
          hx-confirm="Are you uploading a document related to this << equipment >>?   This is not an attachment for a specific << equipment record >> in the << equipment records >> section?"
          href="javascript:"><i class="bi bi-file-earmark-arrow-up"></i></a>
     </div>
-    <div class="panel-content">
+    <div class="card-body">
       {% if attachments|length %}
         {% for file in attachments %}
-          <div class="row pb-2">
+          <div class="row data-row align-items-center">
             <div class="d-none d-lg-block col-lg-1">
-              <span class="text-muted small">{{ file.uploaded_at|date:"d/m/Y" }}</span>
+              <span class="text-muted">{{ file.uploaded_at|date:"d/m/Y" }}</span>
             </div>
             <div class="d-none d-lg-block col-lg-1">
               <a href="{{ file.file.url }}">
@@ -133,7 +133,7 @@
                 {% else %}
                   <i class="bi bi-file-earmark text-danger"></i>
                 {% endif %}
-                <i class="text-muted small">{{ file.file.size|filesizeformat }}</i></a>
+                <span class="text-muted">{{ file.file.size|filesizeformat }}</span></a>
             </div>
             <div class="col-6 col-lg-9">
               <a href="{{ file.file.url }}">
@@ -163,14 +163,14 @@
     </div>
   </div>
   {# equipment records #}
-  <div class="panel">
-    <div class="panel-heading d-flex justify-content-between align-items-center pe-2">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
       <span class="text-primary"><i class="bi bi-card-checklist"></i> Equipment records</span>
       <a href="{% url 'equipmentrecord_create' equipment.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
     </div>
-    <div class="panel-content pb-5">
+    <div class="card-body">
       {% for record in equipment.equipmentrecord_set.all %}
-        <div class="row align-items-center py-2 g-0 border-bottom {% if not forloop.counter0|divisibleby:2 %}bg-light{% else %}bg-white{% endif %}">
+        <div class="row data-row alternate-row align-items-center">
           <div class="col-3 col-lg-1 ps-2">
             <a href="{% url 'equipmentrecord_detail' record.id %}" title="Equipment record ID: {{ record.id }}">
               <span class="text-warning pe-3 fw-semibold">{{ record.id }}</span>
@@ -180,8 +180,8 @@
             <a href="{% url 'equipmentrecord_detail' record.id %}" title="View record details..."> {{ record.date|date:'d/m/Y' }}</a>
           </div>
           <div class="col-6 col-lg-2 fw-semibold" style="color: {{ record.record_type.color }};">{{ record.record_type }}</div>
-          <div class="d-none d-lg-block col-lg-8 small">
-            <i class="text-muted fw-bold">{{ record.created_by.initials|default:"" }}: </i>
+          <div class="d-none d-lg-block col-lg-8">
+            <span class="text-muted fw-bold">{{ record.created_by.initials|default:"" }}: </span>
             {% if record.has_attachment %}<i class="bi bi-paperclip text-danger" title="Has attachment(s)"></i>{% endif %}
             <span class="text-primary">{{ record.description|truncatewords:25|md_link }}</span>
           </div>

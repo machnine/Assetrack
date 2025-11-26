@@ -2,20 +2,18 @@
 {% block page_title %}
 {% endblock page_title %}
 {% block content %}
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="row">
+  <div class="card">
+    <div class="card-header">
+      <div class="row align-items-center">
         <div class="col-lg-5">
-          <h5>
-            {% block panel_heading_start %}
-            {% endblock panel_heading_start %}
-          </h5>
+          {% block panel_heading_start %}
+          {% endblock panel_heading_start %}
         </div>
         <div class="col-lg-4">
           {% block panel_heading_center %}
           {% endblock panel_heading_center %}
         </div>
-        <div class="col-lg-3 text-end pe-4">
+        <div class="col-lg-3 text-end">
           {% block panel_heading_before_end %}
           {% endblock panel_heading_before_end %}
           {% block panel_heading_end %}
@@ -26,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="panel-content px-3">
+    <div class="card-body">
       {% block panel_content %}
       {% endblock panel_content %}
     </div>

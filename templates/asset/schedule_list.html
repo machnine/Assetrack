@@ -4,8 +4,8 @@
 {% endblock page_title %}
 {% block extra_css %}
   <style>
-    .highlighted { 
-      animation: highlight-fade 3s ease-out; 
+    .highlighted {
+      animation: highlight-fade 3s ease-out;
       border-radius: .5rem;
     }
     @keyframes highlight-fade {
@@ -18,7 +18,7 @@
   {% url 'schedule_create' %}
 {% endblock new_object_url %}
 {% block panel_heading_start %}
-  <i class="bi bi-calendar-week text-danger"></i> Scheduled Tasks<i class="ps-lg-3 d-none d-lg-inline small text-muted">&lt; 4 week old</i> <i>and upcoming tasks</i>
+  <i class="bi bi-calendar-week text-danger"></i> Scheduled Tasks <span class="d-none d-lg-inline text-muted">&lt; 4 week old and upcoming tasks</span>
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
   <form method="get" action="{% url 'schedule_list' %}">
@@ -33,11 +33,11 @@
   </form>
 {% endblock panel_heading_center %}
 {% block panel_content %}
-  <div class="row pb-2 text-muted small fw-bold align-items-center">
+  <div class="row list-header">
     <div class="col-lg-1 d-none d-lg-block">Schedule Date</div>
     <div class="col-lg-1">Frequency</div>
     <div class="col-lg-2 d-none d-lg-block">
-      Status <i class="ps-2 bi bi-toggle2-off text-danger" id="showall" title="Show/Hide none active schedules"></i>
+      Status <i class="bi bi-toggle2-off" id="showall" title="Show/Hide inactive schedules"></i>
     </div>
     <div class="col-lg-6 d-none d-lg-block">Activity Description</div>
     <div class="col-lg-2 d-none d-lg-block"></div>

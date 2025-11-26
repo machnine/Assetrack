@@ -14,7 +14,7 @@
      title="Upload a new document"><i class="bi bi-file-earmark-arrow-up"></i></a>
 {% endblock panel_heading_end %}
 {% block panel_heading_start %}
-  <i class="bi bi-folder-fill text-warning"></i> List of Documents <i class="text-muted small d-none d-lg-inline">(unassociated documents)</i>
+  <i class="bi bi-folder-fill text-warning"></i> List of Documents <span class="text-muted d-none d-lg-inline">(unassociated documents)</span>
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
   <form method="get" action="{% url 'document_list' %}">
@@ -30,27 +30,26 @@
 {% endblock panel_heading_center %}
 {% block panel_content %}
   {% if documents|length %}
-    <!-- table header -->
-    <div class="row text-muted small mb-3">
-      <div class="col-lg-1 d-none d-lg-block ">File Size</div>
+    <div class="row list-header">
+      <div class="col-lg-1 d-none d-lg-block">File Size</div>
       <div class="col-lg-3">Name</div>
       <div class="col-lg-7">Description</div>
       <div class="col-lg-1 d-none d-lg-block text-end"></div>
     </div>
     {% for doc in documents %}
-      <div class="row align-items-center border-top py-2 alternate-row">
+      <div class="row data-row alternate-row align-items-center">
         <div class="col-lg-1 d-none d-lg-block">
           {% if doc.filetype %}
             <i class="bi bi-filetype-{{ doc.filetype }} text-danger"></i>
           {% else %}
             <i class="bi bi-file-earmark text-danger"></i>
           {% endif %}
-          {{ doc.file.size|filesizeformat }}
+          {% if doc.file_size %}{{ doc.file_size|filesizeformat }}{% else %}<span class="text-muted">-</span>{% endif %}
         </div>
         <div class="col-lg-3">
-          <a href="{{ doc.file.url }}">{{ doc.name }}</a>
+          {% if doc.file_exists %}<a href="{{ doc.file.url }}">{{ doc.name }}</a>{% else %}<span class="text-muted">{{ doc.name }}</span>{% endif %}
         </div>
-        <div class="col-lg-7 small">{{ doc.description|md_link }}</div>
+        <div class="col-lg-7">{{ doc.description|md_link }}</div>
         <div class="col-lg-1 d-none d-lg-block text-end">
           <a hx-get="{% url 'document_update' doc.id %}"
              hx-trigger="click"

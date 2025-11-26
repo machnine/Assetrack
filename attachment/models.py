@@ -67,6 +67,24 @@ class AttachmentBase(models.Model):
         if suffix := Path(self.file.name).suffix:
             return suffix[1:].lower()
 
+    @property
+    def file_exists(self):
+        """Check if the file exists on disk"""
+        try:
+            return self.file and self.file.storage.exists(self.file.name)
+        except Exception:
+            return False
+
+    @property
+    def file_size(self):
+        """Return file size safely, or None if file is missing"""
+        try:
+            if self.file_exists:
+                return self.file.size
+        except Exception:
+            pass
+        return None
+
     def get_verbose_name(self, plural=False):
         return self._meta.verbose_name_plural if plural else self._meta.verbose_name
 
