@@ -10,15 +10,17 @@
   <i class="bi bi-gear-wide-connected text-success"></i> <span class="text-danger fw-bold">{{ equipment_type }}</span> Maintenance Records
 {% endblock panel_heading_start %}
 {% block panel_heading_center %}
-  <div class="d-flex fw-semibold">
-    <div style="background-color: rgba(235, 235, 225, 0.8); border-radius: .5rem;">
-      <span class="px-2"><a href="{% url 'lx_maintenance_guide' task='daily' %}" target='_blank' class="popup-link"><i class="bi bi-sun-fill pe-1" style="color:#F06624"></i> Daily</a></span>
-      <i class="bi bi-dot"></i>
-      <span class="px-2"><a href="{% url 'lx_maintenance_guide' task='fortnightly' %}" target='_blank' class="popup-link"><i class="bi bi-calendar-week pe-1" style="color:#1CB14F"></i> Fortnightly</a></span>
-      <i class="bi bi-dot"></i>
-      <span class="px-2"><a href="{% url 'lx_maintenance_guide' task='long-term' %}" target='_blank' class="popup-link"><i class="bi bi-calendar3 pe-1" style="color:#0E4C6E"></i> Long term</a></span>
+  {% if equipment_type.slug == 'luminex-machine' %}
+    <div class="d-flex fw-semibold">
+      <div style="background-color: rgba(235, 235, 225, 0.8); border-radius: .5rem;">
+        <span class="px-2"><a href="{% url 'lx_maintenance_guide' task='daily' %}" target='_blank' class="popup-link"><i class="bi bi-sun-fill pe-1" style="color:#F06624"></i> Daily</a></span>
+        <i class="bi bi-dot"></i>
+        <span class="px-2"><a href="{% url 'lx_maintenance_guide' task='fortnightly' %}" target='_blank' class="popup-link"><i class="bi bi-calendar-week pe-1" style="color:#1CB14F"></i> Fortnightly</a></span>
+        <i class="bi bi-dot"></i>
+        <span class="px-2"><a href="{% url 'lx_maintenance_guide' task='long-term' %}" target='_blank' class="popup-link"><i class="bi bi-calendar3 pe-1" style="color:#0E4C6E"></i> Long term</a></span>
+      </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock panel_heading_center %}
 {% block panel_content %}
   <div class="row list-header">
