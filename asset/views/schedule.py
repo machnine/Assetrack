@@ -100,7 +100,7 @@ class ScheduleActionView(LoginRequiredMixin, View):
         # Mark as completed or move to next date
         schedule.update_scheduel_status()
 
-        if request.htmx:
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             if schedule.frequency == "O":  # One-off schedule
                 return HttpResponse("")
             else:

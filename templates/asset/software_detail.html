@@ -84,10 +84,7 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <span class="text-primary"><i class="bi bi-folder"></i> Software documents</span>
-      <a hx-get="{% url 'software_attachment_upload' software.id %}"
-         hx-trigger="click"
-         hx-target="#modal-box .modal-content"
-         hx-swap="innerHTML"
+      <a data-modal-url="{% url 'software_attachment_upload' software.id %}"
          data-bs-toggle="modal"
          data-bs-target="#modal-box"
          href="javascript:"><i class="bi bi-file-earmark-arrow-up"></i></a>
@@ -112,17 +109,11 @@
               <span class="text-primary">{{ file.description|default:"" }}</span>
             </div>
             <div class="d-none d-lg-block col-lg-1 text-end">
-              <a hx-get="{% url 'software_attachment_update' file.id %}"
-                 hx-trigger="click"
-                 hx-target="#modal-box .modal-content"
-                 hx-swap="innerHTML"
+              <a data-modal-url="{% url 'software_attachment_update' file.id %}"
                  data-bs-toggle="modal"
                  data-bs-target="#modal-box"
                  href="javascript:"><i class="bi bi-pencil-square"></i></a>
-              <a hx-get="{% url 'software_attachment_delete' file.id %}"
-                 hx-trigger="click"
-                 hx-target="#modal-box .modal-content"
-                 hx-swap="innerHTML"
+              <a data-modal-url="{% url 'software_attachment_delete' file.id %}"
                  data-bs-toggle="modal"
                  data-bs-target="#modal-box"
                  href="javascript:"><i class="bi bi-trash"></i></a>
@@ -160,7 +151,7 @@
   <div class="modal fade" id="modal-box" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
-        <!-- HTMX rendered content -->
+        <!-- modal content loaded via JS -->
       </div>
     </div>
   </div>

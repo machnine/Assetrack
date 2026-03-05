@@ -9,11 +9,12 @@
     <span class="{% if schedule.status == 'A' %}text-success{% endif %}{% if schedule.status == 'C' %}text-secondary{% endif %}{% if schedule.status == 'X' %}text-danger{% endif %}">{{ schedule.get_status_display }}</span>
     {% if schedule.status == 'A' %}
       <a title="Action this schedule"
-         hx-post="{% url 'schedule_action' schedule.pk %}"
-         hx-target="#schedule-{{ schedule.pk }}"
-         hx-swap="outerHTML"
-         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-         hx-confirm="Action this?">
+         data-post-url="{% url 'schedule_action' schedule.pk %}"
+         data-target="#schedule-{{ schedule.pk }}"
+         data-swap="outerHTML"
+         data-csrf="{{ csrf_token }}"
+         data-confirm="Action this?"
+         href="javascript:">
         <i class="bi bi-box-arrow-in-left text-success"></i>
       </a>
     {% endif %}

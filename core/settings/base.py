@@ -16,8 +16,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # third-party
-    "django_htmx",
     # local
     "core",
     "user",
@@ -36,8 +34,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # third-party
-    "django_htmx.middleware.HtmxMiddleware",
     # local
     "requestlog.middleware.RequestLogMiddleware",
 ]
