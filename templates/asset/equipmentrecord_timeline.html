@@ -20,25 +20,49 @@
           {{ filter_form.end_date }}
           <div class="text-danger small">{{ filter_form.end_date.errors }}</div>
         </div>
-        <div class="col-sm-6 col-lg-2">
+        <div class="col-sm-6 col-lg-3">
           <label class="form-label" for="{{ filter_form.category.id_for_label }}">Category</label>
           {{ filter_form.category }}
           <div class="text-danger small">{{ filter_form.category.errors }}</div>
         </div>
-        <div class="col-sm-6 col-lg-2">
+        <div class="col-sm-6 col-lg-3">
           <label class="form-label" for="{{ filter_form.equipment.id_for_label }}">Equipment</label>
           {{ filter_form.equipment }}
           <div class="text-danger small">{{ filter_form.equipment.errors }}</div>
-        </div>
-        <div class="col-sm-6 col-lg-2">
-          <label class="form-label" for="{{ filter_form.record_type.id_for_label }}">Record type / severity</label>
-          {{ filter_form.record_type }}
-          <div class="text-danger small">{{ filter_form.record_type.errors }}</div>
         </div>
         <div class="col-lg-2 d-flex gap-2">
           <button type="submit" class="btn btn-sm btn-primary flex-grow-1">Apply</button>
           <a href="{% url 'equipmentrecord_timeline' %}" class="btn btn-sm btn-outline-secondary">Clear</a>
         </div>
+        <fieldset class="col-12 timeline-type-filter">
+          <legend class="form-label">Record types / severity</legend>
+          <input type="hidden" name="record_types_filter" value="1">
+          <div class="timeline-legend" aria-label="Select record types to display">
+            <label class="timeline-legend-item timeline-type-chip {% if all_record_types_selected %}is-selected{% endif %}"
+                   style="--record-color: var(--color-primary)">
+              <input type="checkbox"
+                     class="visually-hidden"
+                     id="record-types-all"
+                     {% if all_record_types_selected %}checked{% endif %}
+                     {% if not record_type_options %}disabled{% endif %}>
+              <span class="timeline-legend-dot timeline-all-dot"></span>
+              All
+            </label>
+            {% for option in record_type_options %}
+              <label class="timeline-legend-item timeline-type-chip {% if option.selected %}is-selected{% endif %}"
+                     style="--record-color: {{ option.color }}">
+                <input type="checkbox"
+                       class="visually-hidden timeline-record-type-checkbox"
+                       name="record_types"
+                       value="{{ option.record_type.pk }}"
+                       {% if option.selected %}checked{% endif %}>
+                <span class="timeline-legend-dot" style="--record-color: {{ option.color }}"></span>
+                {{ option.record_type.name }}
+              </label>
+            {% endfor %}
+          </div>
+          <div class="text-danger small">{{ filter_form.record_types.errors }}</div>
+        </fieldset>
         {% if filter_form.non_field_errors %}
           <div class="col-12 text-danger">{{ filter_form.non_field_errors }}</div>
         {% endif %}
@@ -49,16 +73,6 @@
   <div class="card">
     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
       <span>{{ record_count }} record{{ record_count|pluralize }} across {{ equipment_count }} equipment item{{ equipment_count|pluralize }}</span>
-      {% if legend %}
-        <span class="timeline-legend" aria-label="Record type colour legend">
-          {% for item in legend %}
-            <span class="timeline-legend-item">
-              <span class="timeline-legend-dot" style="--record-color: {{ item.color }}"></span>
-              {{ item.record_type.name }}
-            </span>
-          {% endfor %}
-        </span>
-      {% endif %}
     </div>
     <div class="card-body p-0">
       {% if equipment_rows %}
@@ -107,3 +121,47 @@
     </div>
   </div>
 {% endblock content %}
+{% block extra_js %}
+  <script>
+    (function () {
+      const allCheckbox = document.getElementById("record-types-all");
+      const typeCheckboxes = Array.from(document.querySelectorAll(".timeline-record-type-checkbox"));
+      const filterForm = document.querySelector(".timeline-filters");
+      if (!allCheckbox) return;
+      let submitTimer;
+
+      function updateChip(checkbox) {
+        checkbox.closest(".timeline-type-chip").classList.toggle("is-selected", checkbox.checked);
+      }
+
+      function syncAllCheckbox() {
+        const selectedCount = typeCheckboxes.filter((checkbox) => checkbox.checked).length;
+        allCheckbox.checked = typeCheckboxes.length > 0 && selectedCount === typeCheckboxes.length;
+        allCheckbox.indeterminate = selectedCount > 0 && selectedCount < typeCheckboxes.length;
+        updateChip(allCheckbox);
+        typeCheckboxes.forEach(updateChip);
+      }
+
+      function refreshTimeline() {
+        clearTimeout(submitTimer);
+        submitTimer = setTimeout(function () {
+          filterForm.requestSubmit();
+        }, 300);
+      }
+
+      allCheckbox.addEventListener("change", function () {
+        typeCheckboxes.forEach((checkbox) => {
+          checkbox.checked = allCheckbox.checked;
+        });
+        syncAllCheckbox();
+        refreshTimeline();
+      });
+
+      typeCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", function () {
+        syncAllCheckbox();
+        refreshTimeline();
+      }));
+      syncAllCheckbox();
+    })();
+  </script>
+{% endblock extra_js %}

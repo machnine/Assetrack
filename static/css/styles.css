@@ -616,6 +616,18 @@ footer {
   margin-bottom: 0.2rem;
 }
 
+.timeline-type-filter {
+  border-top: 1px solid var(--color-border-light);
+  margin-top: 0.65rem;
+  padding-top: 0.55rem;
+}
+
+.timeline-type-filter legend {
+  float: none;
+  margin-bottom: 0.35rem;
+  width: auto;
+}
+
 .timeline-legend {
   display: flex;
   flex-wrap: wrap;
@@ -630,6 +642,47 @@ footer {
   white-space: nowrap;
 }
 
+.timeline-type-chip {
+  --record-color: var(--color-primary);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  opacity: 0.45;
+  padding: 0.25rem 0.55rem;
+  transition: color var(--transition-fast), opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.timeline-type-chip.is-selected {
+  color: var(--record-color);
+  opacity: 1;
+}
+
+.timeline-type-chip:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+
+.timeline-type-chip.is-selected:hover {
+  opacity: 1;
+}
+
+.timeline-type-chip:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.timeline-type-chip .timeline-legend-dot {
+  background: var(--color-text-muted);
+  box-shadow: 0 0 0 1px var(--color-text-muted);
+}
+
+.timeline-type-chip.is-selected .timeline-legend-dot {
+  background: var(--record-color);
+  box-shadow: 0 0 0 1px var(--record-color);
+}
+
 .timeline-legend-dot {
   background: var(--record-color);
   border: 2px solid #fff;
@@ -638,6 +691,11 @@ footer {
   display: inline-block;
   height: 0.65rem;
   width: 0.65rem;
+}
+
+.timeline-all-dot {
+  --record-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 50%, var(--color-success) 50%);
 }
 
 .timeline-help {

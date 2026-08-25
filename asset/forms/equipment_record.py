@@ -62,11 +62,9 @@ class EquipmentRecordTimelineFilterForm(forms.Form):
         empty_label="All equipment",
         widget=forms.Select(attrs={"class": "form-select form-select-sm"}),
     )
-    record_type = forms.ModelChoiceField(
+    record_types = forms.ModelMultipleChoiceField(
         queryset=RecordType.objects.all(),
         required=False,
-        empty_label="All record types",
-        widget=forms.Select(attrs={"class": "form-select form-select-sm"}),
     )
 
     def clean(self):

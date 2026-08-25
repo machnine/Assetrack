@@ -150,6 +150,8 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
         if self.request.GET:
             filter_form = EquipmentRecordTimelineFilterForm(self.request.GET)
             active_filters = filter_form.cleaned_data if filter_form.is_valid() else {}
+            if "record_types_filter" not in self.request.GET:
+                active_filters["record_types"] = None
         else:
             today = timezone.localdate()
             active_filters = {
@@ -157,7 +159,7 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
                 "end_date": today,
                 "category": None,
                 "equipment": None,
-                "record_type": None,
+                "record_types": None,
             }
             filter_form = EquipmentRecordTimelineFilterForm(initial=active_filters)
 
@@ -170,15 +172,18 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
             records = records.filter(equipment__category=active_filters["category"])
         if active_filters.get("equipment"):
             records = records.filter(equipment=active_filters["equipment"])
-        if active_filters.get("record_type"):
-            records = records.filter(record_type=active_filters["record_type"])
+        if active_filters.get("record_types") is not None:
+            records = records.filter(record_type__in=active_filters["record_types"])
 
         records = list(records.order_by("equipment__name", "date", "pk"))
         timeline = self.build_timeline(records, active_filters)
+        record_type_options = self.build_record_type_options(active_filters.get("record_types"))
         context.update(
             {
                 "filter_form": filter_form,
                 "record_count": len(records),
+                "record_type_options": record_type_options,
+                "all_record_types_selected": all(option["selected"] for option in record_type_options),
                 **timeline,
             }
         )
@@ -186,7 +191,7 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
 
     def build_timeline(self, records, active_filters):
         if not records:
-            return {"equipment_rows": [], "equipment_count": 0, "legend": [], "ticks": []}
+            return {"equipment_rows": [], "equipment_count": 0, "ticks": []}
 
         record_dates = [record.date for record in records]
         first_date = min(record_dates)
@@ -202,7 +207,6 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
 
         total_days = (axis_end - axis_start).days
         rows_by_equipment = {}
-        record_types = {}
 
         for record in records:
             row = rows_by_equipment.setdefault(
@@ -221,7 +225,6 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
                     "top": 14 + lane * 16,
                 }
             )
-            record_types[record.record_type_id] = {"record_type": record.record_type, "color": color}
 
         equipment_rows = []
         for row in rows_by_equipment.values():
@@ -233,9 +236,22 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
             "axis_end": axis_end,
             "equipment_rows": equipment_rows,
             "equipment_count": len(equipment_rows),
-            "legend": sorted(record_types.values(), key=lambda item: item["record_type"].name.lower()),
             "ticks": self.build_ticks(axis_start, axis_end),
         }
+
+    def build_record_type_options(self, selected_record_types):
+        selected_ids = None
+        if selected_record_types is not None:
+            selected_ids = {record_type.pk for record_type in selected_record_types}
+
+        return [
+            {
+                "record_type": record_type,
+                "color": self.normalise_color(record_type.color),
+                "selected": selected_ids is None or record_type.pk in selected_ids,
+            }
+            for record_type in RecordType.objects.all()
+        ]
 
     @staticmethod
     def build_ticks(axis_start, axis_end):

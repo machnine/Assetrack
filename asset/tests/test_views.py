@@ -315,6 +315,7 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
         )
         cls.critical_type = RecordType.objects.create(name="Critical", color="#dc3545")
         cls.information_type = RecordType.objects.create(name="Information", color="#0dcaf0")
+        cls.review_type = RecordType.objects.create(name="Review", color="#198754")
         cls.critical_record = EquipmentRecord.objects.create(
             equipment=cls.equipment,
             record_type=cls.critical_type,
@@ -327,6 +328,13 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
             record_type=cls.information_type,
             date=date(2026, 2, 10),
             description="Information timeline event",
+            created_by=cls.user,
+        )
+        cls.review_record = EquipmentRecord.objects.create(
+            equipment=cls.equipment,
+            record_type=cls.review_type,
+            date=date(2026, 3, 10),
+            description="Review timeline event",
             created_by=cls.user,
         )
         cls.old_record = EquipmentRecord.objects.create(
@@ -344,8 +352,10 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
         response = self.client.get(reverse("equipmentrecord_timeline"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["record_count"], 2)
+        self.assertEqual(response.context["record_count"], 3)
         self.assertEqual(response.context["equipment_count"], 2)
+        self.assertTrue(response.context["all_record_types_selected"])
+        self.assertTrue(all(option["selected"] for option in response.context["record_type_options"]))
         today = timezone.localdate()
         self.assertEqual(response.context["filter_form"].initial["start_date"].year, today.year - 3)
         self.assertEqual(response.context["filter_form"].initial["end_date"], today)
@@ -354,6 +364,8 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
         self.assertContains(response, "Critical")
         self.assertContains(response, "#dc3545")
         self.assertContains(response, reverse("equipmentrecord_detail", kwargs={"pk": self.critical_record.pk}))
+        self.assertContains(response, 'class="visually-hidden timeline-record-type-checkbox"', count=3)
+        self.assertContains(response, "filterForm.requestSubmit()")
         self.assertNotContains(response, "Older timeline event")
 
         for row in response.context["equipment_rows"]:
@@ -374,7 +386,11 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
     def test_timeline_filters_by_equipment_and_record_type(self):
         response = self.client.get(
             reverse("equipmentrecord_timeline"),
-            {"equipment": self.other_equipment.pk, "record_type": self.information_type.pk},
+            {
+                "equipment": self.other_equipment.pk,
+                "record_types_filter": "1",
+                "record_types": [self.information_type.pk],
+            },
         )
 
         self.assertEqual(response.status_code, 200)
@@ -383,10 +399,48 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
             [row["equipment"] for row in response.context["equipment_rows"]],
             [self.other_equipment],
         )
-        self.assertEqual(
-            [item["record_type"] for item in response.context["legend"]],
-            [self.information_type],
+        selected_types = [
+            option["record_type"] for option in response.context["record_type_options"] if option["selected"]
+        ]
+        self.assertEqual(selected_types, [self.information_type])
+        self.assertFalse(response.context["all_record_types_selected"])
+
+    def test_timeline_combines_multiple_record_types(self):
+        response = self.client.get(
+            reverse("equipmentrecord_timeline"),
+            {
+                "start_date": "2025-01-01",
+                "end_date": "2026-12-31",
+                "record_types_filter": "1",
+                "record_types": [self.critical_type.pk, self.information_type.pk],
+            },
         )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["record_count"], 2)
+        selected_type_ids = {
+            option["record_type"].pk for option in response.context["record_type_options"] if option["selected"]
+        }
+        self.assertEqual(selected_type_ids, {self.critical_type.pk, self.information_type.pk})
+        plotted_records = {
+            event["record"] for row in response.context["equipment_rows"] for event in row["events"]
+        }
+        self.assertEqual(plotted_records, {self.critical_record, self.information_record})
+
+    def test_timeline_allows_all_record_types_to_be_deselected(self):
+        response = self.client.get(
+            reverse("equipmentrecord_timeline"),
+            {
+                "start_date": "2025-01-01",
+                "end_date": "2026-12-31",
+                "record_types_filter": "1",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["record_count"], 0)
+        self.assertFalse(response.context["all_record_types_selected"])
+        self.assertFalse(any(option["selected"] for option in response.context["record_type_options"]))
 
     def test_timeline_filters_by_equipment_category(self):
         response = self.client.get(
