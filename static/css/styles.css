@@ -288,10 +288,15 @@ h1, h2, h3, h4, h5, h6,
   outline: none;
 }
 
-.form-control-sm {
+.form-control-sm,
+.form-select-sm {
   font-size: var(--font-size-sm);
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
+}
+
+.form-select-sm {
+  padding-right: 2rem;
 }
 
 /* Input group label widths */
@@ -602,4 +607,168 @@ footer {
   padding: var(--space-4) 0;
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
+}
+
+/* -----------------------------------------------------------------------------
+   Equipment Record Timeline
+   -------------------------------------------------------------------------- */
+.timeline-filters .form-label {
+  margin-bottom: 0.2rem;
+}
+
+.timeline-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  font-weight: 400;
+}
+
+.timeline-legend-item {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.timeline-legend-dot {
+  background: var(--record-color);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--record-color);
+  display: inline-block;
+  height: 0.65rem;
+  width: 0.65rem;
+}
+
+.timeline-help {
+  font-size: var(--font-size-xs);
+}
+
+.timeline-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.timeline-chart {
+  min-width: 960px;
+}
+
+.timeline-axis-row,
+.timeline-row {
+  display: grid;
+  grid-template-columns: 220px minmax(720px, 1fr);
+}
+
+.timeline-axis-row {
+  border-bottom: 1px solid var(--color-border);
+  min-height: 42px;
+}
+
+.timeline-axis-title,
+.timeline-equipment {
+  background: #fff;
+  border-right: 1px solid var(--color-border);
+  left: 0;
+  padding: 0.55rem 0.75rem;
+  position: sticky;
+  z-index: 3;
+}
+
+.timeline-axis-title {
+  align-items: flex-end;
+  color: var(--color-text-muted);
+  display: flex;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.timeline-axis {
+  margin: 0 1.25rem;
+  position: relative;
+}
+
+.timeline-axis-tick,
+.timeline-gridline {
+  border-left: 1px solid var(--color-border);
+  left: var(--tick-position);
+  position: absolute;
+}
+
+.timeline-axis-tick {
+  bottom: 0;
+  height: 10px;
+}
+
+.timeline-axis-label {
+  bottom: 12px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  left: 0;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.timeline-row {
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.timeline-row:nth-child(odd) .timeline-equipment,
+.timeline-row:nth-child(odd) .timeline-track {
+  background-color: var(--color-bg-alt);
+}
+
+.timeline-equipment {
+  align-items: center;
+  display: flex;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  min-height: var(--track-height);
+}
+
+.timeline-track {
+  background: #fff;
+  height: var(--track-height);
+  margin: 0 1.25rem;
+  position: relative;
+}
+
+.timeline-gridline {
+  bottom: 0;
+  top: 0;
+}
+
+.timeline-event {
+  background: var(--record-color);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--record-color), 0 1px 3px rgba(15, 23, 42, 0.35);
+  height: 12px;
+  left: var(--event-position);
+  position: absolute;
+  top: var(--event-top);
+  transform: translate(-50%, -50%);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  width: 12px;
+  z-index: 2;
+}
+
+.timeline-event:hover,
+.timeline-event:focus-visible {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--record-color);
+  outline: none;
+  transform: translate(-50%, -50%) scale(1.45);
+  z-index: 4;
+}
+
+@media (max-width: 767.98px) {
+  .timeline-axis-row,
+  .timeline-row {
+    grid-template-columns: 160px minmax(720px, 1fr);
+  }
+
+  .timeline-chart {
+    min-width: 900px;
+  }
 }

@@ -1,14 +1,26 @@
 """CRUD view for equipment record"""
 
+import csv
 import re
+from datetime import timedelta
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.utils import timezone
+from django.views import View
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
-from asset.forms import EquipmentRecordAttachmentUpdateForm, EquipmentRecordAttachmentUploadForm, EquipmentRecordForm
-from asset.models import EquipmentRecord, RecordType, SiteConfiguration
+from asset.forms import (
+    EquipmentRecordAttachmentUpdateForm,
+    EquipmentRecordAttachmentUploadForm,
+    EquipmentRecordForm,
+    EquipmentRecordTimelineFilterForm,
+)
+from asset.models import Equipment, EquipmentRecord, RecordType, SiteConfiguration
 from asset.models.record import EquipmentRecordAttachment
 from attachment.views import AttachmentDeleteView, AttachmentUpdateView, AttachmentUploadView
 
@@ -124,6 +136,159 @@ class EquipmentRecordDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["attachments"] = EquipmentRecordAttachment.objects.filter(object_id=self.object.id)
         return context
+
+
+class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
+    """Plot equipment records by date, equipment, and record-type colour."""
+
+    template_name = "asset/equipmentrecord_timeline.html"
+    default_color = "#6c757d"
+    color_pattern = re.compile(r"^#[0-9a-fA-F]{6}$")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.GET:
+            filter_form = EquipmentRecordTimelineFilterForm(self.request.GET)
+            active_filters = filter_form.cleaned_data if filter_form.is_valid() else {}
+        else:
+            today = timezone.localdate()
+            active_filters = {
+                "start_date": today - relativedelta(years=3),
+                "end_date": today,
+                "equipment": None,
+                "record_type": None,
+            }
+            filter_form = EquipmentRecordTimelineFilterForm(initial=active_filters)
+
+        records = EquipmentRecord.objects.select_related("equipment", "record_type")
+        if active_filters.get("start_date"):
+            records = records.filter(date__gte=active_filters["start_date"])
+        if active_filters.get("end_date"):
+            records = records.filter(date__lte=active_filters["end_date"])
+        if active_filters.get("equipment"):
+            records = records.filter(equipment=active_filters["equipment"])
+        if active_filters.get("record_type"):
+            records = records.filter(record_type=active_filters["record_type"])
+
+        records = list(records.order_by("equipment__name", "date", "pk"))
+        timeline = self.build_timeline(records, active_filters)
+        context.update(
+            {
+                "filter_form": filter_form,
+                "record_count": len(records),
+                **timeline,
+            }
+        )
+        return context
+
+    def build_timeline(self, records, active_filters):
+        if not records:
+            return {"equipment_rows": [], "equipment_count": 0, "legend": [], "ticks": []}
+
+        record_dates = [record.date for record in records]
+        first_date = min(record_dates)
+        last_date = max(record_dates)
+        date_span = (last_date - first_date).days
+        padding = max(1, round(date_span * 0.03))
+        axis_start = active_filters.get("start_date") or first_date - timedelta(days=padding)
+        axis_end = active_filters.get("end_date") or last_date + timedelta(days=padding)
+
+        if axis_start == axis_end:
+            axis_start -= timedelta(days=1)
+            axis_end += timedelta(days=1)
+
+        total_days = (axis_end - axis_start).days
+        rows_by_equipment = {}
+        record_types = {}
+
+        for record in records:
+            row = rows_by_equipment.setdefault(
+                record.equipment_id,
+                {"equipment": record.equipment, "events": [], "date_lanes": {}, "height": 40},
+            )
+            lane = row["date_lanes"].get(record.date, 0)
+            row["date_lanes"][record.date] = lane + 1
+            row["height"] = max(row["height"], 28 + lane * 16)
+            color = self.normalise_color(record.record_type.color)
+            row["events"].append(
+                {
+                    "record": record,
+                    "color": color,
+                    "position": round(((record.date - axis_start).days / total_days) * 100, 4),
+                    "top": 14 + lane * 16,
+                }
+            )
+            record_types[record.record_type_id] = {"record_type": record.record_type, "color": color}
+
+        equipment_rows = []
+        for row in rows_by_equipment.values():
+            row.pop("date_lanes")
+            equipment_rows.append(row)
+
+        return {
+            "axis_start": axis_start,
+            "axis_end": axis_end,
+            "equipment_rows": equipment_rows,
+            "equipment_count": len(equipment_rows),
+            "legend": sorted(record_types.values(), key=lambda item: item["record_type"].name.lower()),
+            "ticks": self.build_ticks(axis_start, axis_end),
+        }
+
+    @staticmethod
+    def build_ticks(axis_start, axis_end):
+        total_days = (axis_end - axis_start).days
+        tick_count = min(7, total_days + 1)
+        label_format = "Y" if total_days > 730 else "M Y" if total_days > 90 else "d M"
+        return [
+            {
+                "date": axis_start + timedelta(days=round((total_days * index) / (tick_count - 1))),
+                "position": round((index / (tick_count - 1)) * 100, 4),
+                "label_format": label_format,
+            }
+            for index in range(tick_count)
+        ]
+
+    def normalise_color(self, color):
+        return color if color and self.color_pattern.fullmatch(color) else self.default_color
+
+
+class EquipmentRecordCSVExportView(LoginRequiredMixin, View):
+    """Export all records belonging to one item of equipment as CSV."""
+
+    def get(self, request, equipment_id, *args, **kwargs):
+        equipment = get_object_or_404(Equipment, pk=equipment_id)
+        records = EquipmentRecord.objects.filter(equipment=equipment).select_related(
+            "equipment",
+            "record_type",
+            "created_by",
+            "last_updated_by",
+        )
+
+        filename = (
+            f"assetrack_equipment_{equipment.pk}_records_"
+            f"{timezone.now().strftime('%Y-%m-%d-%H-%M-%S')}.csv"
+        )
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+        csv_fields = {
+            "Record ID": lambda record: record.pk,
+            "Date": lambda record: record.date,
+            "Record Type": lambda record: record.record_type.name,
+            "Equipment": lambda record: record.equipment.name,
+            "Description": lambda record: record.description or "",
+            "Created At": lambda record: record.created_at,
+            "Created By": lambda record: record.created_by.username if record.created_by else "",
+            "Last Updated At": lambda record: record.last_updated,
+            "Last Updated By": lambda record: record.last_updated_by.username if record.last_updated_by else "",
+        }
+
+        writer = csv.writer(response)
+        writer.writerow(csv_fields.keys())
+        for record in records:
+            writer.writerow([field(record) for field in csv_fields.values()])
+
+        return response
 
 
 ### EquipmentRecordAttachment CRUD operations

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block page_title %}
+  Equipment Record Timeline
+{% endblock page_title %}
+{% block content %}
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span><i class="bi bi-graph-up text-primary"></i> Equipment Record Timeline</span>
+      <a href="{% url 'equipmentrecord_list' %}" title="Return to the equipment record list"><i class="bi bi-card-list"></i> List view</a>
+    </div>
+    <div class="card-body">
+      <form method="get" class="row g-2 align-items-end timeline-filters">
+        <div class="col-sm-6 col-lg-2">
+          <label class="form-label" for="{{ filter_form.start_date.id_for_label }}">{{ filter_form.start_date.label }}</label>
+          {{ filter_form.start_date }}
+          <div class="text-danger small">{{ filter_form.start_date.errors }}</div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+          <label class="form-label" for="{{ filter_form.end_date.id_for_label }}">{{ filter_form.end_date.label }}</label>
+          {{ filter_form.end_date }}
+          <div class="text-danger small">{{ filter_form.end_date.errors }}</div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <label class="form-label" for="{{ filter_form.equipment.id_for_label }}">Equipment</label>
+          {{ filter_form.equipment }}
+          <div class="text-danger small">{{ filter_form.equipment.errors }}</div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <label class="form-label" for="{{ filter_form.record_type.id_for_label }}">Record type / severity</label>
+          {{ filter_form.record_type }}
+          <div class="text-danger small">{{ filter_form.record_type.errors }}</div>
+        </div>
+        <div class="col-lg-2 d-flex gap-2">
+          <button type="submit" class="btn btn-sm btn-primary flex-grow-1">Apply</button>
+          <a href="{% url 'equipmentrecord_timeline' %}" class="btn btn-sm btn-outline-secondary">Clear</a>
+        </div>
+        {% if filter_form.non_field_errors %}
+          <div class="col-12 text-danger">{{ filter_form.non_field_errors }}</div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <span>{{ record_count }} record{{ record_count|pluralize }} across {{ equipment_count }} equipment item{{ equipment_count|pluralize }}</span>
+      {% if legend %}
+        <span class="timeline-legend" aria-label="Record type colour legend">
+          {% for item in legend %}
+            <span class="timeline-legend-item">
+              <span class="timeline-legend-dot" style="--record-color: {{ item.color }}"></span>
+              {{ item.record_type.name }}
+            </span>
+          {% endfor %}
+        </span>
+      {% endif %}
+    </div>
+    <div class="card-body p-0">
+      {% if equipment_rows %}
+        <p class="timeline-help text-muted px-3 pt-2 mb-1">
+          Colour represents the configured record type and acts as the severity indicator. Select a marker to open its record.
+        </p>
+        <div class="timeline-scroll" role="region" aria-label="Equipment record timeline" tabindex="0">
+          <div class="timeline-chart">
+            <div class="timeline-axis-row">
+              <div class="timeline-axis-title">Equipment</div>
+              <div class="timeline-axis" aria-label="Dates from {{ axis_start }} to {{ axis_end }}">
+                {% for tick in ticks %}
+                  <span class="timeline-axis-tick" style="--tick-position: {{ tick.position }}%">
+                    <span class="timeline-axis-label">{{ tick.date|date:tick.label_format }}</span>
+                  </span>
+                {% endfor %}
+              </div>
+            </div>
+            {% for row in equipment_rows %}
+              <div class="timeline-row" style="--track-height: {{ row.height }}px">
+                <div class="timeline-equipment">
+                  <a href="{% url 'equipment_detail' row.equipment.pk %}" title="Open {{ row.equipment.name }}">{{ row.equipment.name }}</a>
+                </div>
+                <div class="timeline-track">
+                  {% for tick in ticks %}<span class="timeline-gridline" style="--tick-position: {{ tick.position }}%"></span>{% endfor %}
+                  {% for event in row.events %}
+                    <a href="{% url 'equipmentrecord_detail' event.record.pk %}"
+                       class="timeline-event"
+                       style="--event-position: {{ event.position }}%; --event-top: {{ event.top }}px; --record-color: {{ event.color }}"
+                       title="{{ event.record.date|date:'d/m/Y' }} — {{ event.record.record_type.name }} — {{ event.record.description|default:'No description'|truncatechars:140 }}"
+                       aria-label="{{ row.equipment.name }}, {{ event.record.date|date:'d/m/Y' }}, {{ event.record.record_type.name }}">
+                      <span class="visually-hidden">Open record {{ event.record.pk }}</span>
+                    </a>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="text-center text-muted py-5">
+          <i class="bi bi-calendar-x fs-3 d-block mb-2"></i>
+          No equipment records match these filters.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}

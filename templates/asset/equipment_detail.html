@@ -157,7 +157,15 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <span class="text-primary"><i class="bi bi-card-checklist"></i> Equipment records</span>
-      <a href="{% url 'equipmentrecord_create' equipment.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
+      <span>
+        <a href="{% url 'equipmentrecord_csv_export' equipment.id %}"
+           class="pe-2"
+           title="Export equipment records to CSV"
+           onclick="return confirm('Are you sure you want to export the equipment records to CSV?');">
+          <i class="bi bi-filetype-csv text-success"></i>
+        </a>
+        <a href="{% url 'equipmentrecord_create' equipment.id %}" title="Add a new record"><i class="bi bi-plus-circle"></i></a>
+      </span>
     </div>
     <div class="card-body">
       {% for record in equipment.equipmentrecord_set.all %}

@@ -21,6 +21,9 @@
   </form>
 {% endblock panel_heading_center %}
 {% block panel_heading_end %}
+  <a href="{% url 'equipmentrecord_timeline' %}"
+     class="btn btn-sm btn-outline-primary"
+     title="Plot equipment records on a timeline"><i class="bi bi-graph-up"></i> Timeline</a>
 {% endblock panel_heading_end %}
 {% block panel_content %}
   <div class="row list-header">

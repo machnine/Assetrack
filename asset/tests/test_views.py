@@ -11,8 +11,10 @@ from asset.models import (
     Category,
     Company,
     Equipment,
+    EquipmentRecord,
     EquipmentType,
     Location,
+    RecordType,
     Schedule,
     Status,
 )
@@ -61,6 +63,11 @@ class LoginRequiredTest(ViewTestMixin, TestCase):
 
     def test_equipment_list_requires_login(self):
         response = self.client.get(reverse("equipment_list"))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("login", response.url)
+
+    def test_equipment_record_timeline_requires_login(self):
+        response = self.client.get(reverse("equipmentrecord_timeline"))
         self.assertEqual(response.status_code, 302)
         self.assertIn("login", response.url)
 
@@ -162,6 +169,10 @@ class EquipmentDetailViewTest(ViewTestMixin, TestCase):
         response = self.client.get(reverse("equipment_detail", kwargs={"pk": self.equipment.pk}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Test Equipment")
+        self.assertContains(
+            response,
+            reverse("equipmentrecord_csv_export", kwargs={"equipment_id": self.equipment.pk}),
+        )
 
     def test_detail_404(self):
         response = self.client.get(reverse("equipment_detail", kwargs={"pk": 9999}))
@@ -233,6 +244,170 @@ class EquipmentCSVExportViewTest(ViewTestMixin, TestCase):
         content = response.content.decode()
         self.assertIn("Name", content)
         self.assertIn("Test Equipment", content)
+
+
+class EquipmentRecordCSVExportViewTest(ViewTestMixin, TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = cls.create_user()
+        cls.deps = cls.create_equipment_deps()
+        cls.equipment = cls.create_equipment(cls.user, cls.deps)
+        cls.other_equipment = cls.create_equipment(
+            cls.user,
+            cls.deps,
+            name="Other Equipment",
+            serial_number="SN002",
+        )
+        cls.record_type = RecordType.objects.create(name="Service")
+        cls.record = EquipmentRecord.objects.create(
+            equipment=cls.equipment,
+            record_type=cls.record_type,
+            date=date(2026, 8, 20),
+            description="Annual service completed",
+            created_by=cls.user,
+        )
+        EquipmentRecord.objects.create(
+            equipment=cls.other_equipment,
+            record_type=cls.record_type,
+            date=date(2026, 8, 21),
+            description="Record belonging to other equipment",
+            created_by=cls.user,
+        )
+
+    def setUp(self):
+        self.login()
+
+    def test_csv_export_contains_only_selected_equipment_records(self):
+        response = self.client.get(
+            reverse("equipmentrecord_csv_export", kwargs={"equipment_id": self.equipment.pk})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "text/csv")
+        self.assertIn(f"assetrack_equipment_{self.equipment.pk}_records_", response["Content-Disposition"])
+
+        content = response.content.decode()
+        self.assertIn("Record ID,Date,Record Type,Equipment,Description", content)
+        self.assertIn("Annual service completed", content)
+        self.assertIn("Test Equipment", content)
+        self.assertNotIn("Record belonging to other equipment", content)
+        self.assertNotIn("Other Equipment", content)
+
+    def test_csv_export_404_for_invalid_equipment(self):
+        response = self.client.get(reverse("equipmentrecord_csv_export", kwargs={"equipment_id": 9999}))
+
+        self.assertEqual(response.status_code, 404)
+
+
+class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = cls.create_user()
+        cls.deps = cls.create_equipment_deps()
+        cls.equipment = cls.create_equipment(cls.user, cls.deps)
+        cls.other_equipment = cls.create_equipment(
+            cls.user,
+            cls.deps,
+            name="Other Equipment",
+            serial_number="SN-TIMELINE-2",
+        )
+        cls.critical_type = RecordType.objects.create(name="Critical", color="#dc3545")
+        cls.information_type = RecordType.objects.create(name="Information", color="#0dcaf0")
+        cls.critical_record = EquipmentRecord.objects.create(
+            equipment=cls.equipment,
+            record_type=cls.critical_type,
+            date=date(2026, 1, 10),
+            description="Critical timeline event",
+            created_by=cls.user,
+        )
+        cls.information_record = EquipmentRecord.objects.create(
+            equipment=cls.other_equipment,
+            record_type=cls.information_type,
+            date=date(2026, 2, 10),
+            description="Information timeline event",
+            created_by=cls.user,
+        )
+        cls.old_record = EquipmentRecord.objects.create(
+            equipment=cls.equipment,
+            record_type=cls.information_type,
+            date=date(2020, 6, 15),
+            description="Older timeline event",
+            created_by=cls.user,
+        )
+
+    def setUp(self):
+        self.login()
+
+    def test_timeline_defaults_to_the_last_three_years(self):
+        response = self.client.get(reverse("equipmentrecord_timeline"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["record_count"], 2)
+        self.assertEqual(response.context["equipment_count"], 2)
+        today = timezone.localdate()
+        self.assertEqual(response.context["filter_form"].initial["start_date"].year, today.year - 3)
+        self.assertEqual(response.context["filter_form"].initial["end_date"], today)
+        self.assertContains(response, "Test Equipment")
+        self.assertContains(response, "Other Equipment")
+        self.assertContains(response, "Critical")
+        self.assertContains(response, "#dc3545")
+        self.assertContains(response, reverse("equipmentrecord_detail", kwargs={"pk": self.critical_record.pk}))
+        self.assertNotContains(response, "Older timeline event")
+
+        for row in response.context["equipment_rows"]:
+            for event in row["events"]:
+                self.assertGreaterEqual(event["position"], 0)
+                self.assertLessEqual(event["position"], 100)
+
+    def test_timeline_can_show_records_older_than_three_years(self):
+        response = self.client.get(
+            reverse("equipmentrecord_timeline"),
+            {"start_date": "2020-01-01", "end_date": "2020-12-31"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["record_count"], 1)
+        self.assertEqual(response.context["equipment_rows"][0]["events"][0]["record"], self.old_record)
+
+    def test_timeline_filters_by_equipment_and_record_type(self):
+        response = self.client.get(
+            reverse("equipmentrecord_timeline"),
+            {"equipment": self.other_equipment.pk, "record_type": self.information_type.pk},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["record_count"], 1)
+        self.assertEqual(
+            [row["equipment"] for row in response.context["equipment_rows"]],
+            [self.other_equipment],
+        )
+        self.assertEqual(
+            [item["record_type"] for item in response.context["legend"]],
+            [self.information_type],
+        )
+
+    def test_timeline_filters_by_date_range(self):
+        response = self.client.get(
+            reverse("equipmentrecord_timeline"),
+            {"start_date": "2026-02-01", "end_date": "2026-02-28"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["record_count"], 1)
+        self.assertEqual(response.context["equipment_rows"][0]["equipment"], self.other_equipment)
+
+    def test_timeline_rejects_reversed_date_range(self):
+        response = self.client.get(
+            reverse("equipmentrecord_timeline"),
+            {"start_date": "2026-03-01", "end_date": "2026-02-01"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["filter_form"],
+            field=None,
+            errors="The from date must be on or before the to date.",
+        )
 
 
 # ── Schedule Views ──────────────────────────────────────────────

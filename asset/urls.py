@@ -41,6 +41,11 @@ urlpatterns = [
     path("equipment/<int:pk>/delete/", equipment.EquipmentDeleteView.as_view(), name="equipment_delete"),
     path("equipment/records/", equipment_record.EquipmentRecordListView.as_view(), name="equipmentrecord_list"),
     path(
+        "equipment/records/timeline/",
+        equipment_record.EquipmentRecordTimelineView.as_view(),
+        name="equipmentrecord_timeline",
+    ),
+    path(
         "equipment/<int:equipment_id>/record/create/",
         equipment_record.EquipmentRecordCreateView.as_view(),
         name="equipmentrecord_create",
@@ -59,6 +64,11 @@ urlpatterns = [
         "equipment/record/<int:pk>/detail/",
         equipment_record.EquipmentRecordDetailView.as_view(),
         name="equipmentrecord_detail",
+    ),
+    path(
+        "equipment/<int:equipment_id>/records/export/csv/",
+        equipment_record.EquipmentRecordCSVExportView.as_view(),
+        name="equipmentrecord_csv_export",
     ),
     path(
         "equipment/attachment/<int:pk>/upload/",
