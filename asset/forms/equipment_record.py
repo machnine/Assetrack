@@ -3,7 +3,7 @@
 from django import forms
 from django.utils import timezone
 
-from asset.models import Equipment, EquipmentRecord, EquipmentRecordAttachment, RecordType
+from asset.models import Category, Equipment, EquipmentRecord, EquipmentRecordAttachment, RecordType
 from attachment.forms import AttachmentForm
 
 
@@ -49,6 +49,12 @@ class EquipmentRecordTimelineFilterForm(forms.Form):
             attrs={"type": "date", "class": "form-control form-control-sm"},
             format="%Y-%m-%d",
         ),
+    )
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        required=False,
+        empty_label="All categories",
+        widget=forms.Select(attrs={"class": "form-select form-select-sm"}),
     )
     equipment = forms.ModelChoiceField(
         queryset=Equipment.objects.all(),

@@ -155,6 +155,7 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
             active_filters = {
                 "start_date": today - relativedelta(years=3),
                 "end_date": today,
+                "category": None,
                 "equipment": None,
                 "record_type": None,
             }
@@ -165,6 +166,8 @@ class EquipmentRecordTimelineView(LoginRequiredMixin, TemplateView):
             records = records.filter(date__gte=active_filters["start_date"])
         if active_filters.get("end_date"):
             records = records.filter(date__lte=active_filters["end_date"])
+        if active_filters.get("category"):
+            records = records.filter(equipment__category=active_filters["category"])
         if active_filters.get("equipment"):
             records = records.filter(equipment=active_filters["equipment"])
         if active_filters.get("record_type"):

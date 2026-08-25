@@ -305,11 +305,13 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
         cls.user = cls.create_user()
         cls.deps = cls.create_equipment_deps()
         cls.equipment = cls.create_equipment(cls.user, cls.deps)
+        cls.other_category = Category.objects.create(name="Imaging Equipment")
         cls.other_equipment = cls.create_equipment(
             cls.user,
             cls.deps,
             name="Other Equipment",
             serial_number="SN-TIMELINE-2",
+            category=cls.other_category,
         )
         cls.critical_type = RecordType.objects.create(name="Critical", color="#dc3545")
         cls.information_type = RecordType.objects.create(name="Information", color="#0dcaf0")
@@ -384,6 +386,23 @@ class EquipmentRecordTimelineViewTest(ViewTestMixin, TestCase):
         self.assertEqual(
             [item["record_type"] for item in response.context["legend"]],
             [self.information_type],
+        )
+
+    def test_timeline_filters_by_equipment_category(self):
+        response = self.client.get(
+            reverse("equipmentrecord_timeline"),
+            {
+                "start_date": "2025-01-01",
+                "end_date": "2026-12-31",
+                "category": self.other_category.pk,
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["record_count"], 1)
+        self.assertEqual(
+            [row["equipment"] for row in response.context["equipment_rows"]],
+            [self.other_equipment],
         )
 
     def test_timeline_filters_by_date_range(self):
